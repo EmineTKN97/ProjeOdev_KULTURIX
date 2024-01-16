@@ -11,7 +11,7 @@ namespace Entities.Concrete
 {
     public class User : IdentityUser<Guid>, IEntity
     {
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public string Name { get; set; }
 
         public string SurName { get; set; }
@@ -19,5 +19,6 @@ namespace Entities.Concrete
         public string EmailAdress { get; set; }
 
         public DateTime BirthDate { get; set; }
+        public Guid BlogId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

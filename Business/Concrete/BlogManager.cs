@@ -35,7 +35,7 @@ namespace Business.Concrete
         }
         public Blog GetById(Guid id)
         {
-            return _blogDal.Get(blog => blog.Id == id);
+            return _blogDal.Get(blog => blog.BlogId == id);
         }
 
         public void Update(Blog blog)

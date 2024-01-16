@@ -8,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IBlogDal, EfBlogDal>();
 builder.Services.AddScoped<IBlogService, BlogManager>();
+builder.Services.AddScoped<IBlogCommentDal, EfBlogCommentDal>();
+builder.Services.AddScoped<IBlogCommentService, BlogCommentManager>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
