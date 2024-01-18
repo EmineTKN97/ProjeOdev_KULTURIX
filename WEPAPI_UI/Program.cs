@@ -1,6 +1,7 @@
 using Business.Abstract;
 using Business.Concrete;
 using DataAccess.Abstract;
+using DataAccess.Concrete.Context;
 using DataAccess.Concrete.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddScoped<IBlogService, BlogManager>();
 builder.Services.AddScoped<IBlogCommentDal, EfBlogCommentDal>();
 builder.Services.AddScoped<IBlogCommentService, BlogCommentManager>();
 
+builder.Services.AddScoped<ProjeOdevContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

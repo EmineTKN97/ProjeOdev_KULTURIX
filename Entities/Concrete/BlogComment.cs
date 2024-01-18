@@ -14,7 +14,7 @@ namespace Entities.Concrete
         public Guid BlogId { get; set; }
         public string Title { get; set; }
         public  string CommentText { get; set; }
-     
+     public DateTime CommentDate { get; set; }
         public Blog blog{ get; set; }
     }
 }

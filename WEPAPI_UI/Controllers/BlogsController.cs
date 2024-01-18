@@ -1,7 +1,9 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WEPAPI_UI.Controllers
 {
@@ -14,48 +16,60 @@ namespace WEPAPI_UI.Controllers
     {
         _blogService = blogService;
     }
-    [HttpGet("GetAll")]
-    public IActionResult GetAll()
-    {
-        var result = _blogService.GetAll();
-        return Ok(result);
-    }
 
-    [HttpGet("Get")]
-    public IActionResult Get(Guid id)
-    {
-        var result = _blogService.GetById(id);
-        return Ok(result);
-    }
+    [HttpGet("GetAllBlogDetails")]
+        public ActionResult<BlogDetailsDTO> GetAllBlogDetails()
+        {
+            var result = _blogService.GetAllBlogDetails();
+            if (result is null) return NotFound();
+            return Ok(result);
 
-    [HttpPost("Add")]
-    public IActionResult Add(Blog blog)
+        }
+     [HttpGet("GetBlogDetails")]
+        public ActionResult<BlogDTO> GetBlogDetails()
+        {
+            var result = _blogService.GetBlogDetails();
+            return Ok(result);
+
+        }
+
+        
+
+        [HttpPost("AddBlog")]
+    public ActionResult<BlogDTO> AddBlog(BlogDTO blog)
     {
         _blogService.Add(blog);
-        return Ok();
+            return Ok();
     }
 
     [HttpDelete("Delete")]
     public IActionResult Delete(Guid id)
     {
-        var deletedEntity = _blogService.GetById(id);
+            try
+            {
+                _blogService.Delete(id);
+                return Ok("Blog başarıyla silindi.");
+            }
+            catch (Exception ex)
+            {
+                // Eğer bir hata oluşursa, isteğe bağlı olarak hata durumu ile cevap verebilirsiniz.
+                return BadRequest($"Blog silme işlemi başarısız. Hata: {ex.Message}");
+            }
+    }
 
-        if (deletedEntity != null)
+        [HttpPut("{id}")]
+        public IActionResult Update(Guid id, BlogDTO updatedBlogDto)
         {
-            _blogService.Delete(deletedEntity);
-            return Ok();
+            try
+            {
+                _blogService.Update(id, updatedBlogDto);
+                return Ok("Blog başarıyla güncellendi.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Blog güncelleme işlemi başarısız. Hata: {ex.Message}");
+            }
         }
-
-        return BadRequest();
     }
-
-
-    [HttpPut("Update")]
-    public IActionResult Update(Blog blog)
-    {
-        _blogService.Update(blog);
-        return Ok();
-    }
-}
 }
 

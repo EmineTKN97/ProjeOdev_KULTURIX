@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,11 @@ namespace Business.Abstract
 {
     public interface IBlogService
     {
-        void Add(Blog blog);
-        void Delete(Blog blog);
-        void Update(Blog blog);
-        List<Blog> GetAll();
+        void Add(BlogDTO blogdto);
+        void Delete(Guid İd);
+           void Update(Guid id, BlogDTO updatedBlogDto);
         Blog GetById(Guid id);
+        List<BlogDetailsDTO> GetAllBlogDetails();
+        List<BlogDTO> GetBlogDetails();
     }
 }
