@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.Design;
@@ -11,54 +12,53 @@ namespace WEPAPI_UI.Controllers
     public class BlogCommentController : ControllerBase
     {
         private readonly IBlogCommentService _blogcommentService;
-
         public BlogCommentController(IBlogCommentService blogcommentService)
         {
             _blogcommentService = blogcommentService;
         }
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
+
+
+        [HttpGet("GetBlogCommentsDetails")]
+        public ActionResult<BlogCommentDTO> GetAllCommentsDetails()
         {
-
-
-            var result = _blogcommentService.GetAll();
+            var result = _blogcommentService.GetAllCommentsDetails();
             return Ok(result);
+
         }
 
-        [HttpGet("Get")]
-        public IActionResult Get(Guid id)
+        [HttpPost("AddComment")]
+        public ActionResult<BlogCommentDTO> Add(Guid blogId, BlogCommentDTO blogcomment)
         {
-            var result = _blogcommentService.GetById(id);
-            return Ok(result);
-        }
-
-        [HttpPost("Add")]
-        public IActionResult Add(BlogComment blogcomment)
-        {
-            _blogcommentService.Add(blogcomment);
+            _blogcommentService.Add(blogId, blogcomment);
             return Ok();
         }
-
         [HttpDelete("Delete")]
         public IActionResult Delete(Guid id)
         {
-            var deletedEntity = _blogcommentService.GetById(id);
-
-            if (deletedEntity != null)
+            try
             {
-                _blogcommentService.Delete(deletedEntity);
-                return Ok();
+                _blogcommentService.Delete(id);
+                return Ok("Blog başarıyla silindi.");
             }
-
-            return BadRequest();
+            catch (Exception ex)
+            {
+                // Eğer bir hata oluşursa, isteğe bağlı olarak hata durumu ile cevap verebilirsiniz.
+                return BadRequest($"Blog silme işlemi başarısız. Hata: {ex.Message}");
+            }
         }
 
-
-        [HttpPut("Update")]
-        public IActionResult Update(BlogComment blogcomment)
+        [HttpPut("{id}")]
+        public IActionResult Update(Guid id, BlogCommentDTO updatedcommentBlogDto)
         {
-            _blogcommentService.Update(blogcomment);
-            return Ok();
+            try
+            {
+                _blogcommentService.Update(id, updatedcommentBlogDto);
+                return Ok("Blog başarıyla güncellendi.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Blog güncelleme işlemi başarısız. Hata: {ex.Message}");
+            }
         }
     }
 }

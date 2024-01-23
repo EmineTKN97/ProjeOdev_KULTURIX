@@ -14,31 +14,30 @@ using System.Threading.Tasks;
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfBlogDal : EfEntityRepositoryBase<Blog, ProjeOdevContext>, IBlogDal
-    { 
-            private readonly ProjeOdevContext _context;
+    {
+        private readonly ProjeOdevContext _context;
 
-            public EfBlogDal(ProjeOdevContext context)
-            {
-                _context = context;
-            }
+        public EfBlogDal(ProjeOdevContext context)
+        {
+            _context = context;
+        }
 
-            public void Add(BlogDTO blogdto)
+        public void Add(BlogDTO blogdto)
+        {
+            using (var context = _context)
             {
-                // Şimdi _context üzerinden veritabanı işlemlerinizi gerçekleştirebilirsiniz.
-                using (var context = _context)
+                var newBlog = new Blog
                 {
-                    var newBlog = new Blog
-                    {
-                        BlogId = Guid.NewGuid(),
-                        Title = blogdto.Title,
-                        Content = blogdto.Description,
-                        Date = DateTime.Now
-                    };
+                    BlogId = Guid.NewGuid(),
+                    Title = blogdto.Title,
+                    Content = blogdto.Description,
+                    Date = DateTime.Now
+                };
 
-                    context.Blogs.Add(newBlog);
-                    context.SaveChanges();
-                }
+                context.Blogs.Add(newBlog);
+                context.SaveChanges();
             }
+        }
 
         public void Delete(Guid id)
         {
@@ -46,42 +45,82 @@ namespace DataAccess.Concrete.EntityFramework
 
             if (blogToDelete != null)
             {
-                _context.Blogs.Remove(blogToDelete);
+                blogToDelete.Status = true;
+                _context.Blogs.Update(blogToDelete);
                 _context.SaveChanges();
             }
-            
+
         }
         public List<BlogDetailsDTO> GetAllBlogDetails()
         {
-                using (var context = new ProjeOdevContext())
-                {
-                    var result = from b in context.Blogs
-                                 select new BlogDetailsDTO
-                                 {
-                                     İd = b.BlogId,
-                                     BlogTitle= b.Title,
-                                     BlogContent = b.Content,
-                                     BlogDate=b.Date,
-                                 };
+            using (var context = new ProjeOdevContext())
+            {
+                var result = from b in context.Blogs
+                             join bc in context.BlogComments
+                             on b.BlogId equals bc.BlogId
+                             where b.Status == false
 
-                    return result.ToList();
-                }
+                             select new BlogDetailsDTO
+                             {
+                                 İd = b.BlogId,
+                                 BlogTitle = b.Title,
+                                 BlogContent = b.Content,
+                                 BlogDate = b.Date,
+                                 BlogCommentDate = bc.CommentDate,
+                                 BlogCommentText = bc.CommentText,
+                                 BlogCommentTitle = bc.Title,
+                             };
+
+                return result.ToList();
+            }
         }
 
         public List<BlogDTO> GetBlogDetails()
         {
             using (var context = new ProjeOdevContext())
             {
-                    var result = from b in context.Blogs
-                             select new BlogDTO
-                             {
-                              İd= b.BlogId, 
-                              Title= b.Title,
-                              Description=b.Content,
-                              CreateDate=b.Date,    
-                             };
+                var result = context.Blogs
+                    .Where(b => b.Status == false)
+                    .Select(b => new BlogDTO
+                    {
+                        Id = b.BlogId,
+                        Title = b.Title,
+                        Description = b.Content,
+                        CreateDate = b.Date,
+                    })
+                    .ToList();
 
-                return result.ToList();
+                return result;
+            }
+        }
+
+
+        public BlogDTO GetBlogById(Guid id)
+        {
+            using (var context = _context)
+            {
+                var blog = context.Blogs
+                    .Where(b => b.BlogId == id)
+                    .FirstOrDefault();
+
+                if (blog != null)
+                {
+                    // Blog varsa BlogDTO'ya dönüştür ve geri döndür
+                    var blogDto = new BlogDTO
+                    {
+                        Id = blog.BlogId,
+                        Title = blog.Title,
+                        Description = blog.Content,
+                        CreateDate = blog.Date
+                    };
+
+                    return blogDto;
+                }
+                else
+                {
+                    // Blog bulunamazsa null döndür
+                    return null;
+                }
             }
         }
 
@@ -89,11 +128,12 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (var context = _context)
             {
+          
                 var blogToUpdate = context.Blogs.FirstOrDefault(b => b.BlogId == id);
 
                 if (blogToUpdate != null)
                 {
-                    // Güncelleme işlemleri
+                    
                     blogToUpdate.Title = updatedBlogDto.Title ?? blogToUpdate.Title;
                     blogToUpdate.Content = updatedBlogDto.Description ?? blogToUpdate.Content;
 
@@ -105,9 +145,8 @@ namespace DataAccess.Concrete.EntityFramework
                     {
                         blogToUpdate.Date = DateTime.Now;
                     }
-                    // Eğer CreateDate değeri atanmamışsa, varsayılan değer olarak DateTime.Now kullanılır.
 
-                    // Değişiklikleri kaydet
+                    
                     context.SaveChanges();
                 }
                 else
@@ -116,7 +155,11 @@ namespace DataAccess.Concrete.EntityFramework
                 }
             }
         }
- }   }
 
- 
+       
+    }
+}
+
+
+
 

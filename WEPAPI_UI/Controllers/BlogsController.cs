@@ -10,14 +10,14 @@ namespace WEPAPI_UI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class BlogsController : ControllerBase
- { 
-     private readonly IBlogService _blogService;
-    public BlogsController(IBlogService blogService)
     {
-        _blogService = blogService;
-    }
+        private readonly IBlogService _blogService;
+        public BlogsController(IBlogService blogService)
+        {
+            _blogService = blogService;
+        }
 
-    [HttpGet("GetAllBlogDetails")]
+        [HttpGet("GetAllBlogDetails")]
         public ActionResult<BlogDetailsDTO> GetAllBlogDetails()
         {
             var result = _blogService.GetAllBlogDetails();
@@ -25,26 +25,30 @@ namespace WEPAPI_UI.Controllers
             return Ok(result);
 
         }
-     [HttpGet("GetBlogDetails")]
+        [HttpGet("GetBlogDetails")]
         public ActionResult<BlogDTO> GetBlogDetails()
         {
             var result = _blogService.GetBlogDetails();
             return Ok(result);
 
         }
+        [HttpGet("GetById")]
+        public ActionResult<BlogDTO> GetById(Guid id)
+        {
+            var result = _blogService.GetById(id);
+            return Ok(result);
 
-        
-
+        }
         [HttpPost("AddBlog")]
-    public ActionResult<BlogDTO> AddBlog(BlogDTO blog)
-    {
-        _blogService.Add(blog);
+        public ActionResult<BlogDTO> AddBlog(BlogDTO blog)
+        {
+            _blogService.Add(blog);
             return Ok();
-    }
+        }
 
-    [HttpDelete("Delete")]
-    public IActionResult Delete(Guid id)
-    {
+        [HttpDelete("Delete")]
+        public IActionResult Delete(Guid id)
+        {
             try
             {
                 _blogService.Delete(id);
@@ -52,18 +56,27 @@ namespace WEPAPI_UI.Controllers
             }
             catch (Exception ex)
             {
-                // Eğer bir hata oluşursa, isteğe bağlı olarak hata durumu ile cevap verebilirsiniz.
+
                 return BadRequest($"Blog silme işlemi başarısız. Hata: {ex.Message}");
             }
-    }
+        }
 
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, BlogDTO updatedBlogDto)
         {
             try
             {
-                _blogService.Update(id, updatedBlogDto);
-                return Ok("Blog başarıyla güncellendi.");
+                var existingBlog = _blogService.GetById(id);
+
+                if (existingBlog != null)
+                { 
+                    _blogService.Update(id, updatedBlogDto);
+                    return Ok("Blog başarıyla güncellendi.");
+                }
+                else
+                {
+                    return NotFound("Belirtilen id'ye sahip blog bulunamadı.");
+                }
             }
             catch (Exception ex)
             {

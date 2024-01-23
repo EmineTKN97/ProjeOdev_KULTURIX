@@ -11,7 +11,8 @@ namespace Entities.DTOs
     {
         public Guid  İd{ get; set; }
 
-        public Guid Userİd { get; set; }
+        public Guid UserId { get; set; }
+        public Guid BlogId { get; set; }
 
         public  string BlogTitle { get; set; }
 
@@ -23,6 +24,9 @@ namespace Entities.DTOs
         public string  BlogCommentTitle { get; set; }
 
         public  string  BlogCommentText { get; set; }
+
+        public Guid id { get; set; }
+        public bool Status { get; set; }
     }
 
    

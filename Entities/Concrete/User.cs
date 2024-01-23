@@ -19,6 +19,7 @@ namespace Entities.Concrete
         public string EmailAdress { get; set; }
 
         public DateTime BirthDate { get; set; }
-        public Guid BlogId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool Status { get; set; }
+        public Guid BlogId { get; set; }
     }
 }

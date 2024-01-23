@@ -12,7 +12,7 @@ namespace Business.Abstract
     {
         void Add(BlogDTO blogdto);
         void Delete(Guid İd);
-           void Update(Guid id, BlogDTO updatedBlogDto);
+        void Update(Guid id, BlogDTO updatedBlogDto);
         Blog GetById(Guid id);
         List<BlogDetailsDTO> GetAllBlogDetails();
         List<BlogDTO> GetBlogDetails();

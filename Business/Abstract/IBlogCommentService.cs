@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Business.Abstract
  public interface IBlogCommentService
     {
 
-        void Add(BlogComment blogComment);
-        void Delete(BlogComment blogComment);
-        void Update(BlogComment blogComment);
-        List<BlogComment> GetAll();
-        BlogComment GetById(Guid id);
+        void Add(Guid Blogİd,BlogCommentDTO blogcommentdto);
+        void Delete(Guid İd);
+        void Update(Guid id, BlogCommentDTO updatedCommentBlogDto);
+        List<BlogCommentDTO> GetAllCommentsDetails();
+        
     }
 }

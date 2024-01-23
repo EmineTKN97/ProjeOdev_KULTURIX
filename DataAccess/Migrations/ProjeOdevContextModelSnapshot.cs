@@ -38,6 +38,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -66,6 +69,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -78,6 +84,36 @@ namespace DataAccess.Migrations
                     b.HasIndex("BlogId");
 
                     b.ToTable("BlogComments");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.BlogLike", b =>
+                {
+                    b.Property<Guid>("LikeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlogCommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Blogid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LikeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("Userid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LikeId");
+
+                    b.HasIndex("BlogCommentId");
+
+                    b.HasIndex("Blogid");
+
+                    b.ToTable("BlogLikes");
                 });
 
             modelBuilder.Entity("Entities.Concrete.User", b =>
@@ -136,6 +172,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<string>("SurName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -159,15 +198,38 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Concrete.Blog", "blog")
                         .WithMany("BlogComments")
                         .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("blog");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.BlogLike", b =>
+                {
+                    b.HasOne("Entities.Concrete.BlogComment", "comment")
+                        .WithMany("BlogLikes")
+                        .HasForeignKey("BlogCommentId")
+                        .IsRequired();
+
+                    b.HasOne("Entities.Concrete.Blog", "blog")
+                        .WithMany("BlogLikes")
+                        .HasForeignKey("Blogid")
+                        .IsRequired();
+
+                    b.Navigation("blog");
+
+                    b.Navigation("comment");
+                });
+
             modelBuilder.Entity("Entities.Concrete.Blog", b =>
                 {
                     b.Navigation("BlogComments");
+
+                    b.Navigation("BlogLikes");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.BlogComment", b =>
+                {
+                    b.Navigation("BlogLikes");
                 });
 #pragma warning restore 612, 618
         }

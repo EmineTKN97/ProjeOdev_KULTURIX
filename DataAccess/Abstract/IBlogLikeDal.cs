@@ -9,12 +9,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-   public interface IBlogCommentDal : IEntityRepository<BlogComment>
+  public  interface IBlogLikeDal:IEntityRepository<BlogLike>
     {
-        List<BlogCommentDTO> GetAllCommentDetails();
-        void Add(Guid Blogİd, BlogCommentDTO blogcommentdto);
+      
+        void Add(Guid blogİd, BlogLikeDTO bloglikedto);
         void Delete(Guid id);
-        void Update(Guid id, BlogCommentDTO updatedCommentBlogDto);
-
+        List<BlogLikeDTO> GetAllLikeDetails();
     }
 }

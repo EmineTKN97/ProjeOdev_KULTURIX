@@ -11,6 +11,8 @@ builder.Services.AddScoped<IBlogDal, EfBlogDal>();
 builder.Services.AddScoped<IBlogService, BlogManager>();
 builder.Services.AddScoped<IBlogCommentDal, EfBlogCommentDal>();
 builder.Services.AddScoped<IBlogCommentService, BlogCommentManager>();
+builder.Services.AddScoped<IBlogLikeDal, EfBlogLikeDal>();
+builder.Services.AddScoped<IBlogLikeService, BlogLikeManager>();
 
 builder.Services.AddScoped<ProjeOdevContext>();
 

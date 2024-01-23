@@ -2,6 +2,7 @@
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,30 +19,25 @@ namespace Business.Concrete
         {
             _blogcommentDal = blogcommentDal;
         }
-        public void Add(BlogComment blogComment)
+       
+        public void Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
         {
-            _blogcommentDal.Add(blogComment);
+            _blogcommentDal.Add(Blogİd,blogcommentdto);
         }
 
-        public void Delete(BlogComment blogComment)
+        public void Delete(Guid İd)
         {
-            _blogcommentDal.Delete(blogComment);
+            _blogcommentDal.Delete(İd);
         }
 
-        public List<BlogComment> GetAll()
+        public List<BlogCommentDTO> GetAllCommentsDetails()
         {
-            return _blogcommentDal.GetAll();
+            return _blogcommentDal.GetAllCommentDetails();
         }
 
-        public BlogComment GetById(Guid id)
+        public void Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
         {
-
-            return _blogcommentDal.Get(blogComment => blogComment.CommentId == id);
-        }
-
-        public void Update(BlogComment blogComment)
-        {
-            _blogcommentDal.Update(blogComment);
+            _blogcommentDal.Update(id,updatedCommentBlogDto);
         }
     }
 }

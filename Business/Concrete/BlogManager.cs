@@ -24,31 +24,23 @@ namespace Business.Concrete
         {
             _blogDal.Add(blogdto);
         }
-
-
-
-        public void Delete(Guid İd)
+       public void Delete(Guid İd)
         {
             _blogDal.Delete(İd);
         }
-
         public List<BlogDetailsDTO> GetAllBlogDetails()
         {
             return _blogDal.GetAllBlogDetails();
         }
-
         public List<BlogDTO> GetBlogDetails()
         {
             return _blogDal.GetBlogDetails();
 
         }
-
         public Blog GetById(Guid id)
         {
             return _blogDal.Get(blog => blog.BlogId == id);
         }
-
-       
 
         public void Update(Guid id, BlogDTO updatedBlogDto)
         {
