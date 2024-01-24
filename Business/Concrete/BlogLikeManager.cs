@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
@@ -19,29 +22,33 @@ namespace Business.Concrete
             _bloglikeDal = bloglikeDal;
         }
 
-        public void AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto)
+
+        public IResult AddBlogCommentLike(Guid Blogcommentİd, BlogLikeDTO bloglikedto)
         {
-            _bloglikeDal.AddBlogCommentLike(BlogCommentİd, bloglikedto);
+            _bloglikeDal.AddBlogCommentLike(Blogcommentİd, bloglikedto);
+            return new Result(true, Messages.BlogLikeAdded);
         }
 
-        public void AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto)
+        public IResult AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto)
         {
             _bloglikeDal.AddBlogLike(Blogİd, bloglikedto);
+            return new Result(true, Messages.BlogLikeAdded);
         }
 
-        public void Delete(Guid İd)
+        IResult IBlogLikeService.Delete(Guid İd)
         {
             _bloglikeDal.Delete(İd);
+            return new Result(true, Messages.BlogLikeDeleted);
         }
 
-        public List<BlogLikeDTO> GetAllLikeDetails()
+        public IDataResult<List<BlogLikeDTO>> GetAllLikeDetails()
         {
-            return _bloglikeDal.GetAllLikeDetails();
+            return new SuccessDataResult<List<BlogLikeDTO>>(_bloglikeDal.GetAllLikeDetails(), Messages.BlogLikedListed);
         }
 
-        public List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId)
+        public IDataResult<List<BlogLikeDTO>> GetLikesByBlogId(Guid BlogId)
         {
-            return _bloglikeDal.GetLikesByBlogId(BlogId);
+            return new SuccessDataResult<List<BlogLikeDTO>>(_bloglikeDal.GetLikesByBlogId(BlogId), Messages.BlogLikedListed);
         }
     }
 }

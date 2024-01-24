@@ -5,16 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Utilities.Results;
 
 namespace Business.Abstract
 {
-   public interface IBlogLikeService
+    public interface IBlogLikeService
     {
-        void AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto);
-        void AddBlogCommentLike(Guid BlogCpmmentİd, BlogLikeDTO bloglikedto);
-        void Delete(Guid İd);
-        List<BlogLikeDTO> GetAllLikeDetails();
-        List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId);
+        IResult AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto);
+        IResult AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto);
+        IResult Delete(Guid İd);
+        IDataResult<List<BlogLikeDTO>> GetAllLikeDetails();
+        IDataResult<List<BlogLikeDTO>> GetLikesByBlogId(Guid BlogId);
 
     }
 }

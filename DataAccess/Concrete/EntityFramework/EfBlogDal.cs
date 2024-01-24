@@ -125,10 +125,6 @@ namespace DataAccess.Concrete.EntityFramework
                     }
                     context.SaveChanges();
                 }
-                else
-                {
-                    throw new InvalidOperationException("Güncellenmek istenen blog bulunamadı.");
-                }
             }
         }
 

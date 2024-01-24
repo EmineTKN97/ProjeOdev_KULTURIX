@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -19,30 +21,34 @@ namespace Business.Concrete
         {
             _blogcommentDal = blogcommentDal;
         }
-       
-        public void Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
-        {
+ 
+        public IResult Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
+        { 
             _blogcommentDal.Add(Blogİd,blogcommentdto);
+            return new Result(true, Messages.BlogCommentAdded);
         }
 
-        public void Delete(Guid İd)
+        public IResult Delete(Guid İd)
         {
             _blogcommentDal.Delete(İd);
+            return new Result(true, Messages.BlogCommentDeleted);
         }
 
-        public List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId)
+        public IResult Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
         {
-            return _blogcommentDal.GetCommentsByBlogId(BlogId);
+            _blogcommentDal.Update(id, updatedCommentBlogDto);
+            return new Result(true, Messages.BlogCommentUpdated);
         }
 
-        public List<BlogCommentDTO> GetAllCommentsDetails()
+        public IDataResult<List<BlogCommentDTO>> GetAllCommentsDetails()
         {
-            return _blogcommentDal.GetAllCommentDetails();
+            return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetAllCommentDetails(),Messages.BlogCommentListed);
         }
 
-        public void Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
+       public  IDataResult<List<BlogCommentDTO>>GetCommentsByBlogId(Guid BlogId)
         {
-            _blogcommentDal.Update(id,updatedCommentBlogDto);
+            return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetCommentsByBlogId(BlogId),Messages.BlogCommentListed);
+
         }
     }
 }

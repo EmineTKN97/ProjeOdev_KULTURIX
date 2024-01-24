@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -7,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,27 +23,32 @@ namespace Business.Concrete
             _blogDal = blogDal;
         }
 
-        public void Add(BlogDTO blogdto)
+       public IResult Add(BlogDTO blogdto)
         {
-            _blogDal.Add(blogdto);
+                _blogDal.Add(blogdto);
+                return new Result(true, Messages.BlogAdded);
         }
-       public void Delete(Guid İd)
+
+       public  IResult Delete(Guid İd)
         {
             _blogDal.Delete(İd);
+            return new Result(true, Messages.BlogDeleted);
         }
 
-        public List<BlogDetailsDTO> GetBlogsByCommentAndLikeCount()
+       public IDataResult<List<BlogDetailsDTO>> GetBlogsByCommentAndLikeCount()
         {
-            return _blogDal.GetBlogsByCommentAndLikeCount();
-        }
-        public Blog GetById(Guid id)
-        {
-            return _blogDal.Get(blog => blog.BlogId == id);
+            return new SuccessDataResult<List<BlogDetailsDTO>>(_blogDal.GetBlogsByCommentAndLikeCount(),Messages.BlogListed); 
         }
 
-        public void Update(Guid id, BlogDTO updatedBlogDto)
+        public IDataResult<Blog> GetById(Guid id)
         {
-            _blogDal.Update(id,updatedBlogDto);
+            return new SuccessDataResult<Blog>(_blogDal.Get(blog => blog.BlogId == id), Messages.BlogListed);
+        }
+
+       public  IResult Update(Guid id, BlogDTO updatedBlogDto)
+        {
+            _blogDal.Update(id, updatedBlogDto);
+            return new Result(true,Messages.BlogUpdated);
         }
     }
 }

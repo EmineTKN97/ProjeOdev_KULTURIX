@@ -1,4 +1,5 @@
 ﻿
+using Core.Utilities.Results;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
- public interface IBlogCommentService
+    public interface IBlogCommentService
     {
 
-        void Add(Guid Blogİd,BlogCommentDTO blogcommentdto);
-        void Delete(Guid İd);
-        void Update(Guid id, BlogCommentDTO updatedCommentBlogDto);
-        List<BlogCommentDTO> GetAllCommentsDetails();
-        List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId);
+        IResult Add(Guid Blogİd, BlogCommentDTO blogcommentdto);
+        IResult Delete(Guid İd);
+        IResult Update(Guid id, BlogCommentDTO updatedCommentBlogDto);
+        IDataResult<List<BlogCommentDTO>> GetAllCommentsDetails();
+        IDataResult<List<BlogCommentDTO>> GetCommentsByBlogId(Guid BlogId);
 
     }
 }

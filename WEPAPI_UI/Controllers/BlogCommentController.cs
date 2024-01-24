@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using DataAccess.Migrations;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +24,7 @@ namespace WEPAPI_UI.Controllers
         public ActionResult<BlogCommentDTO> GetAllCommentsDetails()
         {
             var result = _blogcommentService.GetAllCommentsDetails();
+            if (result is null) return NotFound(Messages.BlogCommentNotListed);
             return Ok(result);
 
         }
@@ -29,15 +32,24 @@ namespace WEPAPI_UI.Controllers
         public ActionResult<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId)
         {
             var result = _blogcommentService.GetCommentsByBlogId(BlogId);
-            return Ok(result);
+            if (result.Success == true)
+            {
+                return Ok(result);
+            }
+            return BadRequest(Messages.BlogCommentNotListed);
+            ;
 
         }
 
         [HttpPost("AddComment")]
         public ActionResult<BlogCommentDTO> Add(Guid blogId, BlogCommentDTO blogcomment)
         {
-            _blogcommentService.Add(blogId, blogcomment);
-            return Ok();
+            var result = _blogcommentService.Add(blogId,blogcomment);
+            if (result.Success == true)
+            {
+                return Ok(Messages.BlogCommentAdded);
+            }
+            return BadRequest(Messages.BlogCommentNotAdded);
         }
         [HttpDelete("Delete")]
         public IActionResult Delete(Guid id)
@@ -45,11 +57,11 @@ namespace WEPAPI_UI.Controllers
             try
             {
                 _blogcommentService.Delete(id);
-                return Ok("Blog başarıyla silindi.");
+                return Ok(Messages.BlogCommentDeleted);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Blog silme işlemi başarısız. Hata: {ex.Message}");
+                return BadRequest(Messages.BlogCommentNotDeleted);
             }
         }
 
@@ -59,11 +71,11 @@ namespace WEPAPI_UI.Controllers
             try
             {
                 _blogcommentService.Update(id, updatedcommentBlogDto);
-                return Ok("Blog başarıyla güncellendi.");
+                return Ok(Messages.BlogCommentUpdated);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Blog güncelleme işlemi başarısız. Hata: {ex.Message}");
+                return BadRequest(Messages.BlogCommentNotUpdated);
             }
         }
     }

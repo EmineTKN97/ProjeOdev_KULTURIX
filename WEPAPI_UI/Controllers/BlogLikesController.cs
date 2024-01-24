@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,22 +16,31 @@ namespace WEPAPI_UI.Controllers
         {
             _bloglikeService = bloglikeService;
         }
-        [HttpPost("BlogLike")]
+        [HttpPost("AddBlogLike")]
         public ActionResult<BlogLikeDTO> AddBlogLike(Guid blogId, BlogLikeDTO bloglike)
         {
-            _bloglikeService.AddBlogLike(blogId, bloglike);
-            return Ok();
+            var result = _bloglikeService.AddBlogLike(blogId,bloglike);
+            if (result.Success == true)
+            {
+                return Ok(Messages.BlogLikeAdded);
+            }
+            return BadRequest(Messages.BlogLikeNotAdded);
         }
-        [HttpPost("BlogCommentLike")]
+        [HttpPost("AddBlogCommentLike")]
         public ActionResult<BlogLikeDTO> AddBlogCommentLike(Guid blogCommentId, BlogLikeDTO bloglike)
         {
-            _bloglikeService.AddBlogCommentLike(blogCommentId, bloglike);
-            return Ok();
+            var result = _bloglikeService.AddBlogLike(blogCommentId, bloglike);
+            if (result.Success == true)
+            {
+                return Ok(Messages.BlogLikeAdded);
+            }
+            return BadRequest(Messages.BlogLikeNotAdded);
         }
         [HttpGet("GetBlogLikeDetails")]
         public ActionResult<BlogLikeDTO> GetAllLikeDetails()
         {
             var result = _bloglikeService.GetAllLikeDetails();
+            if (result is null) return NotFound(Messages.BlogLikedNotListed);
             return Ok(result);
 
         }
@@ -38,6 +48,7 @@ namespace WEPAPI_UI.Controllers
         public ActionResult<BlogLikeDTO> GetLikesByBlogId(Guid BlogId)
         {
             var result = _bloglikeService.GetLikesByBlogId(BlogId);
+            if (result is null) return NotFound(Messages.BlogLikedNotListed);
             return Ok(result);
 
         }
@@ -47,11 +58,11 @@ namespace WEPAPI_UI.Controllers
             try
             {
                 _bloglikeService.Delete(id);
-                return Ok("Blog başarıyla silindi.");
+                return Ok(Messages.BlogLikeDeleted);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Blog silme işlemi başarısız. Hata: {ex.Message}");
+                return BadRequest(Messages.BlogLikeNotDeleted);
             }
         }
 

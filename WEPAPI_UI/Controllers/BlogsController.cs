@@ -1,4 +1,6 @@
-﻿using Business.Abstract;
+﻿using Azure.Messaging;
+using Business.Abstract;
+using Business.Constants;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -21,21 +23,30 @@ namespace WEPAPI_UI.Controllers
         public ActionResult<BlogDetailsDTO> GetBlogsByCommentAndLikeCounts()
         {
             var result = _blogService.GetBlogsByCommentAndLikeCount();
-            if (result is null) return NotFound();
+            if (result is null) return NotFound(Messages.BlogNotListed);
             return Ok(result);
         }
         [HttpGet("GetById")]
         public ActionResult<BlogDTO> GetById(Guid id)
         {
             var result = _blogService.GetById(id);
-            return Ok(result);
+            if(result.Success == true)
+            {
+                return Ok(result);
+            }
+            return BadRequest(Messages.BlogNotListed);
+            
 
         }
         [HttpPost("AddBlog")]
         public ActionResult<BlogDTO> AddBlog(BlogDTO blog)
         {
-            _blogService.Add(blog);
-            return Ok();
+            var result = _blogService.Add(blog);
+            if (result.Success == true)
+            {
+                return Ok(Messages.BlogAdded);
+            }
+            return BadRequest(Messages.BlogNotAdded);
         }
 
         [HttpDelete("Delete")]
@@ -44,12 +55,12 @@ namespace WEPAPI_UI.Controllers
             try
             {
                 _blogService.Delete(id);
-                return Ok("Blog başarıyla silindi.");
+                return Ok(Messages.BlogDeleted);
             }
             catch (Exception ex)
             {
 
-                return BadRequest($"Blog silme işlemi başarısız. Hata: {ex.Message}");
+                return BadRequest(Messages.BlogNotDeleted);
             }
         }
 
@@ -63,16 +74,16 @@ namespace WEPAPI_UI.Controllers
                 if (existingBlog != null)
                 { 
                     _blogService.Update(id, updatedBlogDto);
-                    return Ok("Blog başarıyla güncellendi.");
+                    return Ok(Messages.BlogUpdated);
                 }
                 else
                 {
-                    return NotFound("Belirtilen id'ye sahip blog bulunamadı.");
+                    return NotFound(Messages.BlogNotUpdated);
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest($"Blog güncelleme işlemi başarısız. Hata: {ex.Message}");
+                return BadRequest(Messages.BlogNotUpdated);
             }
         }
     }
