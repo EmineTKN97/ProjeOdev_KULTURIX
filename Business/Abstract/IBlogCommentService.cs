@@ -15,6 +15,7 @@ namespace Business.Abstract
         void Delete(Guid İd);
         void Update(Guid id, BlogCommentDTO updatedCommentBlogDto);
         List<BlogCommentDTO> GetAllCommentsDetails();
-        
+        List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId);
+
     }
 }

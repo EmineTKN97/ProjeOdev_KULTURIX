@@ -11,8 +11,7 @@ namespace DataAccess.Abstract
 {
     public interface IBlogDal : IEntityRepository<Blog>
     {
-        List<BlogDetailsDTO> GetAllBlogDetails();
-        List<BlogDTO> GetBlogDetails();
+        List<BlogDetailsDTO> GetBlogsByCommentAndLikeCount();
         void Add(BlogDTO blogdto);
         void Delete(Guid id);
         void Update(Guid id, BlogDTO updatedBlogDto);

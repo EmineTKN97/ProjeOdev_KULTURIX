@@ -25,6 +25,13 @@ namespace WEPAPI_UI.Controllers
             return Ok(result);
 
         }
+        [HttpGet("GetCommentsByBlogId")]
+        public ActionResult<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId)
+        {
+            var result = _blogcommentService.GetCommentsByBlogId(BlogId);
+            return Ok(result);
+
+        }
 
         [HttpPost("AddComment")]
         public ActionResult<BlogCommentDTO> Add(Guid blogId, BlogCommentDTO blogcomment)
@@ -42,7 +49,6 @@ namespace WEPAPI_UI.Controllers
             }
             catch (Exception ex)
             {
-                // Eğer bir hata oluşursa, isteğe bağlı olarak hata durumu ile cevap verebilirsiniz.
                 return BadRequest($"Blog silme işlemi başarısız. Hata: {ex.Message}");
             }
         }

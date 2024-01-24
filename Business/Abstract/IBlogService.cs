@@ -14,7 +14,6 @@ namespace Business.Abstract
         void Delete(Guid İd);
         void Update(Guid id, BlogDTO updatedBlogDto);
         Blog GetById(Guid id);
-        List<BlogDetailsDTO> GetAllBlogDetails();
-        List<BlogDTO> GetBlogDetails();
+        List<BlogDetailsDTO> GetBlogsByCommentAndLikeCount();
     }
 }

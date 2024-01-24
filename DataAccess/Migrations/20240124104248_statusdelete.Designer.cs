@@ -4,6 +4,7 @@ using DataAccess.Concrete.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    partial class ProjeOdevContextModelSnapshot : ModelSnapshot
+    [Migration("20240124104248_statusdelete")]
+    partial class statusdelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +40,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -69,9 +69,6 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -92,17 +89,14 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BlogCommentId")
+                    b.Property<Guid>("BlogCommentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Blogid")
+                    b.Property<Guid>("Blogid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LikeDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.Property<Guid>("Userid")
                         .HasColumnType("uniqueidentifier");
@@ -172,9 +166,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
                     b.Property<string>("SurName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -207,11 +198,13 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Entities.Concrete.BlogComment", "comment")
                         .WithMany("BlogLikes")
-                        .HasForeignKey("BlogCommentId");
+                        .HasForeignKey("BlogCommentId")
+                        .IsRequired();
 
                     b.HasOne("Entities.Concrete.Blog", "blog")
                         .WithMany("BlogLikes")
-                        .HasForeignKey("Blogid");
+                        .HasForeignKey("Blogid")
+                        .IsRequired();
 
                     b.Navigation("blog");
 

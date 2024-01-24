@@ -1,6 +1,7 @@
 ﻿using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
+using DataAccess.Migrations;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
@@ -51,50 +52,33 @@ namespace DataAccess.Concrete.EntityFramework
             }
 
         }
-        public List<BlogDetailsDTO> GetAllBlogDetails()
+        //bloğu yorum sayısı ve like sayısına göre sıralama
+        public List<BlogDetailsDTO> GetBlogsByCommentAndLikeCount()
         {
             using (var context = new ProjeOdevContext())
             {
-                var result = from b in context.Blogs
-                             join bc in context.BlogComments
-                             on b.BlogId equals bc.BlogId
-                             where b.Status == false
+                var blogDetails = (from b in context.Blogs
+                                   join l in context.BlogLikes on b.BlogId equals l.Blogid
+                                   join bc in context.BlogComments on b.BlogId equals bc.BlogId
+                                   where b.Status == false && l.Status == false && bc.Status == false
+                                   group b by b.BlogId into groupedBlogs
+                                   select new BlogDetailsDTO
+                                   {
+                                       İd = groupedBlogs.Key,
+                                       BlogTitle = groupedBlogs.First().Title,
+                                       BlogContent = groupedBlogs.First().Content,
+                                       BlogDate = groupedBlogs.First().Date,
+                                       BlogCommentCount = context.BlogComments.Count(c => c.BlogId == groupedBlogs.Key),
+                                       BlogLikeCount = context.BlogLikes.Count(l => l.Blogid == groupedBlogs.Key)
+                                   }).OrderByDescending(b => b.BlogLikeCount)
+                                    .ThenByDescending(b => b.BlogCommentCount)
+                                    .ToList();
 
-                             select new BlogDetailsDTO
-                             {
-                                 İd = b.BlogId,
-                                 BlogTitle = b.Title,
-                                 BlogContent = b.Content,
-                                 BlogDate = b.Date,
-                                 BlogCommentDate = bc.CommentDate,
-                                 BlogCommentText = bc.CommentText,
-                                 BlogCommentTitle = bc.Title,
-                             };
-
-                return result.ToList();
+                return blogDetails;
             }
+
         }
-
-        public List<BlogDTO> GetBlogDetails()
-        {
-            using (var context = new ProjeOdevContext())
-            {
-                var result = context.Blogs
-                    .Where(b => b.Status == false)
-                    .Select(b => new BlogDTO
-                    {
-                        Id = b.BlogId,
-                        Title = b.Title,
-                        Description = b.Content,
-                        CreateDate = b.Date,
-                    })
-                    .ToList();
-
-                return result;
-            }
-        }
-
-
+        //bloğun id'sine göre sıralama
         public BlogDTO GetBlogById(Guid id)
         {
             using (var context = _context)
@@ -105,7 +89,6 @@ namespace DataAccess.Concrete.EntityFramework
 
                 if (blog != null)
                 {
-                    // Blog varsa BlogDTO'ya dönüştür ve geri döndür
                     var blogDto = new BlogDTO
                     {
                         Id = blog.BlogId,
@@ -118,22 +101,17 @@ namespace DataAccess.Concrete.EntityFramework
                 }
                 else
                 {
-                    // Blog bulunamazsa null döndür
                     return null;
                 }
             }
         }
-
         public void Update(Guid id, BlogDTO updatedBlogDto)
         {
             using (var context = _context)
             {
-          
-                var blogToUpdate = context.Blogs.FirstOrDefault(b => b.BlogId == id);
-
+                var blogToUpdate = context.Blogs.FirstOrDefault(b => b.BlogId == id &&  b.Status == false);
                 if (blogToUpdate != null)
                 {
-                    
                     blogToUpdate.Title = updatedBlogDto.Title ?? blogToUpdate.Title;
                     blogToUpdate.Content = updatedBlogDto.Description ?? blogToUpdate.Content;
 
@@ -145,8 +123,6 @@ namespace DataAccess.Concrete.EntityFramework
                     {
                         blogToUpdate.Date = DateTime.Now;
                     }
-
-                    
                     context.SaveChanges();
                 }
                 else
@@ -156,7 +132,7 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-       
+
     }
 }
 

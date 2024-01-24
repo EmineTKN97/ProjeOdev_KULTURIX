@@ -6,6 +6,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,15 +22,35 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void Add(Guid blogİd, BlogLikeDTO bloglikedto)
+        public void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto)
         {
             using (var context = _context)
             {
-                // Veritabanından belirli bir blog ve kullanıcıya ait like'ı kontrol et
+                var existingLike = context.BlogLikes
+                    .FirstOrDefault(l => l.BlogCommentId == blogCommentİd);
+
+                if (existingLike == null)
+                {
+                    var newBlogLike = new BlogLike
+                    {
+                        LikeId = Guid.NewGuid(),
+                        LikeDate = DateTime.Now,
+                        BlogCommentId = bloglikedto.BlogCommentid
+                    };
+
+                    context.BlogLikes.Add(newBlogLike);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto)
+        {
+            using (var context = _context)
+            {
                 var existingLike = context.BlogLikes
                     .FirstOrDefault(l => l.Blogid == blogİd);
 
-                // Eğer daha önce like eklenmemişse, yeni bir like oluştur ve ekleyin
                 if (existingLike == null)
                 {
                     var newBlogLike = new BlogLike
@@ -37,25 +58,64 @@ namespace DataAccess.Concrete.EntityFramework
                         LikeId = Guid.NewGuid(),
                         LikeDate = DateTime.Now,
                         Blogid = bloglikedto.Blogid,
-                        BlogCommentId=bloglikedto.BlogCommentid
                     };
 
                     context.BlogLikes.Add(newBlogLike);
                     context.SaveChanges();
                 }
-                // Eğer daha önce like eklenmişse, burada gerekirse güncelleme veya hata yönetimi yapabilirsiniz
-                // Örneğin: existingLike.Status'u güncelleyerek like'ı tekrar etkin hale getirebilirsiniz.
             }
+
         }
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var blogLikeToDelete = _context.BlogLikes.FirstOrDefault(l => l.LikeId == id);
+
+            if (blogLikeToDelete != null)
+            {
+                blogLikeToDelete.Status = true;
+                _context.BlogLikes.Update(blogLikeToDelete);
+                _context.SaveChanges();
+            }
         }
 
         public List<BlogLikeDTO> GetAllLikeDetails()
         {
-            throw new NotImplementedException();
+            using (var context = new ProjeOdevContext())
+            {
+                var result = context.BlogLikes
+                    .Where(l => l.Status == false)
+                     .Select(l => new BlogLikeDTO
+                     {
+                         Likeİd = l.LikeId,
+                         Blogid = l.Blogid.HasValue ? l.Blogid.Value : Guid.Empty,
+                         BlogCommentid = l.BlogCommentId.HasValue ? l.BlogCommentId.Value : Guid.Empty,
+                         LikeDate = l.LikeDate,
+                         Userid = l.Userid,
+                     }).ToList();
+
+                return result;
+            }
+        }
+
+        public List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId)
+        {
+            using (var context = new ProjeOdevContext())
+            {
+                var likes = (from l in context.BlogLikes
+                             join b in context.Blogs on l.Blogid equals b.BlogId
+                             where l.Blogid == BlogId && l.Status == false && b.Status == false
+                             select new BlogLikeDTO
+                             {
+                                 LikeDate = l.LikeDate,
+                                 Userid = l.Userid,
+                                 Likeİd = l.LikeId,
+                                 Blogid = b.BlogId  
+                             })
+                            .OrderByDescending(l => l.LikeDate)
+                            .ToList();
+                return likes;
+            }
         }
     }
 }

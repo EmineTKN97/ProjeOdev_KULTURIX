@@ -30,6 +30,11 @@ namespace Business.Concrete
             _blogcommentDal.Delete(İd);
         }
 
+        public List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId)
+        {
+            return _blogcommentDal.GetCommentsByBlogId(BlogId);
+        }
+
         public List<BlogCommentDTO> GetAllCommentsDetails()
         {
             return _blogcommentDal.GetAllCommentDetails();

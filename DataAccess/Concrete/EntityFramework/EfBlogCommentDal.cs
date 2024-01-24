@@ -20,33 +20,28 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void Add(Guid Blogİd,BlogCommentDTO blogcommentdto)
+        public void Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
         {
             using (var context = _context)
             {
-                
-                    var newBlogComment = new BlogComment
-                    {
-                        CommentId = Guid.NewGuid(),
-                        Title = blogcommentdto.CommentTitle,
-                        CommentText = blogcommentdto.CommentDetail,
-                        UserId = blogcommentdto.UserId,
-                        CommentDate= DateTime.Now,
-                        BlogId = blogcommentdto.BlogId,
-  
-                    };
-                // BlogComments tablosuna yeni yorumu ekle
-        
-                  context.BlogComments.Add(newBlogComment);//blogid sıfırlanıyor
+
+                var newBlogComment = new BlogComment
+                {
+                    CommentId = Guid.NewGuid(),
+                    Title = blogcommentdto.CommentTitle,
+                    CommentText = blogcommentdto.CommentDetail,
+                    UserId = blogcommentdto.UserId,
+                    CommentDate = DateTime.Now,
+                    BlogId = blogcommentdto.BlogId,
+                };
+                context.BlogComments.Add(newBlogComment);
                 context.SaveChanges();
 
             }
         }
-
-
         public void Delete(Guid id)
         {
-            var blogCommentToDelete = _context.BlogComments.FirstOrDefault(c =>c.CommentId  == id);
+            var blogCommentToDelete = _context.BlogComments.FirstOrDefault(c => c.CommentId == id);
 
             if (blogCommentToDelete != null)
             {
@@ -55,38 +50,58 @@ namespace DataAccess.Concrete.EntityFramework
                 _context.SaveChanges();
             }
         }
-
+        //Blog yorumunu like göre sıralama
         public List<BlogCommentDTO> GetAllCommentDetails()
         {
             using (var context = new ProjeOdevContext())
             {
-                var result = context.BlogComments
-                    .Where(bc =>bc.Status== false)
-                     .Select(bc => new BlogCommentDTO
-                             {
-                                CommentDate = bc.CommentDate,
-                                CommentDetail= bc.CommentText,
-                                CommentTitle =bc.Title,
-                                Id=bc.CommentId,
-                                UserId=bc.UserId,
-                        
-                                
-                             }).ToList();
-
+                var result = (
+                    from bc in context.BlogComments
+                    join l in context.BlogLikes
+                    on bc.CommentId equals l.BlogCommentId
+                    where bc.Status == false && l.Status == false
+                    select new BlogCommentDTO
+                    {
+                        CommentDate = bc.CommentDate,
+                        CommentDetail = bc.CommentText,
+                        CommentTitle = bc.Title,
+                        Id = bc.CommentId,
+                        UserId = bc.UserId,
+                        BlogLikeCount = context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId)
+                    }).OrderByDescending(b => b.BlogLikeCount).ToList();
                 return result;
             }
         }
+        //Blog yorumunu Blogunid'sine göre sıralama
+        public List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId)
+        {
+            using (var context = new ProjeOdevContext())
+            {
+                var comments = (from bc in context.BlogComments
+                                join b in context.Blogs
+                                on bc.BlogId equals b.BlogId
+                                where bc.BlogId == BlogId && bc.Status == false && b.Status == false
+                                select new BlogCommentDTO
+                                {
+                                    CommentDate = bc.CommentDate,
+                                    CommentDetail = bc.CommentText,
+                                    CommentTitle = bc.Title,
+                                    Id = bc.CommentId,
+                                    UserId = bc.UserId,
+                                    BlogLikeCount = context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId && l.Status == false)
+                                }).OrderByDescending(bc => bc.CommentDate).ToList();
+                return comments;
 
-     
+            }
+        }
+
         public void Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
         {
             using (var context = _context)
             {
-                var blogToUpdate = context.BlogComments.FirstOrDefault(c => c.CommentId == id);
-
+                var blogToUpdate = context.BlogComments.FirstOrDefault(c => c.CommentId == id && c.Status == false);
                 if (blogToUpdate != null)
                 {
-                    // Güncelleme işlemleri
                     blogToUpdate.Title = updatedCommentBlogDto.CommentTitle ?? blogToUpdate.Title;
                     blogToUpdate.CommentText = updatedCommentBlogDto.CommentDetail ?? blogToUpdate.CommentText;
 
@@ -98,9 +113,6 @@ namespace DataAccess.Concrete.EntityFramework
                     {
                         blogToUpdate.CommentDate = DateTime.Now;
                     }
-                    // Eğer CreateDate değeri atanmamışsa, varsayılan değer olarak DateTime.Now kullanılır.
-
-                    // Değişiklikleri kaydet
                     context.SaveChanges();
                 }
                 else

@@ -17,20 +17,12 @@ namespace WEPAPI_UI.Controllers
             _blogService = blogService;
         }
 
-        [HttpGet("GetAllBlogDetails")]
-        public ActionResult<BlogDetailsDTO> GetAllBlogDetails()
+        [HttpGet(" GetBlogsByCommentAndLikeCount")]
+        public ActionResult<BlogDetailsDTO> GetBlogsByCommentAndLikeCounts()
         {
-            var result = _blogService.GetAllBlogDetails();
+            var result = _blogService.GetBlogsByCommentAndLikeCount();
             if (result is null) return NotFound();
             return Ok(result);
-
-        }
-        [HttpGet("GetBlogDetails")]
-        public ActionResult<BlogDTO> GetBlogDetails()
-        {
-            var result = _blogService.GetBlogDetails();
-            return Ok(result);
-
         }
         [HttpGet("GetById")]
         public ActionResult<BlogDTO> GetById(Guid id)

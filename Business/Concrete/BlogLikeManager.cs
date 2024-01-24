@@ -19,9 +19,14 @@ namespace Business.Concrete
             _bloglikeDal = bloglikeDal;
         }
 
-        public void Add(Guid Blogİd, BlogLikeDTO bloglikedto)
+        public void AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto)
         {
-            _bloglikeDal.Add(Blogİd, bloglikedto);
+            _bloglikeDal.AddBlogCommentLike(BlogCommentİd, bloglikedto);
+        }
+
+        public void AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto)
+        {
+            _bloglikeDal.AddBlogLike(Blogİd, bloglikedto);
         }
 
         public void Delete(Guid İd)
@@ -32,6 +37,11 @@ namespace Business.Concrete
         public List<BlogLikeDTO> GetAllLikeDetails()
         {
             return _bloglikeDal.GetAllLikeDetails();
+        }
+
+        public List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId)
+        {
+            return _bloglikeDal.GetLikesByBlogId(BlogId);
         }
     }
 }

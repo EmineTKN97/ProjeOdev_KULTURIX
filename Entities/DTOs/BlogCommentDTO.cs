@@ -14,7 +14,7 @@ namespace Entities.DTOs
         public Guid BlogId { get; set; }
         public string CommentTitle { get; set; }
         public string CommentDetail { get; set; }
-        public DateTime CommentDate { get; set;}
-        public bool Status { get; set; }
+        public int BlogLikeCount { get; set; }
+        public DateTime CommentDate { get; set; }
     }
 }

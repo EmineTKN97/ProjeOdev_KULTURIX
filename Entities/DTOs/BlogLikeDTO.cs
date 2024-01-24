@@ -10,11 +10,10 @@ namespace Entities.DTOs
     public class BlogLikeDTO:IDto
     {
         public Guid Likeİd { get; set; }
-        public Guid Blogid { get; set; }
-        public Guid BlogCommentid { get; set; }
+        public Guid? Blogid { get; set; }
+        public Guid? BlogCommentid { get; set; }
         public Guid Userid { get; set; }
         public DateTime LikeDate { get; set; }
-        public bool Status { get; set; }
 
     }
 }

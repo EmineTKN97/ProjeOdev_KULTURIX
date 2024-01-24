@@ -28,14 +28,10 @@ namespace Business.Concrete
         {
             _blogDal.Delete(İd);
         }
-        public List<BlogDetailsDTO> GetAllBlogDetails()
-        {
-            return _blogDal.GetAllBlogDetails();
-        }
-        public List<BlogDTO> GetBlogDetails()
-        {
-            return _blogDal.GetBlogDetails();
 
+        public List<BlogDetailsDTO> GetBlogsByCommentAndLikeCount()
+        {
+            return _blogDal.GetBlogsByCommentAndLikeCount();
         }
         public Blog GetById(Guid id)
         {

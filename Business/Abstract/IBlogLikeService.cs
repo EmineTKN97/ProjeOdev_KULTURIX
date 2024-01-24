@@ -10,8 +10,11 @@ namespace Business.Abstract
 {
    public interface IBlogLikeService
     {
-        void Add(Guid Blogİd, BlogLikeDTO bloglikedto);
+        void AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto);
+        void AddBlogCommentLike(Guid BlogCpmmentİd, BlogLikeDTO bloglikedto);
         void Delete(Guid İd);
         List<BlogLikeDTO> GetAllLikeDetails();
+        List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId);
+
     }
 }

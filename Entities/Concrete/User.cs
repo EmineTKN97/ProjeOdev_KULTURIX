@@ -17,9 +17,8 @@ namespace Entities.Concrete
         public string SurName { get; set; }
 
         public string EmailAdress { get; set; }
-
-        public DateTime BirthDate { get; set; }
         public bool Status { get; set; }
+        public DateTime BirthDate { get; set; }
         public Guid BlogId { get; set; }
     }
 }

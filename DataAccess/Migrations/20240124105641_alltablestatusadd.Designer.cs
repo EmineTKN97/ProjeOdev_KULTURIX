@@ -4,6 +4,7 @@ using DataAccess.Concrete.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    partial class ProjeOdevContextModelSnapshot : ModelSnapshot
+    [Migration("20240124105641_alltablestatusadd")]
+    partial class alltablestatusadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,10 +95,10 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BlogCommentId")
+                    b.Property<Guid>("BlogCommentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Blogid")
+                    b.Property<Guid>("Blogid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LikeDate")
@@ -207,11 +210,13 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Entities.Concrete.BlogComment", "comment")
                         .WithMany("BlogLikes")
-                        .HasForeignKey("BlogCommentId");
+                        .HasForeignKey("BlogCommentId")
+                        .IsRequired();
 
                     b.HasOne("Entities.Concrete.Blog", "blog")
                         .WithMany("BlogLikes")
-                        .HasForeignKey("Blogid");
+                        .HasForeignKey("Blogid")
+                        .IsRequired();
 
                     b.Navigation("blog");
 
