@@ -9,14 +9,15 @@ namespace Entities.Concrete
 {
     public class BlogComment:IEntity
     {
-        public  Guid CommentId { get; set; }
-        public Guid UserId { get; set; }
+        public Guid CommentId { get; set; }
+        public  Guid UserId{ get; set; }
         public Guid BlogId { get; set; }
         public string Title { get; set; }
-        public  string CommentText { get; set; }
+        public string CommentText { get; set; }
         public DateTime CommentDate { get; set; }
-        public Blog blog{ get; set; }
         public bool Status { get; set; }
+        public virtual Blog Blog { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<BlogLike> BlogLikes { get; set; }
     }
 }

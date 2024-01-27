@@ -11,14 +11,14 @@ namespace Entities.Concrete
 {
     public class User : IdentityUser<Guid>, IEntity
     {
-        public Guid UserId { get; set; }
         public string Name { get; set; }
-
         public string SurName { get; set; }
-
         public string EmailAdress { get; set; }
-        public bool Status { get; set; }
         public DateTime BirthDate { get; set; }
-        public Guid BlogId { get; set; }
+
+        public virtual ICollection<BlogLike> BlogLikes { get; set; }
+        public virtual ICollection<BlogComment> BlogComments { get; set; }
+        public virtual ICollection<Media> Medias { get; set; }
+        public virtual ICollection<Blog> Blogs { get; set; }
     }
 }

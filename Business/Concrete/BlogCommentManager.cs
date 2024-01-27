@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -21,7 +23,7 @@ namespace Business.Concrete
         {
             _blogcommentDal = blogcommentDal;
         }
- 
+        [ValidationAspect(typeof(BlogCommentValidator))]
         public IResult Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
         { 
             _blogcommentDal.Add(Blogİd,blogcommentdto);

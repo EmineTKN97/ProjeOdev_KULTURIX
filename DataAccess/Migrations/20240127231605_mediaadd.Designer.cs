@@ -4,6 +4,7 @@ using DataAccess.Concrete.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    partial class ProjeOdevContextModelSnapshot : ModelSnapshot
+    [Migration("20240127231605_mediaadd")]
+    partial class mediaadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,6 +241,7 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Concrete.User", "User")
                         .WithMany("BlogComments")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Blog");

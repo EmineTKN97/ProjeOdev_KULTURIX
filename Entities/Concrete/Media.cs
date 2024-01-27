@@ -1,0 +1,26 @@
+﻿using Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Entities.Concrete
+{
+    public class Media:IEntity
+    {
+        public  Guid  MediaId { get; set; }
+
+        public  Guid? UserId { get; set; }
+
+        public  Guid? BlogId { get; set; }
+
+        public string ImagePath { get; set; }
+
+        public  DateTime CreateDate { get; set; }
+        public bool Status { get; set; }
+        public Blog blog { get; set; }
+        public User user { get; set; }
+
+    }
+}

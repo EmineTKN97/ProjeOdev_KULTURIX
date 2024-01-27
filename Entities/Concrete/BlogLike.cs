@@ -18,5 +18,7 @@ namespace Entities.Concrete
         public Blog blog { get; set; }
 
         public BlogComment comment { get; set; }
+
+        public User user { get; set; }
     }
 }
