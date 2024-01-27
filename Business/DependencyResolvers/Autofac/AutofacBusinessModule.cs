@@ -1,6 +1,9 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
+using Castle.DynamicProxy;
+using Core.Utilities.İnterceptors;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
 using DataAccess.Concrete.EntityFramework;
@@ -24,6 +27,13 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<BlogLikeManager>().As<IBlogLikeService>().SingleInstance();
             builder.RegisterType<EfBlogLikeDal>().As<IBlogLikeDal>().SingleInstance();
             builder.RegisterType<ProjeOdevContext>().InstancePerLifetimeScope();
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+                {
+                    Selector = new AspectInterceptorSelector()
+                }).SingleInstance();
         }
     }
 }

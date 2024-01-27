@@ -19,7 +19,7 @@ namespace WEPAPI_UI.Controllers
             _blogService = blogService;
         }
 
-        [HttpGet(" GetBlogsByCommentAndLikeCount")]
+        [HttpGet("SGetBlogsByCommentAndLikeCount")]
         public ActionResult<BlogDetailsDTO> GetBlogsByCommentAndLikeCounts()
         {
             var result = _blogService.GetBlogsByCommentAndLikeCount();

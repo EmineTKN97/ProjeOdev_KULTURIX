@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -12,7 +13,6 @@ using System.Reflection.Metadata;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Business.Concrete
 {
     public class BlogManager : IBlogService
@@ -22,8 +22,8 @@ namespace Business.Concrete
         {
             _blogDal = blogDal;
         }
-
-       public IResult Add(BlogDTO blogdto)
+        [ValidationAspect(typeof(BlogValidator))]
+        public IResult Add(BlogDTO blogdto)
         {
                 _blogDal.Add(blogdto);
                 return new Result(true, Messages.BlogAdded);
