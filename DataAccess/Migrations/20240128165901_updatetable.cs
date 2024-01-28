@@ -5,24 +5,24 @@
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class @bool : Migration
+    public partial class updatetable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "Status",
+            migrationBuilder.AddColumn<string>(
+                name: "ImagePath",
                 table: "Blogs",
-                type: "bit",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Status",
+                name: "ImagePath",
                 table: "Blogs");
         }
     }

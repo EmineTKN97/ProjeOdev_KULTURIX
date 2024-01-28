@@ -13,7 +13,7 @@ namespace DataAccess.Abstract
     {
       
         void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto);
-        void AddBlogCommentLike(Guid blogİd, BlogLikeDTO bloglikedto);
+        void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto);
         void Delete(Guid id);
         List<BlogLikeDTO> GetAllLikeDetails();
         List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId);

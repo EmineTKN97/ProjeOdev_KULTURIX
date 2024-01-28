@@ -1,6 +1,7 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,10 @@ namespace Business.Abstract
 {
     public interface IBlogService
     {
-        IResult Add(BlogDTO blogdto);
-        IResult Delete(Guid İd);
-        IResult Update(Guid id, BlogDTO updatedBlogDto);
-        IDataResult<Blog> GetById(Guid id);
-        IDataResult<List<BlogDetailsDTO>>GetBlogsByCommentAndLikeCount();
+       Task<IResult> Add(IFormFile file,BlogDTO blogdto);
+        Task<IResult> Delete(Guid İd);
+        Task<IResult> Update(Guid id, BlogDTO updatedBlogDto);
+        Task<IDataResult<Blog>> GetById(Guid id);
+        Task<IDataResult<List<BlogDetailsDTO>>>GetBlogsByCommentAndLikeCount();
     }
 }

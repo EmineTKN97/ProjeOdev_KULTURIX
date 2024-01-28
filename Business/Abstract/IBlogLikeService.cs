@@ -11,11 +11,11 @@ namespace Business.Abstract
 {
     public interface IBlogLikeService
     {
-        IResult AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto);
-        IResult AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto);
-        IResult Delete(Guid İd);
-        IDataResult<List<BlogLikeDTO>> GetAllLikeDetails();
-        IDataResult<List<BlogLikeDTO>> GetLikesByBlogId(Guid BlogId);
+        Task<IResult> AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto);
+        Task<IResult> AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto);
+        Task<IResult> Delete(Guid İd);
+        Task<IDataResult<List<BlogLikeDTO>>> GetAllLikeDetails();
+        Task<IDataResult<List<BlogLikeDTO>>> GetLikesByBlogId(Guid BlogId);
 
     }
 }

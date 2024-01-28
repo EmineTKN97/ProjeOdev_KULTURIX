@@ -12,7 +12,7 @@ namespace DataAccess.Abstract
     public interface IBlogDal : IEntityRepository<Blog>
     {
         List<BlogDetailsDTO> GetBlogsByCommentAndLikeCount();
-        void Add(BlogDTO blogdto);
+        void AddImage(string fileName, BlogDTO blogdto);
         void Delete(Guid id);
         void Update(Guid id, BlogDTO updatedBlogDto);
     }

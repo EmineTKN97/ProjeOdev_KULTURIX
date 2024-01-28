@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    [Migration("20240127231605_mediaadd")]
-    partial class mediaadd
+    [Migration("20240128165610_CrateTable")]
+    partial class CrateTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,7 +99,7 @@ namespace DataAccess.Migrations
                     b.Property<Guid?>("BlogCommentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Blogid")
+                    b.Property<Guid?>("BlogId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LikeDate")
@@ -108,16 +108,16 @@ namespace DataAccess.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("Userid")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LikeId");
 
                     b.HasIndex("BlogCommentId");
 
-                    b.HasIndex("Blogid");
+                    b.HasIndex("BlogId");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex("UserId");
 
                     b.ToTable("BlogLikes");
                 });
@@ -159,61 +159,33 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime>("BirtDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmailAdress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SurName")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("SurName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -241,7 +213,6 @@ namespace DataAccess.Migrations
                     b.HasOne("Entities.Concrete.User", "User")
                         .WithMany("BlogComments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Blog");
@@ -257,18 +228,18 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Entities.Concrete.Blog", "blog")
                         .WithMany("BlogLikes")
-                        .HasForeignKey("Blogid");
+                        .HasForeignKey("BlogId");
 
-                    b.HasOne("Entities.Concrete.User", "user")
+                    b.HasOne("Entities.Concrete.User", "User")
                         .WithMany("BlogLikes")
-                        .HasForeignKey("Userid")
+                        .HasForeignKey("UserId")
                         .IsRequired();
+
+                    b.Navigation("User");
 
                     b.Navigation("blog");
 
                     b.Navigation("comment");
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Media", b =>
@@ -277,13 +248,13 @@ namespace DataAccess.Migrations
                         .WithMany("Medias")
                         .HasForeignKey("BlogId");
 
-                    b.HasOne("Entities.Concrete.User", "user")
+                    b.HasOne("Entities.Concrete.User", "User")
                         .WithMany("Medias")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("blog");
+                    b.Navigation("User");
 
-                    b.Navigation("user");
+                    b.Navigation("blog");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Blog", b =>

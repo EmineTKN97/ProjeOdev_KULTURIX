@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation
 {
+    /*
     public class BlogValidator : AbstractValidator<BlogDTO>
     {
         private static readonly string[] ImageFormats = { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff", ".webp" };
@@ -103,5 +104,6 @@ namespace Business.ValidationRules.FluentValidation
         }
 
     }
+*/
 }
 

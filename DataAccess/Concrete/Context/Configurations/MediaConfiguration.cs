@@ -16,13 +16,11 @@ namespace DataAccess.Concrete.Context.Configurations
                    .HasForeignKey(m => m.BlogId)
                    .HasPrincipalKey(b => b.BlogId)
                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-           builder
-                    .HasOne(m => m.user)
-                    .WithMany(u => u.Medias)
-                    .HasForeignKey(m => m.UserId)
-                    .HasPrincipalKey(u => u.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasOne(m => m.User)
+               .WithMany(u => u.Medias)
+               .HasForeignKey(bc => bc.UserId)
+               .HasPrincipalKey(c => c.Id)
+              .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

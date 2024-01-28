@@ -1,24 +1,28 @@
 ﻿using Core.Entities;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class User : IdentityUser<Guid>, IEntity
+   public class User: IEntity
     {
+        public  Guid Id { get; set; }
+
         public string Name { get; set; }
         public string SurName { get; set; }
-        public string EmailAdress { get; set; }
-        public DateTime BirthDate { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public DateTime BirtDate { get; set; }
+        public DateTime CreateDate { get; set; }
+        public bool Status { get; set; }
+        public string ImagePath { get; set; }
 
-        public virtual ICollection<BlogLike> BlogLikes { get; set; }
         public virtual ICollection<BlogComment> BlogComments { get; set; }
-        public virtual ICollection<Media> Medias { get; set; }
         public virtual ICollection<Blog> Blogs { get; set; }
+        public virtual ICollection<Media> Medias { get; set; }
+        public virtual ICollection<BlogLike> BlogLikes { get; set; }
     }
 }

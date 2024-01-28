@@ -1,11 +1,10 @@
-﻿using Azure.Messaging;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Constants;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WEPAPI_UI.Controllers
 {
@@ -13,48 +12,50 @@ namespace WEPAPI_UI.Controllers
     [ApiController]
     public class BlogsController : ControllerBase
     {
-        private readonly IBlogService _blogService;
+         IBlogService _blogService;
         public BlogsController(IBlogService blogService)
         {
             _blogService = blogService;
         }
 
-        [HttpGet("SGetBlogsByCommentAndLikeCount")]
-        public ActionResult<BlogDetailsDTO> GetBlogsByCommentAndLikeCounts()
+        [HttpGet("GetBlogsByCommentAndLikeCount")]
+        public async Task<ActionResult> GetBlogsByCommentAndLikeCounts()
         {
-            var result = _blogService.GetBlogsByCommentAndLikeCount();
-            if (result is null) return NotFound(Messages.BlogNotListed);
-            return Ok(result);
+            var result = await _blogService.GetBlogsByCommentAndLikeCount();
+            if (!result.Success) 
+            return BadRequest(Messages.BlogNotListed);
+            return Ok(result.Data);
         }
         [HttpGet("GetById")]
-        public ActionResult<BlogDTO> GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var result = _blogService.GetById(id);
-            if(result.Success == true)
+            var result = await _blogService.GetById(id);
+            if(result.Success)
             {
-                return Ok(result);
+                return Ok(result.Data);
             }
             return BadRequest(Messages.BlogNotListed);
             
 
         }
         [HttpPost("AddBlog")]
-        public ActionResult<BlogDTO> AddBlog(BlogDTO blog)
+        public  async Task<IActionResult> AddBlog(IFormFile file,BlogDTO blogdto)
         {
-            var result = _blogService.Add(blog);
-            if (result.Success == true)
+            var result = await _blogService.Add(file,blogdto);
+            if (result.Success)
             {
-                return Ok(Messages.BlogAdded);
+                return Ok(result);
             }
-            return BadRequest(Messages.BlogNotAdded);
+
+            return BadRequest(result.Message);
         }
 
         [HttpDelete("Delete")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                _blogService.Delete(id);
+               await _blogService.Delete(id);
                 return Ok(Messages.BlogDeleted);
             }
             catch (Exception ex)
@@ -64,8 +65,8 @@ namespace WEPAPI_UI.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(Guid id, BlogDTO updatedBlogDto)
+        [HttpPut("UpdateBlog")]
+        public async Task<IActionResult>Update(Guid id, BlogDTO updatedBlogDto)
         {
             try
             {
@@ -73,7 +74,7 @@ namespace WEPAPI_UI.Controllers
 
                 if (existingBlog != null)
                 { 
-                    _blogService.Update(id, updatedBlogDto);
+                   await  _blogService.Update(id, updatedBlogDto);
                     return Ok(Messages.BlogUpdated);
                 }
                 else

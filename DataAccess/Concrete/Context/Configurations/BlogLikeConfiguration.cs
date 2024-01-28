@@ -14,7 +14,7 @@ namespace DataAccess.Concrete.Context.Configurations
             builder
                         .HasOne(l => l.blog)
                         .WithMany(b => b.BlogLikes)
-                        .HasForeignKey(l => l.Blogid)
+                        .HasForeignKey(l => l.BlogId)
                        .OnDelete(DeleteBehavior.ClientSetNull);
 
 
@@ -26,13 +26,16 @@ namespace DataAccess.Concrete.Context.Configurations
                       .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder
-                    .HasOne(l => l.user)
-                    .WithMany(u => u.BlogLikes)
-                    .HasForeignKey(l => l.Userid)
-                    .HasPrincipalKey(u => u.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                .HasOne(l => l.User)
+               .WithMany(u => u.BlogLikes)
+               .HasForeignKey(l => l.UserId)
+               .HasPrincipalKey(u => u.Id)
+              .OnDelete(DeleteBehavior.ClientSetNull);
 
-           
+
+
+
+
         }
     }
 }

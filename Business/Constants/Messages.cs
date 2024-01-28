@@ -30,5 +30,10 @@ namespace Business.Constants
         public static string BlogLikeNotAdded="Beğeni işlemi başarısız";
         public static string BlogLikedNotListed="Beğeni listeleme işlemi başarısız";
         public static string BlogCommentListed = "Yorumlar listelendi";
+        public static string AddBlogİmage="Blog için resim başarı ile eklendi";
+        public static string AddUserİmage = "Profil resiminiz başarı ile yüklendi";
+        public static string MediaNotAdded="Resim eklenemedi";
+        public static string UserAdded="Kullanıcı eklendi";
+        public static object? UserNotAdded;
     }
 }

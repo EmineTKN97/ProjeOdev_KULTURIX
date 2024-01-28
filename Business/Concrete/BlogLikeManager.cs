@@ -23,33 +23,31 @@ namespace Business.Concrete
         {
             _bloglikeDal = bloglikeDal;
         }
-
-
-        public IResult AddBlogCommentLike(Guid Blogcommentİd, BlogLikeDTO bloglikedto)
-        {
-            _bloglikeDal.AddBlogCommentLike(Blogcommentİd, bloglikedto);
-            return new Result(true, Messages.BlogLikeAdded);
-        }
-
-        [ValidationAspect(typeof(BlogLikeValidator))]
-        public IResult AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto)
+        //[ValidationAspect(typeof(BlogLikeValidator))]
+        public async Task<IResult> AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto)
         {
             _bloglikeDal.AddBlogLike(Blogİd, bloglikedto);
             return new Result(true, Messages.BlogLikeAdded);
         }
+        //[ValidationAspect(typeof(BlogLikeValidator))]
+        public async Task<IResult> AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto)
+        {
+            _bloglikeDal.AddBlogCommentLike(BlogCommentİd, bloglikedto);
+            return new Result(true, Messages.BlogLikeAdded);
+        }
 
-        IResult IBlogLikeService.Delete(Guid İd)
+        public  async Task<IResult> Delete(Guid İd)
         {
             _bloglikeDal.Delete(İd);
             return new Result(true, Messages.BlogLikeDeleted);
         }
 
-        public IDataResult<List<BlogLikeDTO>> GetAllLikeDetails()
+        public async Task<IDataResult<List<BlogLikeDTO>>> GetAllLikeDetails()
         {
             return new SuccessDataResult<List<BlogLikeDTO>>(_bloglikeDal.GetAllLikeDetails(), Messages.BlogLikedListed);
         }
 
-        public IDataResult<List<BlogLikeDTO>> GetLikesByBlogId(Guid BlogId)
+        public async Task<IDataResult<List<BlogLikeDTO>>>GetLikesByBlogId(Guid BlogId)
         {
             return new SuccessDataResult<List<BlogLikeDTO>>(_bloglikeDal.GetLikesByBlogId(BlogId), Messages.BlogLikedListed);
         }

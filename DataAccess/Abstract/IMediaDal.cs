@@ -10,5 +10,7 @@ namespace DataAccess.Abstract
 {
     public interface IMediaDal : IEntityRepository<Media>
     {
+        void AddBlogMedia(string fileName, Guid blogId);
+        void AddUserMedia(string fileName, Guid userId);
     }
 }

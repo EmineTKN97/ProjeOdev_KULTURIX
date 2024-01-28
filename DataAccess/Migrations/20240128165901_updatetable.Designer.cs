@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    [Migration("20240124104549_bool")]
-    partial class @bool
+    [Migration("20240128165901_updatetable")]
+    partial class updatetable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,7 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImagePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
@@ -52,6 +53,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("BlogId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Blogs");
                 });
@@ -72,6 +75,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -83,6 +89,8 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("BlogId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("BlogComments");
                 });
 
@@ -92,25 +100,61 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BlogCommentId")
+                    b.Property<Guid?>("BlogCommentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Blogid")
+                    b.Property<Guid?>("BlogId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LikeDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Userid")
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LikeId");
 
                     b.HasIndex("BlogCommentId");
 
-                    b.HasIndex("Blogid");
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BlogLikes");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Media", b =>
+                {
+                    b.Property<Guid>("MediaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BlogId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("MediaId");
+
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Medias");
                 });
 
             modelBuilder.Entity("Entities.Concrete.User", b =>
@@ -119,67 +163,33 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime>("BirtDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("BlogId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmailAdress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SurName")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserName")
+                    b.Property<string>("SurName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -187,31 +197,68 @@ namespace DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.Blog", b =>
+                {
+                    b.HasOne("Entities.Concrete.User", "User")
+                        .WithMany("Blogs")
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Entities.Concrete.BlogComment", b =>
                 {
-                    b.HasOne("Entities.Concrete.Blog", "blog")
+                    b.HasOne("Entities.Concrete.Blog", "Blog")
                         .WithMany("BlogComments")
                         .HasForeignKey("BlogId")
                         .IsRequired();
 
-                    b.Navigation("blog");
+                    b.HasOne("Entities.Concrete.User", "User")
+                        .WithMany("BlogComments")
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entities.Concrete.BlogLike", b =>
                 {
                     b.HasOne("Entities.Concrete.BlogComment", "comment")
                         .WithMany("BlogLikes")
-                        .HasForeignKey("BlogCommentId")
-                        .IsRequired();
+                        .HasForeignKey("BlogCommentId");
 
                     b.HasOne("Entities.Concrete.Blog", "blog")
                         .WithMany("BlogLikes")
-                        .HasForeignKey("Blogid")
+                        .HasForeignKey("BlogId");
+
+                    b.HasOne("Entities.Concrete.User", "User")
+                        .WithMany("BlogLikes")
+                        .HasForeignKey("UserId")
                         .IsRequired();
+
+                    b.Navigation("User");
 
                     b.Navigation("blog");
 
                     b.Navigation("comment");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Media", b =>
+                {
+                    b.HasOne("Entities.Concrete.Blog", "blog")
+                        .WithMany("Medias")
+                        .HasForeignKey("BlogId");
+
+                    b.HasOne("Entities.Concrete.User", "User")
+                        .WithMany("Medias")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+
+                    b.Navigation("blog");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Blog", b =>
@@ -219,11 +266,24 @@ namespace DataAccess.Migrations
                     b.Navigation("BlogComments");
 
                     b.Navigation("BlogLikes");
+
+                    b.Navigation("Medias");
                 });
 
             modelBuilder.Entity("Entities.Concrete.BlogComment", b =>
                 {
                     b.Navigation("BlogLikes");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.User", b =>
+                {
+                    b.Navigation("BlogComments");
+
+                    b.Navigation("BlogLikes");
+
+                    b.Navigation("Blogs");
+
+                    b.Navigation("Medias");
                 });
 #pragma warning restore 612, 618
         }

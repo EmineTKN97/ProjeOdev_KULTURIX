@@ -1,7 +1,6 @@
 ﻿using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
-using DataAccess.Migrations;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
@@ -23,23 +22,22 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void Add(BlogDTO blogdto)
+        public void AddImage(string fileName, BlogDTO blogdto)
         {
-            using (var context = _context)
+            var newBlog = new Blog
             {
-                var newBlog = new Blog
-                {
-                    BlogId = Guid.NewGuid(),
-                    Title = blogdto.Title,
-                    Content = blogdto.Description,
-                    Date = DateTime.Now
-                };
+                BlogId = Guid.NewGuid(),
+                Title = blogdto.Title,
+                Content = blogdto.Description,
+                Date = DateTime.Now,
+                UserId = blogdto.UserId,
+                ImagePath = fileName,
 
-                context.Blogs.Add(newBlog);
-                context.SaveChanges();
-            }
+            };
+            _context.Blogs.Add(newBlog);
+            _context.SaveChanges();
         }
-
+        
         public void Delete(Guid id)
         {
             var blogToDelete = _context.Blogs.FirstOrDefault(b => b.BlogId == id);
@@ -55,82 +53,78 @@ namespace DataAccess.Concrete.EntityFramework
         //bloğu yorum sayısı ve like sayısına göre sıralama
         public List<BlogDetailsDTO> GetBlogsByCommentAndLikeCount()
         {
-            using (var context = new ProjeOdevContext())
-            {
-                var blogDetails = (from b in context.Blogs
-                                   join l in context.BlogLikes on b.BlogId equals l.Blogid
-                                   join bc in context.BlogComments on b.BlogId equals bc.BlogId
-                                   where b.Status == false && l.Status == false && bc.Status == false
-                                   group b by b.BlogId into groupedBlogs
-                                   select new BlogDetailsDTO
-                                   {
-                                       İd = groupedBlogs.Key,
-                                       BlogTitle = groupedBlogs.First().Title,
-                                       BlogContent = groupedBlogs.First().Content,
-                                       BlogDate = groupedBlogs.First().Date,
-                                       BlogCommentCount = context.BlogComments.Count(c => c.BlogId == groupedBlogs.Key),
-                                       BlogLikeCount = context.BlogLikes.Count(l => l.Blogid == groupedBlogs.Key)
-                                   }).OrderByDescending(b => b.BlogLikeCount)
-                                    .ThenByDescending(b => b.BlogCommentCount)
-                                    .ToList();
+            var blogDetails = (from b in _context.Blogs
+                               join l in _context.BlogLikes on b.BlogId equals l.BlogId
+                               join bc in _context.BlogComments on b.BlogId equals bc.BlogId
+                               where b.Status == false && l.Status == false && bc.Status == false
+                               group b by b.BlogId into groupedBlogs
+                               select new BlogDetailsDTO
+                               {
+                                   İd = groupedBlogs.Key,
+                                   BlogTitle = groupedBlogs.First().Title,
+                                   BlogContent = groupedBlogs.First().Content,
+                                   BlogDate = groupedBlogs.First().Date,
+                                   BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == groupedBlogs.Key),
+                                   BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == groupedBlogs.Key)
+                               }).OrderByDescending(b => b.BlogLikeCount)
+                                  .ThenByDescending(b => b.BlogCommentCount)
+                                  .ToList();
 
-                return blogDetails;
-            }
+            return blogDetails;
+
 
         }
         //bloğun id'sine göre sıralama
         public BlogDTO GetBlogById(Guid id)
         {
-            using (var context = _context)
+
+
+            var blog = _context.Blogs
+                .Where(b => b.BlogId == id)
+                .FirstOrDefault();
+
+            if (blog != null)
             {
-                var blog = context.Blogs
-                    .Where(b => b.BlogId == id)
-                    .FirstOrDefault();
-
-                if (blog != null)
+                var blogDto = new BlogDTO
                 {
-                    var blogDto = new BlogDTO
-                    {
-                        Id = blog.BlogId,
-                        Title = blog.Title,
-                        Description = blog.Content,
-                        CreateDate = blog.Date
-                    };
+                    Id = blog.BlogId,
+                    Title = blog.Title,
+                    Description = blog.Content,
+                    CreateDate = blog.Date
+                };
 
-                    return blogDto;
-                }
-                else
-                {
-                    return null;
-                }
+                return blogDto;
             }
+            else
+            {
+                return null;
+            }
+
         }
         public void Update(Guid id, BlogDTO updatedBlogDto)
         {
-            using (var context = _context)
-            {
-                var blogToUpdate = context.Blogs.FirstOrDefault(b => b.BlogId == id &&  b.Status == false);
-                if (blogToUpdate != null)
-                {
-                    blogToUpdate.Title = updatedBlogDto.Title ?? blogToUpdate.Title;
-                    blogToUpdate.Content = updatedBlogDto.Description ?? blogToUpdate.Content;
 
-                    if (updatedBlogDto.CreateDate != null)
-                    {
-                        blogToUpdate.Date = updatedBlogDto.CreateDate;
-                    }
-                    else
-                    {
-                        blogToUpdate.Date = DateTime.Now;
-                    }
-                    context.SaveChanges();
+            var blogToUpdate = _context.Blogs.FirstOrDefault(b => b.BlogId == id && b.Status == false);
+            if (blogToUpdate != null)
+            {
+                blogToUpdate.Title = updatedBlogDto.Title ?? blogToUpdate.Title;
+                blogToUpdate.Content = updatedBlogDto.Description ?? blogToUpdate.Content;
+
+                if (updatedBlogDto.CreateDate != null)
+                {
+                    blogToUpdate.Date = updatedBlogDto.CreateDate;
                 }
+                else
+                {
+                    blogToUpdate.Date = DateTime.Now;
+                }
+                _context.SaveChanges();
             }
         }
-
-
     }
 }
+
+
 
 
 

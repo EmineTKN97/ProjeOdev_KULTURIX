@@ -1,7 +1,6 @@
 ﻿using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
-using DataAccess.Migrations;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
@@ -24,32 +23,28 @@ namespace DataAccess.Concrete.EntityFramework
 
         public void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto)
         {
-            using (var context = _context)
+            var existingLike = _context.BlogLikes
+             .FirstOrDefault(l => l.BlogCommentId == blogCommentİd);
+
+            if (existingLike == null)
             {
-                var existingLike = context.BlogLikes
-                    .FirstOrDefault(l => l.BlogCommentId == blogCommentİd);
-
-                if (existingLike == null)
+                var newBlogCommentLike = new BlogLike
                 {
-                    var newBlogLike = new BlogLike
-                    {
-                        LikeId = Guid.NewGuid(),
-                        LikeDate = DateTime.Now,
-                        BlogCommentId = bloglikedto.BlogCommentid
-                    };
+                    LikeId = Guid.NewGuid(),
+                    LikeDate = DateTime.Now,
+                    BlogCommentId =bloglikedto.BlogCommentid,
+                    UserId = bloglikedto.Userid
+                };
 
-                    context.BlogLikes.Add(newBlogLike);
-                    context.SaveChanges();
-                }
+                _context.BlogLikes.Add(newBlogCommentLike);
+                _context.SaveChanges();
             }
         }
 
         public void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto)
         {
-            using (var context = _context)
-            {
-                var existingLike = context.BlogLikes
-                    .FirstOrDefault(l => l.Blogid == blogİd);
+               var existingLike = _context.BlogLikes
+                    .FirstOrDefault(l => l.BlogId == blogİd);
 
                 if (existingLike == null)
                 {
@@ -57,13 +52,14 @@ namespace DataAccess.Concrete.EntityFramework
                     {
                         LikeId = Guid.NewGuid(),
                         LikeDate = DateTime.Now,
-                        Blogid = bloglikedto.Blogid,
+                        BlogId = bloglikedto.Blogid,
+                        UserId = bloglikedto.Userid 
                     };
 
-                    context.BlogLikes.Add(newBlogLike);
-                    context.SaveChanges();
+                    _context.BlogLikes.Add(newBlogLike);
+                    _context.SaveChanges();
                 }
-            }
+            
 
         }
 
@@ -88,10 +84,10 @@ namespace DataAccess.Concrete.EntityFramework
                      .Select(l => new BlogLikeDTO
                      {
                          Likeİd = l.LikeId,
-                         Blogid = l.Blogid.HasValue ? l.Blogid.Value : Guid.Empty,
+                         Blogid = l.BlogId.HasValue ? l.BlogId.Value : Guid.Empty,
                          BlogCommentid = l.BlogCommentId.HasValue ? l.BlogCommentId.Value : Guid.Empty,
                          LikeDate = l.LikeDate,
-                         Userid = l.Userid,
+                         Userid = l.UserId,
                      }).ToList();
 
                 return result;
@@ -103,12 +99,12 @@ namespace DataAccess.Concrete.EntityFramework
             using (var context = new ProjeOdevContext())
             {
                 var likes = (from l in context.BlogLikes
-                             join b in context.Blogs on l.Blogid equals b.BlogId
-                             where l.Blogid == BlogId && l.Status == false && b.Status == false
+                             join b in context.Blogs on l.BlogId equals b.BlogId
+                             where l.BlogId == BlogId && l.Status == false && b.Status == false
                              select new BlogLikeDTO
                              {
                                  LikeDate = l.LikeDate,
-                                 Userid = l.Userid,
+                                 Userid = l.UserId,
                                  Likeİd = l.LikeId,
                                  Blogid = b.BlogId  
                              })

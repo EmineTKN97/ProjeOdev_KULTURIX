@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Entities\Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\StaticContent\" />
+  </ItemGroup>
+
 </Project>

@@ -10,19 +10,21 @@ namespace DataAccess.Concrete.Context.Configurations
         public void Configure(EntityTypeBuilder<BlogComment> builder)
         {
             builder.HasKey(c => c.CommentId);
-                    
-                builder
-               .HasOne(bc => bc.Blog)
-                    .WithMany(b => b.BlogComments)
-                    .HasForeignKey(bc => bc.BlogId)
-                    .HasPrincipalKey(b => b.BlogId)
-                   .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder
-    .HasOne(bc => bc.User)
-    .WithMany(u => u.BlogComments)
-    .HasForeignKey(bc => bc.UserId)
-    .HasPrincipalKey(u => u.Id)
-    .OnDelete(DeleteBehavior.ClientSetNull);
+           .HasOne(bc => bc.Blog)
+                .WithMany(b => b.BlogComments)
+                .HasForeignKey(bc => bc.BlogId)
+                .HasPrincipalKey(b => b.BlogId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasOne(bc => bc.User)
+                .WithMany(u => u.BlogComments)
+                .HasForeignKey(bc => bc.UserId)
+                .HasPrincipalKey(c => c.Id)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+
+
 
 
 

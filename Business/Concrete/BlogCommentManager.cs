@@ -23,34 +23,33 @@ namespace Business.Concrete
         {
             _blogcommentDal = blogcommentDal;
         }
-        [ValidationAspect(typeof(BlogCommentValidator))]
-        public IResult Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
-        { 
-            _blogcommentDal.Add(Blogİd,blogcommentdto);
+        //[ValidationAspect(typeof(BlogCommentValidator))]
+        public async Task<IResult> Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
+        {
+            _blogcommentDal.Add(Blogİd, blogcommentdto);
             return new Result(true, Messages.BlogCommentAdded);
         }
 
-        public IResult Delete(Guid İd)
+        public async Task<IResult> Delete(Guid İd)
         {
             _blogcommentDal.Delete(İd);
             return new Result(true, Messages.BlogCommentDeleted);
         }
 
-        public IResult Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
+        public async Task<IResult> Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
         {
             _blogcommentDal.Update(id, updatedCommentBlogDto);
             return new Result(true, Messages.BlogCommentUpdated);
         }
 
-        public IDataResult<List<BlogCommentDTO>> GetAllCommentsDetails()
+        public async Task<IDataResult<List<BlogCommentDTO>>> GetAllCommentsDetails()
         {
-            return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetAllCommentDetails(),Messages.BlogCommentListed);
+            return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetAllCommentDetails());
         }
 
-       public  IDataResult<List<BlogCommentDTO>>GetCommentsByBlogId(Guid BlogId)
+       public async Task<IDataResult<List<BlogCommentDTO>>> GetCommentsByBlogId(Guid BlogId)
         {
-            return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetCommentsByBlogId(BlogId),Messages.BlogCommentListed);
-
+            return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetCommentsByBlogId(BlogId), Messages.BlogCommentListed);
         }
     }
 }

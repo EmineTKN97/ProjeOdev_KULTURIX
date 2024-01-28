@@ -20,12 +20,16 @@ namespace Business.DependencyResolvers.Autofac
         protected override void Load(ContainerBuilder builder)
         {
 
-            builder.RegisterType<BlogManager>().As<IBlogService>().SingleInstance();
-            builder.RegisterType<EfBlogDal>().As<IBlogDal>().SingleInstance();
-            builder.RegisterType<BlogCommentManager>().As<IBlogCommentService>().SingleInstance();
-            builder.RegisterType<EfBlogCommentDal>().As<IBlogCommentDal>().SingleInstance();
-            builder.RegisterType<BlogLikeManager>().As<IBlogLikeService>().SingleInstance();
-            builder.RegisterType<EfBlogLikeDal>().As<IBlogLikeDal>().SingleInstance();
+            builder.RegisterType<BlogManager>().As<IBlogService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfBlogDal>().As<IBlogDal>().InstancePerLifetimeScope();
+            builder.RegisterType<BlogCommentManager>().As<IBlogCommentService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfBlogCommentDal>().As<IBlogCommentDal>().InstancePerLifetimeScope();
+            builder.RegisterType<BlogLikeManager>().As<IBlogLikeService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfBlogLikeDal>().As<IBlogLikeDal>().InstancePerLifetimeScope();
+            builder.RegisterType<MediaManager>().As<IMediaService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfMediaDal>().As<IMediaDal>().InstancePerLifetimeScope();
+            builder.RegisterType<UserManager>().As<IUserService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfUserDal>().As<IUserDal>().InstancePerLifetimeScope();
             builder.RegisterType<ProjeOdevContext>().InstancePerLifetimeScope();
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

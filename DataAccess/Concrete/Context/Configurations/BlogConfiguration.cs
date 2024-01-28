@@ -15,12 +15,12 @@ namespace DataAccess.Concrete.Context.Configurations
         public void Configure(EntityTypeBuilder<Blog> builder)
         {
             builder.HasKey(b => b.BlogId);
-            builder.HasOne(b => b.User)
-        .WithMany(u => u.Blogs)
-        .HasForeignKey(b => b.UserId)
-        .HasPrincipalKey(u => u.Id)
-        .OnDelete(DeleteBehavior.ClientSetNull);
 
+            builder.HasOne(b => b.User)
+               .WithMany(u => u.Blogs)
+               .HasForeignKey(b=> b.UserId)
+               .HasPrincipalKey(c => c.Id)
+              .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

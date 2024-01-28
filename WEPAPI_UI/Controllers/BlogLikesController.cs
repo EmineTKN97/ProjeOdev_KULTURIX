@@ -17,50 +17,51 @@ namespace WEPAPI_UI.Controllers
             _bloglikeService = bloglikeService;
         }
         [HttpPost("AddBlogLike")]
-        public ActionResult<BlogLikeDTO> AddBlogLike(Guid blogId, BlogLikeDTO bloglike)
+        public async Task<IActionResult> AddBlogLike(Guid blogId, BlogLikeDTO bloglike)
         {
-            var result = _bloglikeService.AddBlogLike(blogId,bloglike);
-            if (result.Success == true)
+            var result = await _bloglikeService.AddBlogLike(blogId,bloglike);
+            if (result.Success)
             {
                 return Ok(Messages.BlogLikeAdded);
             }
             return BadRequest(Messages.BlogLikeNotAdded);
         }
         [HttpPost("AddBlogCommentLike")]
-        public ActionResult<BlogLikeDTO> AddBlogCommentLike(Guid blogCommentId, BlogLikeDTO bloglike)
+        public async Task<IActionResult> AddBlogCommentLike(Guid blogCommentId, BlogLikeDTO bloglike)
         {
-            var result = _bloglikeService.AddBlogLike(blogCommentId, bloglike);
-            if (result.Success == true)
+            var result = await _bloglikeService.AddBlogCommentLike(blogCommentId, bloglike);
+            if (result.Success)
             {
                 return Ok(Messages.BlogLikeAdded);
             }
             return BadRequest(Messages.BlogLikeNotAdded);
         }
         [HttpGet("GetBlogLikeDetails")]
-        public ActionResult<BlogLikeDTO> GetAllLikeDetails()
+        public async Task<IActionResult> GetAllLikeDetails()
         {
-            var result = _bloglikeService.GetAllLikeDetails();
+            var result = await _bloglikeService.GetAllLikeDetails();
             if (result is null) return NotFound(Messages.BlogLikedNotListed);
             return Ok(result);
 
         }
         [HttpGet("GetLikesByBlogId")]
-        public ActionResult<BlogLikeDTO> GetLikesByBlogId(Guid BlogId)
+        public async Task<IActionResult> GetLikesByBlogId(Guid BlogId)
         {
             var result = _bloglikeService.GetLikesByBlogId(BlogId);
-            if (result is null) return NotFound(Messages.BlogLikedNotListed);
+            if (result is null)
+            return NotFound(Messages.BlogLikedNotListed);
             return Ok(result);
 
         }
         [HttpDelete("Delete")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                _bloglikeService.Delete(id);
+               await _bloglikeService.Delete(id);
                 return Ok(Messages.BlogLikeDeleted);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
                 return BadRequest(Messages.BlogLikeNotDeleted);
             }
