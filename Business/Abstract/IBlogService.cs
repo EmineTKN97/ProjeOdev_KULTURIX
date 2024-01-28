@@ -12,7 +12,7 @@ namespace Business.Abstract
 {
     public interface IBlogService
     {
-       Task<IResult> Add(IFormFile file,BlogDTO blogdto);
+       Task<IResult> Add(BlogDTO blogdto);
         Task<IResult> Delete(Guid İd);
         Task<IResult> Update(Guid id, BlogDTO updatedBlogDto);
         Task<IDataResult<Blog>> GetById(Guid id);

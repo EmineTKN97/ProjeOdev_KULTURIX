@@ -48,19 +48,10 @@ namespace Business.Concrete
             return new Result(true, Messages.BlogUpdated);
         }
         // [ValidationAspect(typeof(BlogValidator))
-        public async Task<IResult> Add(IFormFile file,BlogDTO blogdto)
+        public async Task<IResult> Add(BlogDTO blogdto)
         {
-            string uniqueFileName = Guid.NewGuid().ToString();
-            string fileExtension = Path.GetExtension(file.FileName);
-            string fileName = uniqueFileName + fileExtension;
-
-            var filePath = Common.GetFilePath(fileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-            _blogDal.AddImage(fileName,blogdto);
+        
+            _blogDal.Add(blogdto);
             return new SuccessResult(Messages.BlogAdded);
         }
       

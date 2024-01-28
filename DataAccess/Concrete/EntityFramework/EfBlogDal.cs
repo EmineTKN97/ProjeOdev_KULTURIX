@@ -22,7 +22,7 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void AddImage(string fileName, BlogDTO blogdto)
+        public void Add(BlogDTO blogdto)
         {
             var newBlog = new Blog
             {
@@ -31,7 +31,7 @@ namespace DataAccess.Concrete.EntityFramework
                 Content = blogdto.Description,
                 Date = DateTime.Now,
                 UserId = blogdto.UserId,
-                ImagePath = fileName,
+                ImagePath = blogdto.ImagePath,
 
             };
             _context.Blogs.Add(newBlog);

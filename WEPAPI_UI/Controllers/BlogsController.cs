@@ -39,9 +39,9 @@ namespace WEPAPI_UI.Controllers
 
         }
         [HttpPost("AddBlog")]
-        public  async Task<IActionResult> AddBlog(IFormFile file,BlogDTO blogdto)
+        public  async Task<IActionResult> AddBlog(BlogDTO blogdto)
         {
-            var result = await _blogService.Add(file,blogdto);
+            var result = await _blogService.Add(blogdto);
             if (result.Success)
             {
                 return Ok(result);

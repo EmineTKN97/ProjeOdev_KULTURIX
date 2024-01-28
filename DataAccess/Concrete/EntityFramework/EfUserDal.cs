@@ -21,7 +21,7 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void Add(string fileName, UserDTO userdto)
+        public void Add( UserDTO userdto)
         {
             var newUser = new User
             {
@@ -31,7 +31,7 @@ namespace DataAccess.Concrete.EntityFramework
                 Email = userdto.Email,
                 BirtDate = userdto.BirthDate,
                 Password = userdto.Password,
-                ImagePath = fileName,
+                ImagePath = userdto.İmagePath,
                 CreateDate = DateTime.Now,
 
             };

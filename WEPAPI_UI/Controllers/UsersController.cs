@@ -18,9 +18,9 @@ namespace WEPAPI_UI.Controllers
         }
 
         [HttpPost("AddUser")]
-        public async Task<IActionResult> AdUser(IFormFile file,UserDTO userdto)
+        public async Task<IActionResult> AdUser(UserDTO userdto)
         {
-            var result = await _userService.Add(file,userdto);
+            var result = await _userService.Add(userdto);
             if (result.Success)
             {
                 return Ok(result);

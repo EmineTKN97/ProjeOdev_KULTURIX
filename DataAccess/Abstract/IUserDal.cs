@@ -11,6 +11,6 @@ namespace DataAccess.Abstract
 {
     public interface IUserDal : IEntityRepository<User>
     {
-        void Add(string fileName, UserDTO userdto);
+        void Add(UserDTO userdto);
     }
 }

@@ -26,21 +26,9 @@ namespace Business.Concrete
 
 
 
-        public async Task<IResult> Add(IFormFile file, UserDTO userDto)
+        public async Task<IResult> Add(UserDTO userDto)
         {
-            string uniqueFileName = Guid.NewGuid().ToString();
-            string fileExtension = Path.GetExtension(file.FileName);
-            string fileName = uniqueFileName + fileExtension;
-
-            var filePath = Common.GetFilePath(fileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-            _userDal.Add(fileName, userDto);
-
+           _userDal.Add(userDto);
             return new SuccessResult(Messages.UserAdded);
         }
         public async Task<IResult> Delete(Guid İd)
