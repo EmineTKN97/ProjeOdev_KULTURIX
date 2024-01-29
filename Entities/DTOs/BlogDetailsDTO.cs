@@ -15,6 +15,7 @@ namespace Entities.DTOs
         public string BlogContent { get; set; }
         public int BlogLikeCount { get; set; }
         public int BlogCommentCount { get; set; }
+        public string İmagePath { get; set; }
     }
 
 

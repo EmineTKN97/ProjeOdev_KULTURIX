@@ -77,9 +77,7 @@ namespace DataAccess.Concrete.EntityFramework
 
         public List<BlogLikeDTO> GetAllLikeDetails()
         {
-            using (var context = new ProjeOdevContext())
-            {
-                var result = context.BlogLikes
+              var result = _context.BlogLikes
                     .Where(l => l.Status == false)
                      .Select(l => new BlogLikeDTO
                      {
@@ -91,15 +89,14 @@ namespace DataAccess.Concrete.EntityFramework
                      }).ToList();
 
                 return result;
-            }
+            
         }
 
         public List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId)
         {
-            using (var context = new ProjeOdevContext())
-            {
-                var likes = (from l in context.BlogLikes
-                             join b in context.Blogs on l.BlogId equals b.BlogId
+            
+                var likes = (from l in _context.BlogLikes
+                             join b in _context.Blogs on l.BlogId equals b.BlogId
                              where l.BlogId == BlogId && l.Status == false && b.Status == false
                              select new BlogLikeDTO
                              {
@@ -111,7 +108,6 @@ namespace DataAccess.Concrete.EntityFramework
                             .OrderByDescending(l => l.LikeDate)
                             .ToList();
                 return likes;
-            }
         }
     }
 }

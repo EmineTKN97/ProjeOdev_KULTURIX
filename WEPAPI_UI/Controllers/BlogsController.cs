@@ -19,38 +19,25 @@ namespace WEPAPI_UI.Controllers
         }
 
         [HttpGet("GetBlogsByCommentAndLikeCount")]
-        public async Task<ActionResult> GetBlogsByCommentAndLikeCounts()
+        public async Task<IActionResult> GetBlogsByCommentAndLikeCounts()
         {
             var result = await _blogService.GetBlogsByCommentAndLikeCount();
-            if (!result.Success) 
-            return BadRequest(Messages.BlogNotListed);
-            return Ok(result.Data);
+            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
         }
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _blogService.GetById(id);
-            if(result.Success)
-            {
-                return Ok(result.Data);
-            }
-            return BadRequest(Messages.BlogNotListed);
-            
-
+            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
         }
         [HttpPost("AddBlog")]
         public  async Task<IActionResult> AddBlog(BlogDTO blogdto)
         {
             var result = await _blogService.Add(blogdto);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result.Message);
+            return !result.Success ? BadRequest(Messages.BlogNotAdded) : Ok(Messages.BlogAdded);
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("DeleteBlog")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
@@ -68,25 +55,25 @@ namespace WEPAPI_UI.Controllers
         [HttpPut("UpdateBlog")]
         public async Task<IActionResult>Update(Guid id, BlogDTO updatedBlogDto)
         {
-            try
-            {
-                var existingBlog = _blogService.GetById(id);
+              var existingBlog = _blogService.GetById(id);
+                var result = await _blogService.Update(id,updatedBlogDto);
 
-                if (existingBlog != null)
+                if (existingBlog != null && result.Success)
                 { 
-                   await  _blogService.Update(id, updatedBlogDto);
                     return Ok(Messages.BlogUpdated);
                 }
                 else
                 {
-                    return NotFound(Messages.BlogNotUpdated);
+                    return BadRequest(Messages.BlogNotUpdated);
                 }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(Messages.BlogNotUpdated);
-            }
+        }
+        [HttpGet("GetByUserId")]
+        public async Task<IActionResult> GetByUserId(Guid UserId)
+        {
+            var result = await _blogService.GetByUserId(UserId);
+            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
+
+
         }
     }
 }
-

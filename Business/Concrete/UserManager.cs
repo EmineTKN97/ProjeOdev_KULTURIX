@@ -33,17 +33,27 @@ namespace Business.Concrete
         }
         public async Task<IResult> Delete(Guid İd)
         {
-            throw new NotImplementedException();
+            _userDal.Delete(İd);
+            return new Result(true, Messages.UserDeleted);
         }
 
         public async Task<IDataResult<List<UserDTO>>>GetAllUsers()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<UserDTO>>(_userDal.GetAllUsers(), Messages.UserListed);
         }
 
-        public async Task<IResult> Update(UserDTO userDto)
+        public async Task<IResult> Update(Guid İd,UserDTO userDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                _userDal.Update(İd,userDto);
+                return new Result(true, Messages.UserUpdated);
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult(Messages.UserNotUpdated);
+            }
         }
     }
 }

@@ -20,37 +20,34 @@ namespace WEPAPI_UI.Controllers
         public async Task<IActionResult> AddBlogLike(Guid blogId, BlogLikeDTO bloglike)
         {
             var result = await _bloglikeService.AddBlogLike(blogId,bloglike);
-            if (result.Success)
-            {
-                return Ok(Messages.BlogLikeAdded);
-            }
-            return BadRequest(Messages.BlogLikeNotAdded);
+            return !result.Success ? BadRequest(Messages.BlogLikeNotAdded) : Ok(Messages.BlogLikeAdded);
         }
         [HttpPost("AddBlogCommentLike")]
         public async Task<IActionResult> AddBlogCommentLike(Guid blogCommentId, BlogLikeDTO bloglike)
         {
             var result = await _bloglikeService.AddBlogCommentLike(blogCommentId, bloglike);
-            if (result.Success)
-            {
-                return Ok(Messages.BlogLikeAdded);
-            }
-            return BadRequest(Messages.BlogLikeNotAdded);
+            return !result.Success ? BadRequest(Messages.BlogLikeNotAdded) : Ok(Messages.BlogLikeAdded);
         }
         [HttpGet("GetBlogLikeDetails")]
         public async Task<IActionResult> GetAllLikeDetails()
         {
             var result = await _bloglikeService.GetAllLikeDetails();
-            if (result is null) return NotFound(Messages.BlogLikedNotListed);
-            return Ok(result);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return NotFound(Messages.BlogLikedNotListed);
 
         }
         [HttpGet("GetLikesByBlogId")]
         public async Task<IActionResult> GetLikesByBlogId(Guid BlogId)
         {
-            var result = _bloglikeService.GetLikesByBlogId(BlogId);
-            if (result is null)
+            var result = await _bloglikeService.GetLikesByBlogId(BlogId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
             return NotFound(Messages.BlogLikedNotListed);
-            return Ok(result);
 
         }
         [HttpDelete("Delete")]

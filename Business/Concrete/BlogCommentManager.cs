@@ -26,7 +26,7 @@ namespace Business.Concrete
         //[ValidationAspect(typeof(BlogCommentValidator))]
         public async Task<IResult> Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
         {
-            _blogcommentDal.Add(Blogİd, blogcommentdto);
+           _blogcommentDal.Add(Blogİd, blogcommentdto);
             return new Result(true, Messages.BlogCommentAdded);
         }
 
@@ -38,8 +38,16 @@ namespace Business.Concrete
 
         public async Task<IResult> Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
         {
-            _blogcommentDal.Update(id, updatedCommentBlogDto);
-            return new Result(true, Messages.BlogCommentUpdated);
+            try
+            {
+
+               _blogcommentDal.Update(id, updatedCommentBlogDto);
+                return new Result(true, Messages.BlogCommentUpdated);
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult(Messages.BlogCommentNotUpdated);
+            }
         }
 
         public async Task<IDataResult<List<BlogCommentDTO>>> GetAllCommentsDetails()

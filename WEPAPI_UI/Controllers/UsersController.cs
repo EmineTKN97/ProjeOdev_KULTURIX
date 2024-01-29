@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Core.Utilities.Results;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,35 @@ namespace WEPAPI_UI.Controllers
         public async Task<IActionResult> AdUser(UserDTO userdto)
         {
             var result = await _userService.Add(userdto);
-            if (result.Success)
+            return !result.Success ? BadRequest(Messages.UserNotAdded) : Ok(result);
+        }
+        [HttpDelete("DeleteUser")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
             {
-                return Ok(result);
+                await _userService.Delete(id);
+                return Ok(Messages.UserDeleted);
             }
-            return BadRequest(Messages.UserNotAdded);
+            catch (Exception ex)
+            {
+
+                return BadRequest(Messages.UserNotDeleted);
+            }
+        }
+
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> Update(Guid id, UserDTO userDto)
+        {
+
+            var result = await _userService.Update(id, userDto);
+            return !result.Success ? BadRequest(Messages.UserNotUpdated) : Ok(Messages.UserUpdated);
+        }
+        [HttpGet("GetAllUser")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var result = await _userService.GetAllUsers();
+            return !result.Success ? BadRequest(Messages.UserNotListed) : Ok(result.Data);
         }
     }
 }

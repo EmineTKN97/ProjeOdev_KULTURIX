@@ -34,6 +34,20 @@ namespace Business.Constants
         public static string AddUserİmage = "Profil resiminiz başarı ile yüklendi";
         public static string MediaNotAdded="Resim eklenemedi";
         public static string UserAdded="Kullanıcı eklendi";
-        public static object? UserNotAdded;
+        public static string UserNotAdded="Kullanıcı eklenemedi";
+        public static string MediaNotListed="Resimler listelenemedi";
+        public static string MediaDeleted="Resim silindi";
+        public static string MediaListed = "Resimler listelendi";
+        public static string UpdateMedia="Resim güncellendi";
+        public static string UserMediaListed="Profil fotoğrafları listelendi";
+        public static string BlogMediaListed="Blog resimleri listelendi";
+        public static string MediaNotDeleted="Resim silinemedi";
+        public static string UserDeleted="Kullanıcı silindi";
+        public static string UserListed="Kullanıcılar listelendi";
+        public static string UserUpdated="Kullanıcılar güncellendi";
+        public static string UserNotUpdated="Kullanıcı güncelleme işlemi başarısız";
+        public static string UserNotDeleted="Kullanıcı silinemedi";
+        public static string UserNotListed="Kullanıcılar listelenemedi";
+        public static object? MediaNotUpdated;
     }
 }

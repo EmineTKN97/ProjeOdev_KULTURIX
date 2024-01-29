@@ -31,13 +31,12 @@ namespace DataAccess.Concrete.EntityFramework
                 Content = blogdto.Description,
                 Date = DateTime.Now,
                 UserId = blogdto.UserId,
-                ImagePath = blogdto.ImagePath,
-
+                ImagePath =  "wwwroot\\Uploads\\StaticContent\\default.jpg"
             };
             _context.Blogs.Add(newBlog);
             _context.SaveChanges();
         }
-        
+
         public void Delete(Guid id)
         {
             var blogToDelete = _context.Blogs.FirstOrDefault(b => b.BlogId == id);
@@ -56,20 +55,25 @@ namespace DataAccess.Concrete.EntityFramework
             var blogDetails = (from b in _context.Blogs
                                join l in _context.BlogLikes on b.BlogId equals l.BlogId
                                join bc in _context.BlogComments on b.BlogId equals bc.BlogId
-                               where b.Status == false && l.Status == false && bc.Status == false
-                               group b by b.BlogId into groupedBlogs
+                               join m in _context.Medias on b.BlogId equals m.BlogId
+                             where (b.Status == false) 
+                                  && (l.Status == false)
+                                  && (bc.Status == false )
+                                  && (m.Status == false )
+                               group new { b, m } by b.BlogId into groupedBlogs
                                select new BlogDetailsDTO
                                {
                                    İd = groupedBlogs.Key,
-                                   BlogTitle = groupedBlogs.First().Title,
-                                   BlogContent = groupedBlogs.First().Content,
-                                   BlogDate = groupedBlogs.First().Date,
+                                   BlogTitle = groupedBlogs.First().b.Title,
+                                   BlogContent = groupedBlogs.First().b.Content,
+                                   BlogDate = groupedBlogs.First().b.Date,
+                                   İmagePath = groupedBlogs.First().m.ImagePath,
                                    BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == groupedBlogs.Key),
                                    BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == groupedBlogs.Key)
-                               }).OrderByDescending(b => b.BlogLikeCount)
-                                  .ThenByDescending(b => b.BlogCommentCount)
-                                  .ToList();
-
+                               })
+                   .OrderByDescending(b => b.BlogLikeCount)
+                   .ThenByDescending(b => b.BlogCommentCount)
+                   .ToList();
             return blogDetails;
 
 
@@ -77,8 +81,6 @@ namespace DataAccess.Concrete.EntityFramework
         //bloğun id'sine göre sıralama
         public BlogDTO GetBlogById(Guid id)
         {
-
-
             var blog = _context.Blogs
                 .Where(b => b.BlogId == id)
                 .FirstOrDefault();
@@ -104,25 +106,41 @@ namespace DataAccess.Concrete.EntityFramework
         public void Update(Guid id, BlogDTO updatedBlogDto)
         {
 
-            var blogToUpdate = _context.Blogs.FirstOrDefault(b => b.BlogId == id && b.Status == false);
-            if (blogToUpdate != null)
+            var blogToUpdate = _context.Blogs.FirstOrDefault(b => b.BlogId == id);
+            if (blogToUpdate != null && blogToUpdate.Status == false)
             {
-                blogToUpdate.Title = updatedBlogDto.Title ?? blogToUpdate.Title;
-                blogToUpdate.Content = updatedBlogDto.Description ?? blogToUpdate.Content;
-
-                if (updatedBlogDto.CreateDate != null)
-                {
-                    blogToUpdate.Date = updatedBlogDto.CreateDate;
-                }
-                else
-                {
-                    blogToUpdate.Date = DateTime.Now;
-                }
+                blogToUpdate.Title = blogToUpdate.Title;
+                blogToUpdate.Content = blogToUpdate.Content;
+                blogToUpdate.UserId = updatedBlogDto.UserId;
+                blogToUpdate.Date = DateTime.Now;
                 _context.SaveChanges();
             }
+            else
+            {
+                throw new Exception("Blog güncellenemedi");
+            }
+        }
+        //userın bloglarını eklenme tarihine göre sıralama
+        public List<Blog> GetByUserId(Guid userId)
+        {
+
+            var blogs = (from b in _context.Blogs
+                          join u in _context.Users on b.UserId equals u.Id
+                          where b.UserId == userId
+                          orderby b.Date descending
+                          select new Blog
+                          {
+                              BlogId = b.BlogId,
+                              Title = b.Title,
+                              Content = b.Content,
+                              ImagePath = b.ImagePath,    
+                          }).ToList();
+
+            return blogs;
         }
     }
 }
+
 
 
 

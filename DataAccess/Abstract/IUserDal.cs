@@ -12,5 +12,9 @@ namespace DataAccess.Abstract
     public interface IUserDal : IEntityRepository<User>
     {
         void Add(UserDTO userdto);
+        void Delete(Guid id);
+        List<UserDTO> GetAllUsers();
+    
+        void Update(Guid id, UserDTO userDto);
     }
 }

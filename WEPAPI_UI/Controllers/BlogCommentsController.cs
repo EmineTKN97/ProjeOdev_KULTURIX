@@ -23,37 +23,21 @@ namespace WEPAPI_UI.Controllers
         public async Task<IActionResult> GetAllCommentsDetails()
         {
             var result = await _blogcommentService.GetAllCommentsDetails();
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-            return NotFound(Messages.BlogCommentNotListed);
-
+            return !result.Success ? BadRequest(Messages.BlogCommentNotListed) : Ok(result.Data);
 
         }
         [HttpGet("GetCommentsByBlogId")]
         public async Task<IActionResult> GetCommentsByBlogId(Guid BlogId)
         {
             var result = await _blogcommentService.GetCommentsByBlogId(BlogId);
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-                return BadRequest(Messages.BlogCommentNotListed);
-           
-            
-
+            return !result.Success ? BadRequest(Messages.BlogCommentNotListed) : Ok(result.Data);
         }
 
         [HttpPost("AddComment")]
         public async Task<IActionResult> Add(Guid blogId, BlogCommentDTO blogcomment)
         {
             var result = await _blogcommentService.Add(blogId,blogcomment);
-            if (result.Success)
-            {
-                return Ok(Messages.BlogCommentAdded);
-            }
-            return BadRequest(Messages.BlogCommentNotAdded);
+            return !result.Success ? BadRequest(Messages.BlogCommentNotAdded) : Ok(Messages.BlogAdded);
         }
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(Guid id)
@@ -72,15 +56,9 @@ namespace WEPAPI_UI.Controllers
         [HttpPut("UpdateBlogComment")]
         public async Task<IActionResult> Update(Guid id, BlogCommentDTO updatedcommentBlogDto)
         {
-            try
-            {
-                await _blogcommentService.Update(id, updatedcommentBlogDto);
-                return Ok(Messages.BlogCommentUpdated);
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(Messages.BlogCommentNotUpdated);
-            }
+            var result = await _blogcommentService.Update(id,updatedcommentBlogDto);
+            return !result.Success ? BadRequest(Messages.BlogCommentNotUpdated) : Ok(Messages.BlogCommentUpdated);
+           
         }
     }
 }

@@ -11,9 +11,9 @@ namespace Business.Abstract
 {
    public interface IUserService
     {
-       Task<IResult> Add(UserDTO userDto);
+        Task<IResult> Add(UserDTO userDto);
         Task<IResult> Delete(Guid İd);
-        Task<IResult> Update(UserDTO userDto);
+        Task<IResult> Update(Guid İd,UserDTO userDto);
        Task< IDataResult<List<UserDTO>>> GetAllUsers();
     }
 }

@@ -43,9 +43,16 @@ namespace Business.Concrete
             return new SuccessDataResult<Blog>(_blogDal.Get(blog => blog.BlogId == id), Messages.BlogListed);
         }
         public async Task<IResult>Update(Guid id, BlogDTO updatedBlogDto)
-        {
-            _blogDal.Update(id, updatedBlogDto);
-            return new Result(true, Messages.BlogUpdated);
+        {  
+            try
+            {
+                _blogDal.Update(id, updatedBlogDto);
+                return new Result(true, Messages.BlogUpdated);
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult(Messages.BlogNotUpdated);
+            }
         }
         // [ValidationAspect(typeof(BlogValidator))
         public async Task<IResult> Add(BlogDTO blogdto)
@@ -54,15 +61,13 @@ namespace Business.Concrete
             _blogDal.Add(blogdto);
             return new SuccessResult(Messages.BlogAdded);
         }
-      
 
-    
+  
+      public async  Task<IDataResult<List<Blog>>> GetByUserId(Guid UserId)
+        {
+            return new SuccessDataResult<List<Blog>>(_blogDal.GetByUserId(UserId), Messages.BlogListed);
+        }
 
-               
-                    
-
-
-
-
+        
     }
 }

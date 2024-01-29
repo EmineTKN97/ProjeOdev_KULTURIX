@@ -1,8 +1,10 @@
 ﻿using Core.DataAccess.EntityFramework;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +24,6 @@ namespace DataAccess.Concrete.EntityFramework
 
         public void Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
         {
-            using (var context = _context)
-            {
-
                 var newBlogComment = new BlogComment
                 {
                     CommentId = Guid.NewGuid(),
@@ -34,10 +33,10 @@ namespace DataAccess.Concrete.EntityFramework
                     CommentDate = DateTime.Now,
                     BlogId = blogcommentdto.BlogId,
                 };
-                context.BlogComments.Add(newBlogComment);
-                context.SaveChanges();
+                _context.BlogComments.Add(newBlogComment);
+                _context.SaveChanges();
 
-            }
+            
         }
         public void Delete(Guid id)
         {
@@ -53,11 +52,9 @@ namespace DataAccess.Concrete.EntityFramework
         //Blog yorumunu like göre sıralama
         public List<BlogCommentDTO> GetAllCommentDetails()
         {
-            using (var context = new ProjeOdevContext())
-            {
-                var result = (
-                    from bc in context.BlogComments
-                    join l in context.BlogLikes
+              var result = (
+                    from bc in _context.BlogComments
+                    join l in _context.BlogLikes
                     on bc.CommentId equals l.BlogCommentId
                     where bc.Status == false && l.Status == false
                     select new BlogCommentDTO
@@ -67,18 +64,16 @@ namespace DataAccess.Concrete.EntityFramework
                         CommentTitle = bc.Title,
                         Id = bc.CommentId,
                         UserId = bc.UserId,
-                        BlogLikeCount = context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId)
+                        BlogLikeCount = _context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId)
                     }).OrderByDescending(b => b.BlogLikeCount).ToList();
                 return result;
-            }
+            
         }
         //Blog yorumunu Blogunid'sine göre sıralama
         public List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId)
         {
-            using (var context = new ProjeOdevContext())
-            {
-                var comments = (from bc in context.BlogComments
-                                join b in context.Blogs
+                var comments = (from bc in _context.BlogComments
+                                join b in _context.Blogs
                                 on bc.BlogId equals b.BlogId
                                 where bc.BlogId == BlogId && bc.Status == false && b.Status == false
                                 select new BlogCommentDTO
@@ -88,34 +83,33 @@ namespace DataAccess.Concrete.EntityFramework
                                     CommentTitle = bc.Title,
                                     Id = bc.CommentId,
                                     UserId = bc.UserId,
-                                    BlogLikeCount = context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId && l.Status == false)
+                                    BlogLikeCount = _context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId && l.Status == false)
                                 }).OrderByDescending(bc => bc.CommentDate).ToList();
                 return comments;
 
-            }
+            
         }
 
         public void Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
         {
-            using (var context = _context)
-            {
-                var blogToUpdate = context.BlogComments.FirstOrDefault(c => c.CommentId == id && c.Status == false);
-                if (blogToUpdate != null)
+          
+                var blogCommentToUpdate = _context.BlogComments.FirstOrDefault(c => c.CommentId == id);
+                if (blogCommentToUpdate != null && blogCommentToUpdate.Status == false)
                 {
-                    blogToUpdate.Title = updatedCommentBlogDto.CommentTitle ?? blogToUpdate.Title;
-                    blogToUpdate.CommentText = updatedCommentBlogDto.CommentDetail ?? blogToUpdate.CommentText;
+                    blogCommentToUpdate.Title = updatedCommentBlogDto.CommentTitle;
+                    blogCommentToUpdate.CommentText = updatedCommentBlogDto.CommentDetail;
+                    blogCommentToUpdate.CommentDate = DateTime.Now;
 
-                    if (updatedCommentBlogDto.CommentDate != null)
-                    {
-                        blogToUpdate.CommentDate = updatedCommentBlogDto.CommentDate;
-                    }
-                    else
-                    {
-                        blogToUpdate.CommentDate = DateTime.Now;
-                    }
-                    context.SaveChanges();
+                     _context.SaveChanges();
                 }
-            }
+                else
+                {
+                    throw new Exception("Blog Yorum güncellenemedi");
+                }
+            
         }
     }
 }
+
+
+
