@@ -27,12 +27,14 @@ namespace DataAccess.Concrete.Context
             modelBuilder.ApplyConfiguration(new BlogCommentConfiguration());
             modelBuilder.ApplyConfiguration(new BlogLikeConfiguration());
             modelBuilder.ApplyConfiguration(new MediaConfiguration());
+            modelBuilder.ApplyConfiguration(new AnnouncementConfiguration());
         }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<BlogComment> BlogComments { get; set; }
         public DbSet<BlogLike> BlogLikes { get; set; }
         public DbSet<Media> Medias { get; set; }
+        public DbSet<Announcement> Announcements{ get; set; }
 
     }
 }
