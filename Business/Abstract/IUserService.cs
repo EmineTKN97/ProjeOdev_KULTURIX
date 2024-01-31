@@ -1,6 +1,5 @@
-﻿using Core.Utilities.Results;
-using Entities.DTOs;
-using Microsoft.AspNetCore.Http;
+﻿
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-   public interface IUserService
+    public interface IUserService
     {
-        Task<IResult> Add(UserDTO userDto);
-        Task<IResult> Delete(Guid İd);
-        Task<IResult> Update(Guid İd,UserDTO userDto);
-       Task< IDataResult<List<UserDTO>>> GetAllUsers();
+        List<OperationClaim> GetClaims(User user);
+        void Add(User user);
+        User GetByMail(string email);
     }
 }

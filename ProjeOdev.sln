@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{BB88D427-8188-46B5-A15D-1F18CF5E3709}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{BB88D427-8188-46B5-A15D-1F18CF5E3709}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{50AE9CDD-D6B8-4974-94FB-CC19E5038A16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{50AE9CDD-D6B8-4974-94FB-CC19E5038A16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{D3046F2D-8208-470C-9955-814426CCB124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{D3046F2D-8208-470C-9955-814426CCB124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEPAPI_UI", "WEPAPI_UI\WEPAPI_UI.csproj", "{EBC847B7-5145-4705-BF23-8F950DD7D62A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEPAPI_UI", "WEPAPI_UI\WEPAPI_UI.csproj", "{EBC847B7-5145-4705-BF23-8F950DD7D62A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{2B3701B1-4B6F-49FE-9F2B-38E4F0E240C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{2B3701B1-4B6F-49FE-9F2B-38E4F0E240C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "Security\Security.csproj", "{993306BE-94EC-4F71-8E64-51391B95E92A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2B3701B1-4B6F-49FE-9F2B-38E4F0E240C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B3701B1-4B6F-49FE-9F2B-38E4F0E240C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B3701B1-4B6F-49FE-9F2B-38E4F0E240C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{993306BE-94EC-4F71-8E64-51391B95E92A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{993306BE-94EC-4F71-8E64-51391B95E92A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{993306BE-94EC-4F71-8E64-51391B95E92A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{993306BE-94EC-4F71-8E64-51391B95E92A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

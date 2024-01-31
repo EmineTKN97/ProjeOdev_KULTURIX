@@ -4,9 +4,12 @@ using Business.Abstract;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.İnterceptors;
+using Core.Utilities.Security.JWT;
+using DataAccess.Abstarct;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +31,11 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfBlogLikeDal>().As<IBlogLikeDal>().InstancePerLifetimeScope();
             builder.RegisterType<MediaManager>().As<IMediaService>().InstancePerLifetimeScope();
             builder.RegisterType<EfMediaDal>().As<IMediaDal>().InstancePerLifetimeScope();
-            builder.RegisterType<UserManager>().As<IUserService>().InstancePerLifetimeScope();
-            builder.RegisterType<EfUserDal>().As<IUserDal>().InstancePerLifetimeScope();
+            builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<EfUserDal>().As<IUserDal>();
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+
             builder.RegisterType<ProjeOdevContext>().InstancePerLifetimeScope();
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

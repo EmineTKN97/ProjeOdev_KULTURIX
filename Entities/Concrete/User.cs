@@ -10,12 +10,12 @@ namespace Entities.Concrete
    public class User: IEntity
     {
         public  Guid Id { get; set; }
-
         public string Name { get; set; }
         public string SurName { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
-        public DateTime BirtDate { get; set; }
+        public byte[] PasswordSalt { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public DateTime BirthDate { get; set; }
         public DateTime CreateDate { get; set; }
         public bool Status { get; set; }
         public string ImagePath { get; set; }
@@ -24,5 +24,6 @@ namespace Entities.Concrete
         public virtual ICollection<Blog> Blogs { get; set; }
         public virtual ICollection<Media> Medias { get; set; }
         public virtual ICollection<BlogLike> BlogLikes { get; set; }
+        public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; }
     }
 }

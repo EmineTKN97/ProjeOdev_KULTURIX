@@ -28,6 +28,10 @@ namespace DataAccess.Concrete.Context
             modelBuilder.ApplyConfiguration(new BlogLikeConfiguration());
             modelBuilder.ApplyConfiguration(new MediaConfiguration());
             modelBuilder.ApplyConfiguration(new AnnouncementConfiguration());
+            modelBuilder.ApplyConfiguration(new AdminConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new UserOperationClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new AdminOperationClaimConfiguration());
         }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<User> Users { get; set; }
@@ -35,6 +39,11 @@ namespace DataAccess.Concrete.Context
         public DbSet<BlogLike> BlogLikes { get; set; }
         public DbSet<Media> Medias { get; set; }
         public DbSet<Announcement> Announcements{ get; set; }
+        public   DbSet<Admin> Admins { get; set; }  
+
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<AdminOperationClaim> AdminOperationClaims { get; set; }
+        public  DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 
     }
 }

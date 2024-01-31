@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.Concrete.Context.Configurations
 {
-    internal class UserConfiguration : IEntityTypeConfiguration<User>
+    internal class AdminConfiguration : IEntityTypeConfiguration<Admin>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Admin> builder)
         {
-            builder.HasKey(u => u.Id);
+            builder.HasKey(admin => admin.Id);
+       
+
         }
     }
 }

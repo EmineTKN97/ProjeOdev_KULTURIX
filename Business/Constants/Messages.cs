@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,6 +49,14 @@ namespace Business.Constants
         public static string UserNotUpdated="Kullanıcı güncelleme işlemi başarısız";
         public static string UserNotDeleted="Kullanıcı silinemedi";
         public static string UserNotListed="Kullanıcılar listelenemedi";
-        public static object? MediaNotUpdated;
+        public static string MediaNotUpdated="Resim güncellenemdi";
+        public static string AuthorizationDenied = "Yetkiniz yok";
+        public static string UserRegistered = "Kayıt oldu";
+        public static string UserNotFound = "Kullanıcı bulunamadı";
+        public static string PasswordError = "Şifre  hatalı";
+        public static string SuccessfulLogin = "Giriş başarılı";
+        public static string UserAlreadyExists = "Kullanıcı mevcut";
+        public static string AccessTokenCreated = "Token oluşturuldu";
+        internal static User UserRegistrationFailed;
     }
 }

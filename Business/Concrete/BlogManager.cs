@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.Helper;
 using Business.ValidationRules.FluentValidation;
@@ -55,6 +56,7 @@ namespace Business.Concrete
             }
         }
         // [ValidationAspect(typeof(BlogValidator))
+        [SecuredOperation("USER")]
         public async Task<IResult> Add(BlogDTO blogdto)
         {
         

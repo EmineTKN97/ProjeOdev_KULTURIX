@@ -6,11 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Abstarct
+namespace DataAccess.Abstract
 {
-    public interface IUserDal : IEntityRepository<User>
+    public interface IUserOperationClaimDal : IEntityRepository<UserOperationClaim>
     {
-       
-        List<OperationClaim> GetClaims(User user);
     }
+       
 }

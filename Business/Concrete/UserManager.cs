@@ -1,12 +1,6 @@
 ﻿using Business.Abstract;
-using Business.Constants;
-using Business.Helper;
-using Core.Utilities.Results;
-using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
+using DataAccess.Abstarct;
 using Entities.Concrete;
-using Entities.DTOs;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,36 +18,19 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
-
-
-        public async Task<IResult> Add(UserDTO userDto)
+        public List<OperationClaim> GetClaims(User user)
         {
-           _userDal.Add(userDto);
-            return new SuccessResult(Messages.UserAdded);
-        }
-        public async Task<IResult> Delete(Guid İd)
-        {
-            _userDal.Delete(İd);
-            return new Result(true, Messages.UserDeleted);
+            return _userDal.GetClaims(user);
         }
 
-        public async Task<IDataResult<List<UserDTO>>>GetAllUsers()
+        public void Add(User user)
         {
-            return new SuccessDataResult<List<UserDTO>>(_userDal.GetAllUsers(), Messages.UserListed);
+            _userDal.Add(user);
         }
 
-        public async Task<IResult> Update(Guid İd,UserDTO userDto)
+        public User GetByMail(string email)
         {
-            try
-            {
-
-                _userDal.Update(İd,userDto);
-                return new Result(true, Messages.UserUpdated);
-            }
-            catch (Exception ex)
-            {
-                return new ErrorResult(Messages.UserNotUpdated);
-            }
+            return _userDal.Get(u => u.Email == email);
         }
     }
 }
