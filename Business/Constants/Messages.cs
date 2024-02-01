@@ -43,20 +43,26 @@ namespace Business.Constants
         public static string UserMediaListed="Profil fotoğrafları listelendi";
         public static string BlogMediaListed="Blog resimleri listelendi";
         public static string MediaNotDeleted="Resim silinemedi";
-        public static string UserDeleted="Kullanıcı silindi";
-        public static string UserListed="Kullanıcılar listelendi";
-        public static string UserUpdated="Kullanıcılar güncellendi";
-        public static string UserNotUpdated="Kullanıcı güncelleme işlemi başarısız";
-        public static string UserNotDeleted="Kullanıcı silinemedi";
-        public static string UserNotListed="Kullanıcılar listelenemedi";
         public static string MediaNotUpdated="Resim güncellenemdi";
         public static string AuthorizationDenied = "Yetkiniz yok";
-        public static string UserRegistered = "Kayıt oldu";
+        public static string UserRegistered = "Kayıt olundu";
         public static string UserNotFound = "Kullanıcı bulunamadı";
         public static string PasswordError = "Şifre  hatalı";
         public static string SuccessfulLogin = "Giriş başarılı";
         public static string UserAlreadyExists = "Kullanıcı mevcut";
         public static string AccessTokenCreated = "Token oluşturuldu";
-        internal static User UserRegistrationFailed;
+        public static string UserRegistrationFailed="Kayıt işlemi başarısız";
+        public static string AdminRegistered="Kayıt olundu";
+        public static string AdminRegistrationFailed = "Kayıt işlemi başarısız";
+        public static string AdminNotFound="Yönetici bulunamadı";
+        public static string AdminAlreadyExists="Bu yönetici mevcut";
+        public static string AnnouncementAdded="Duyuru Eklendi";
+        public static string AnnouncementDeleted="Duyuru silindi";
+        public static string AnnouncementListed="Duyurular Listelendi";
+        public static string AnnouncementUpdated="Duyuru güncellendi";
+        public static string AnnouncementNotUpdated="Duyuru Güncellenemedi";
+        public static string AnnouncementNotListed="Duyurular Listelenemedi";
+        public static string AnnouncementNotAdded="Duyuru eklenemedi";
+        public static string AnnouncementNotDeleted="Duyuru silinemedi";
     }
 }

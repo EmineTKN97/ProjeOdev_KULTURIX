@@ -31,18 +31,18 @@ namespace WEPAPI_UI.Controllers
             return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
         }
         [HttpPost("AddBlog")]
-        public  async Task<IActionResult> AddBlog(BlogDTO blogdto)
+        public  async Task<IActionResult> AddBlog(BlogDTO blogdto,Guid UserId)
         {
-            var result = await _blogService.Add(blogdto);
+            var result = await _blogService.Add(blogdto,UserId);
             return !result.Success ? BadRequest(Messages.BlogNotAdded) : Ok(Messages.BlogAdded);
         }
 
         [HttpDelete("DeleteBlog")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id,Guid UserId)
         {
             try
             {
-               await _blogService.Delete(id);
+               await _blogService.Delete(id, UserId);
                 return Ok(Messages.BlogDeleted);
             }
             catch (Exception ex)
@@ -53,10 +53,10 @@ namespace WEPAPI_UI.Controllers
         }
 
         [HttpPut("UpdateBlog")]
-        public async Task<IActionResult>Update(Guid id, BlogDTO updatedBlogDto)
+        public async Task<IActionResult>Update(Guid id, BlogDTO updatedBlogDto, Guid UserId)
         {
-              var existingBlog = _blogService.GetById(id);
-                var result = await _blogService.Update(id,updatedBlogDto);
+              var existingBlog = await _blogService.GetById(id);
+                var result = await _blogService.Update(id,updatedBlogDto, UserId);
 
                 if (existingBlog != null && result.Success)
                 { 

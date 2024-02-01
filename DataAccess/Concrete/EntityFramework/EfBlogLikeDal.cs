@@ -21,19 +21,16 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto)
+        public void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto,Guid UserId)
         {
-            var existingLike = _context.BlogLikes
-             .FirstOrDefault(l => l.BlogCommentId == blogCommentİd);
-
-            if (existingLike == null)
+            if (!_context.BlogLikes.Any(l => l.BlogCommentId == blogCommentİd && l.UserId == UserId))
             {
                 var newBlogCommentLike = new BlogLike
                 {
                     LikeId = Guid.NewGuid(),
                     LikeDate = DateTime.Now,
-                    BlogCommentId =bloglikedto.BlogCommentid,
-                    UserId = bloglikedto.Userid
+                    BlogCommentId = blogCommentİd,
+                    UserId = UserId
                 };
 
                 _context.BlogLikes.Add(newBlogCommentLike);
@@ -41,31 +38,25 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto)
+        public void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto, Guid UserId)
         {
-               var existingLike = _context.BlogLikes
-                    .FirstOrDefault(l => l.BlogId == blogİd);
-
-                if (existingLike == null)
+            if (!_context.BlogLikes.Any(l => l.BlogId == blogİd && l.UserId == UserId))
+            {
+                var newBlogLike = new BlogLike
                 {
-                    var newBlogLike = new BlogLike
-                    {
-                        LikeId = Guid.NewGuid(),
-                        LikeDate = DateTime.Now,
-                        BlogId = bloglikedto.Blogid,
-                        UserId = bloglikedto.Userid 
-                    };
-
-                    _context.BlogLikes.Add(newBlogLike);
-                    _context.SaveChanges();
-                }
-            
-
+                    LikeId = Guid.NewGuid(),
+                    LikeDate = DateTime.Now,
+                    BlogId = bloglikedto.Blogid,
+                    UserId = bloglikedto.Userid
+                };
+                _context.BlogLikes.Add(newBlogLike);
+                _context.SaveChanges();
+            }
         }
 
-        public void Delete(Guid id)
+        public void Delete(Guid id, Guid UserId)
         {
-            var blogLikeToDelete = _context.BlogLikes.FirstOrDefault(l => l.LikeId == id);
+            var blogLikeToDelete = _context.BlogLikes.FirstOrDefault(l => l.LikeId == id && l.UserId ==UserId) ;
 
             if (blogLikeToDelete != null)
             {
@@ -77,37 +68,34 @@ namespace DataAccess.Concrete.EntityFramework
 
         public List<BlogLikeDTO> GetAllLikeDetails()
         {
-              var result = _context.BlogLikes
-                    .Where(l => l.Status == false)
-                     .Select(l => new BlogLikeDTO
-                     {
-                         Likeİd = l.LikeId,
-                         Blogid = l.BlogId.HasValue ? l.BlogId.Value : Guid.Empty,
-                         BlogCommentid = l.BlogCommentId.HasValue ? l.BlogCommentId.Value : Guid.Empty,
-                         LikeDate = l.LikeDate,
-                         Userid = l.UserId,
-                     }).ToList();
+            var result = _context.BlogLikes
+                        .Where(l => l.Status == false)
+                        .Select(l => new BlogLikeDTO
+                        {
+                          Likeİd = l.LikeId,
+                          Blogid = l.BlogId ?? Guid.Empty,
+                          BlogCommentid = l.BlogCommentId ?? Guid.Empty,
+                          LikeDate = l.LikeDate,
+                          Userid =l. UserId,
+                        }).ToList();
 
-                return result;
-            
-        }
-
+            return result;
+        }   
         public List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId)
         {
-            
-                var likes = (from l in _context.BlogLikes
-                             join b in _context.Blogs on l.BlogId equals b.BlogId
-                             where l.BlogId == BlogId && l.Status == false && b.Status == false
-                             select new BlogLikeDTO
-                             {
-                                 LikeDate = l.LikeDate,
-                                 Userid = l.UserId,
-                                 Likeİd = l.LikeId,
-                                 Blogid = b.BlogId  
-                             })
-                            .OrderByDescending(l => l.LikeDate)
-                            .ToList();
-                return likes;
+
+            var likes = _context.BlogLikes
+                     .Where(l => l.BlogId == BlogId && l.Status == false)
+                     .Select(l => new BlogLikeDTO
+                     {
+                         LikeDate = l.LikeDate,
+                         Userid = l.UserId,
+                         Likeİd = l.LikeId,
+                         Blogid = BlogId
+                     })
+                     .OrderByDescending(l => l.LikeDate)
+                     .ToList();
+            return likes;
         }
     }
 }

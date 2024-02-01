@@ -11,9 +11,9 @@ namespace Business.Abstract
 {
     public interface IBlogLikeService
     {
-        Task<IResult> AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto);
-        Task<IResult> AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto);
-        Task<IResult> Delete(Guid İd);
+        Task<IResult> AddBlogLike(Guid BlogId, BlogLikeDTO blogLikedto, Guid UserId);
+        Task<IResult> AddBlogCommentLike(Guid BlogCommentId, BlogLikeDTO blogLikedto, Guid UserId);
+        Task<IResult> Delete(Guid Id, Guid UserId);
         Task<IDataResult<List<BlogLikeDTO>>> GetAllLikeDetails();
         Task<IDataResult<List<BlogLikeDTO>>> GetLikesByBlogId(Guid BlogId);
 

@@ -19,11 +19,13 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
+        private IAdminService _adminService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IAdminService adminService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _adminService = adminService;
         }
 
         public IDataResult<User> Register(UserForRegisterDTO userForRegisterDto, string password)
@@ -53,7 +55,7 @@ namespace Business.Concrete
                     var userOperationClaim = new UserOperationClaim
                     {
                         UserId = user.Id,
-                        OperationClaimsId = OperationClaimsStaticId.DefaultOperationClaimId 
+                        OperationClaimsId = OperationClaimsStaticId.DefaultUserOperationClaimId 
                     };
 
                     unitOfWork.UserOperationClaims.Add(userOperationClaim);
@@ -98,6 +100,79 @@ namespace Business.Concrete
         {
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
+            return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
+        }
+
+        public IDataResult<Admin> RegisterAdmin(AdminForRegisterDTO adminForRegisterDto, string password)
+        {
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            var admin= new Admin
+            {
+                Email = adminForRegisterDto.Email,
+                FirstName = adminForRegisterDto.FirstName,
+                LastName = adminForRegisterDto.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true,
+  
+            };
+
+            using (var unitOfWork = new ProjeOdevContext())
+            {
+                try
+                {
+                    unitOfWork.Admins.Add(admin);
+                    unitOfWork.SaveChanges();
+
+                    var adminOperationClaim = new AdminOperationClaim
+                    {
+                        AdminId = admin.Id,
+                        OperationClaimsId = OperationClaimsStaticId.DefaultAdminOperationClaimId
+                    };
+
+                    unitOfWork.AdminOperationClaims.Add(adminOperationClaim);
+                    unitOfWork.SaveChanges();
+
+                    return new SuccessDataResult<Admin>(admin, Messages.AdminRegistered);
+                }
+                catch (Exception ex)
+                {
+                    return new ErrorDataResult<Admin>(Messages.AdminRegistrationFailed);
+                }
+            }
+        }
+
+        public IDataResult<Admin> LoginAdmin(AdminForLoginDTO adminForLoginDto)
+        {
+            var adminToCheck = _adminService.GetByMail(adminForLoginDto.Email);
+            if (adminToCheck == null)
+            {
+                return new ErrorDataResult<Admin>(Messages.AdminNotFound);
+            }
+
+            if (!HashingHelper.VerifyPasswordHash(adminForLoginDto.Password, adminToCheck.PasswordHash, adminToCheck.PasswordSalt))
+            {
+                return new ErrorDataResult<Admin>(Messages.PasswordError);
+            }
+
+            return new SuccessDataResult<Admin>(adminToCheck, Messages.SuccessfulLogin);
+        }
+
+        public IResult AdminExists(string email)
+        {
+            if (_adminService.GetByMail(email) != null)
+            {
+                return new ErrorResult(Messages.AdminAlreadyExists);
+            }
+            return new SuccessResult();
+        }
+
+        public IDataResult<AccessToken> CreateAccessTokenAdmin(Admin admin)
+        {
+            var claims = _adminService.GetClaims(admin);
+            var accessToken = _tokenHelper.CreateToken(admin, claims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
     }

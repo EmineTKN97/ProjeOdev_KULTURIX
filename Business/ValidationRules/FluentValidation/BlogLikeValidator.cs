@@ -13,13 +13,10 @@ namespace Business.ValidationRules.FluentValidation
     {
         public BlogLikeValidator()
         {
-          
 
             RuleFor(bl => bl.Userid)
                 .NotEmpty().WithMessage("Kullanıcı ID boş olamaz.")
                 .Must(BeValidGuid).WithMessage("Geçerli bir Kullanıcı ID olmalıdır.");
-
-         
         }
 
         private bool BeValidGuid(Guid id)

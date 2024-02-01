@@ -12,9 +12,9 @@ namespace DataAccess.Abstract
   public  interface IBlogLikeDal:IEntityRepository<BlogLike>
     {
       
-        void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto);
-        void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto);
-        void Delete(Guid id);
+        void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto, Guid userId);
+        void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto, Guid userId);
+        void Delete(Guid id, Guid userId);
         List<BlogLikeDTO> GetAllLikeDetails();
         List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId);
     }

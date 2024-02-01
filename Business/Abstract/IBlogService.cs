@@ -12,9 +12,9 @@ namespace Business.Abstract
 {
     public interface IBlogService
     {
-        Task<IResult> Add(BlogDTO blogdto);
-        Task<IResult> Delete(Guid İd);
-        Task<IResult> Update(Guid id, BlogDTO updatedBlogDto);
+        Task<IResult> Add(BlogDTO blogdto,Guid UserId);
+        Task<IResult> Delete(Guid İd,Guid UserId);
+        Task<IResult> Update(Guid id, BlogDTO updatedBlogDto,Guid UserId);
         Task<IDataResult<Blog>> GetById(Guid id);
         Task<IDataResult<List<Blog>>> GetByUserId(Guid UserId);
         Task<IDataResult<List<BlogDetailsDTO>>>GetBlogsByCommentAndLikeCount();

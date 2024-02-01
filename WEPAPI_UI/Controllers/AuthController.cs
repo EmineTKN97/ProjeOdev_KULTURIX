@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _authService = authService;
         }
 
-        [HttpPost("login")]
+        [HttpPost("loginUser")]
         public ActionResult Login(UserForLoginDTO userForLoginDto)
         {
             var userToLogin = _authService.Login(userForLoginDto);
@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("register")]
+        [HttpPost("registerUser")]
         public ActionResult Register(UserForRegisterDTO userForRegisterDto)
         {
             var userExists = _authService.UserExists(userForRegisterDto.Email);
@@ -45,6 +45,42 @@ namespace WebAPI.Controllers
 
             var registerResult = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
             var result = _authService.CreateAccessToken(registerResult.Data);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+        [HttpPost("loginAdmin")]
+        public ActionResult Login(AdminForLoginDTO adminForLoginDto)
+        {
+            var adminToLogin = _authService.LoginAdmin(adminForLoginDto);
+            if (!adminToLogin.Success)
+            {
+                return BadRequest(adminToLogin.Message);
+            }
+
+            var result = _authService.CreateAccessTokenAdmin(adminToLogin.Data);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("registerAdmin")]
+        public ActionResult Register(AdminForRegisterDTO adminForRegisterDto)
+        {
+            var adminExists = _authService.AdminExists(adminForRegisterDto.Email);
+            if (!adminExists.Success)
+            {
+                return BadRequest(adminExists.Message);
+            }
+
+            var registerAdminResult = _authService.RegisterAdmin(adminForRegisterDto, adminForRegisterDto.Password);
+            var result = _authService.CreateAccessTokenAdmin(registerAdminResult.Data);
             if (result.Success)
             {
                 return Ok(result.Data);

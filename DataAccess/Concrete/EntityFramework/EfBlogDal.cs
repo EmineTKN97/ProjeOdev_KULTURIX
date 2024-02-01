@@ -1,4 +1,5 @@
 ﻿using Core.DataAccess.EntityFramework;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
 using Entities.Concrete;
@@ -22,7 +23,7 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void Add(BlogDTO blogdto)
+        public void Add(BlogDTO blogdto, Guid userId)
         {
             var newBlog = new Blog
             {
@@ -30,16 +31,17 @@ namespace DataAccess.Concrete.EntityFramework
                 Title = blogdto.Title,
                 Content = blogdto.Description,
                 Date = DateTime.Now,
-                UserId = blogdto.UserId,
-                ImagePath =  "wwwroot\\Uploads\\StaticContent\\default.jpg"
+                ImagePath = "wwwroot\\Uploads\\StaticContent\\default.jpg",
+                UserId = userId
             };
+
             _context.Blogs.Add(newBlog);
             _context.SaveChanges();
         }
 
-        public void Delete(Guid id)
+        public void Delete(Guid id, Guid userId)
         {
-            var blogToDelete = _context.Blogs.FirstOrDefault(b => b.BlogId == id);
+            var blogToDelete = _context.Blogs.FirstOrDefault(b => b.BlogId == id && b.UserId ==userId);
 
             if (blogToDelete != null)
             {
@@ -56,10 +58,10 @@ namespace DataAccess.Concrete.EntityFramework
                                join l in _context.BlogLikes on b.BlogId equals l.BlogId
                                join bc in _context.BlogComments on b.BlogId equals bc.BlogId
                                join m in _context.Medias on b.BlogId equals m.BlogId
-                             where (b.Status == false) 
-                                  && (l.Status == false)
-                                  && (bc.Status == false )
-                                  && (m.Status == false )
+                               where (b.Status == false)
+                                    && (l.Status == false)
+                                    && (bc.Status == false)
+                                    && (m.Status == false)
                                group new { b, m } by b.BlogId into groupedBlogs
                                select new BlogDetailsDTO
                                {
@@ -71,53 +73,37 @@ namespace DataAccess.Concrete.EntityFramework
                                    BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == groupedBlogs.Key),
                                    BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == groupedBlogs.Key)
                                })
-                   .OrderByDescending(b => b.BlogLikeCount)
-                   .ThenByDescending(b => b.BlogCommentCount)
-                   .ToList();
-            return blogDetails;
-
-
-        }
-        //bloğun id'sine göre sıralama
-        public BlogDTO GetBlogById(Guid id)
-        {
-            var blog = _context.Blogs
-                .Where(b => b.BlogId == id)
-                .FirstOrDefault();
-
-            if (blog != null)
-            {
-                var blogDto = new BlogDTO
+           .OrderByDescending(b => b.BlogLikeCount)
+           .ThenByDescending(b => b.BlogCommentCount)
+           .ToList();
+           foreach(var blogDetail in blogDetails)
+{
+                if (blogDetail.BlogCommentCount == 0 || blogDetail.BlogLikeCount == 0)
                 {
-                    Id = blog.BlogId,
-                    Title = blog.Title,
-                    Description = blog.Content,
-                    CreateDate = blog.Date
-                };
-
-                return blogDto;
-            }
-            else
-            {
-                return null;
+                  
+                     blogDetail.BlogLikeCount = 0;
+                    blogDetail.BlogCommentCount = 0;
+                }
             }
 
+            return blogDetails;
         }
-        public void Update(Guid id, BlogDTO updatedBlogDto)
+         
+        public void Update(Guid id, BlogDTO updatedBlogDto, Guid UserId)
         {
+            var blogToUpdate = _context.Blogs.FirstOrDefault(b => b.BlogId == id && b.UserId == UserId);
 
-            var blogToUpdate = _context.Blogs.FirstOrDefault(b => b.BlogId == id);
             if (blogToUpdate != null && blogToUpdate.Status == false)
             {
-                blogToUpdate.Title = blogToUpdate.Title;
-                blogToUpdate.Content = blogToUpdate.Content;
-                blogToUpdate.UserId = updatedBlogDto.UserId;
+                blogToUpdate.Title = updatedBlogDto.Title;
+                blogToUpdate.Content = updatedBlogDto.Description;
                 blogToUpdate.Date = DateTime.Now;
+                _context.Entry(blogToUpdate).State = EntityState.Modified;
                 _context.SaveChanges();
             }
             else
             {
-                throw new Exception("Blog güncellenemedi");
+                throw new Exception("Blog bulunamadı veya güncellenemedi.");
             }
         }
         //userın bloglarını eklenme tarihine göre sıralama

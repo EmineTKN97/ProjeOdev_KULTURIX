@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,15 +18,15 @@ namespace WEPAPI_UI.Controllers
             _bloglikeService = bloglikeService;
         }
         [HttpPost("AddBlogLike")]
-        public async Task<IActionResult> AddBlogLike(Guid blogId, BlogLikeDTO bloglike)
+        public async Task<IActionResult> AddBlogLike(Guid blogId, BlogLikeDTO bloglike,Guid UserId)
         {
-            var result = await _bloglikeService.AddBlogLike(blogId,bloglike);
+            var result = await _bloglikeService.AddBlogLike(blogId,bloglike,UserId);
             return !result.Success ? BadRequest(Messages.BlogLikeNotAdded) : Ok(Messages.BlogLikeAdded);
         }
         [HttpPost("AddBlogCommentLike")]
-        public async Task<IActionResult> AddBlogCommentLike(Guid blogCommentId, BlogLikeDTO bloglike)
+        public async Task<IActionResult> AddBlogCommentLike(Guid blogCommentId, BlogLikeDTO bloglike, Guid UserId)
         {
-            var result = await _bloglikeService.AddBlogCommentLike(blogCommentId, bloglike);
+            var result = await _bloglikeService.AddBlogCommentLike(blogCommentId, bloglike, UserId);
             return !result.Success ? BadRequest(Messages.BlogLikeNotAdded) : Ok(Messages.BlogLikeAdded);
         }
         [HttpGet("GetBlogLikeDetails")]
@@ -51,11 +52,11 @@ namespace WEPAPI_UI.Controllers
 
         }
         [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id,Guid UserId)
         {
             try
             {
-               await _bloglikeService.Delete(id);
+               await _bloglikeService.Delete(id, UserId);
                 return Ok(Messages.BlogLikeDeleted);
             }
             catch (Exception exception)
