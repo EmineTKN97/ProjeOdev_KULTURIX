@@ -34,17 +34,17 @@ namespace WEPAPI_UI.Controllers
         }
 
         [HttpPost("AddComment")]
-        public async Task<IActionResult> Add(Guid blogId, BlogCommentDTO blogcomment)
+        public async Task<IActionResult> Add(Guid blogId, BlogCommentDTO blogcomment,Guid UserId)
         {
-            var result = await _blogcommentService.Add(blogId,blogcomment);
-            return !result.Success ? BadRequest(Messages.BlogCommentNotAdded) : Ok(Messages.BlogAdded);
+            var result = await _blogcommentService.Add(blogId,blogcomment,UserId);
+            return !result.Success ? BadRequest(Messages.BlogCommentNotAdded) : Ok(Messages.BlogCommentAdded);
         }
         [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id,Guid UserId)
         {
             try
             {
-                await _blogcommentService.Delete(id);
+                await _blogcommentService.Delete(id,UserId);
                 return Ok(Messages.BlogCommentDeleted);
             }
             catch (Exception ex)
@@ -54,9 +54,9 @@ namespace WEPAPI_UI.Controllers
         }
 
         [HttpPut("UpdateBlogComment")]
-        public async Task<IActionResult> Update(Guid id, BlogCommentDTO updatedcommentBlogDto)
+        public async Task<IActionResult> Update(Guid id, BlogCommentDTO updatedcommentBlogDto,Guid UserId)
         {
-            var result = await _blogcommentService.Update(id,updatedcommentBlogDto);
+            var result = await _blogcommentService.Update(id,updatedcommentBlogDto,UserId);
             return !result.Success ? BadRequest(Messages.BlogCommentNotUpdated) : Ok(Messages.BlogCommentUpdated);
            
         }

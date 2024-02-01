@@ -11,10 +11,12 @@ namespace DataAccess.Abstract
 {
     public interface IMediaDal : IEntityRepository<Media>
     {
-        void AddBlogMedia(string fileName, Guid blogId);
+        void AddBlogMedia(string fileName, Guid blogId, Guid userId);
         void AddUserMedia(string fileName, Guid userId);
-        void Delete(Guid id);
+        void Delete(Guid id, Guid userId);
+        void DeleteBlogMedia(Guid id,Guid blogId);
         List<MediaDTO> GetAllMediaDetails();
-        void Update(string fileName, Guid mediaId);
+        void Update(string fileName, Guid mediaId, Guid userId);
+        void UpdateBlogMedia(string fileName, Guid mediaId, Guid blogId);
     }
 }

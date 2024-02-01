@@ -18,9 +18,9 @@ namespace WEPAPI_UI.Controllers
         }
 
         [HttpPost("AddBlogMedia")]
-        public async Task<IActionResult> AddBlogMedia(IFormFile file,Guid BlogId)
+        public async Task<IActionResult> AddBlogMedia(IFormFile file,Guid BlogId, Guid UserId)
         {
-            var result = await _mediaService.AddBlogMedia(file,BlogId);
+            var result = await _mediaService.AddBlogMedia(file,BlogId, UserId);
             return !result.Success ? BadRequest(Messages.MediaNotAdded) : Ok(result);
         }
         [HttpPost("AddUserMedia")]
@@ -36,11 +36,11 @@ namespace WEPAPI_UI.Controllers
             return !result.Success ? BadRequest(Messages.MediaNotListed) : Ok(result.Data);
         }
         [HttpDelete("DeleteMedia")]
-        public async Task<IActionResult> Delete(Guid MediaId)
+        public async Task<IActionResult> Delete(Guid MediaId, Guid UserId)
         {
             try
             {
-                await _mediaService.Delete(MediaId);
+                await _mediaService.Delete(MediaId, UserId);
                 return Ok(Messages.MediaDeleted);
             }
             catch (Exception ex)
@@ -50,9 +50,9 @@ namespace WEPAPI_UI.Controllers
             }
         }
         [HttpPut("UpdateMedia")]
-        public async Task<IActionResult> UpdateMedia(Guid MediaId,IFormFile file)
+        public async Task<IActionResult> UpdateMedia(Guid MediaId,IFormFile file, Guid UserId)
         {
-            var result = await _mediaService.Update(file, MediaId);
+            var result = await _mediaService.Update(file, MediaId,UserId);
             return !result.Success ? BadRequest(Messages.MediaNotUpdated) : Ok(result);
         }
         [HttpGet("GetMediaByBlogId")]
@@ -66,6 +66,26 @@ namespace WEPAPI_UI.Controllers
         {
             var result = await _mediaService.GetMediaByUserId(UserId);
             return !result.Success ? BadRequest(Messages.MediaNotListed) : Ok(result.Data);
+        }
+        [HttpPut("UpdateBlogMedia")]
+        public async Task<IActionResult> UpdateBlogMedia(Guid MediaId, IFormFile file,Guid BlogId)
+        {
+            var result = await _mediaService.UpdateBlogMedia(file, MediaId,BlogId);
+            return !result.Success ? BadRequest(Messages.MediaNotUpdated) : Ok(result);
+        }
+        [HttpDelete("DeleteBlogMedia")]
+        public async Task<IActionResult> DeleteBlogMedia(Guid MediaId, Guid BlogId)
+        {
+            try
+            {
+                await _mediaService.DeleteBlogMedia(MediaId, BlogId);
+                return Ok(Messages.MediaDeleted);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(Messages.MediaNotDeleted);
+            }
         }
     }
 }

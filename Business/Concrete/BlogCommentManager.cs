@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -23,25 +24,27 @@ namespace Business.Concrete
         {
             _blogcommentDal = blogcommentDal;
         }
-        //[ValidationAspect(typeof(BlogCommentValidator))]
-        public async Task<IResult> Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
+        [ValidationAspect(typeof(BlogCommentValidator))]
+        [SecuredOperation("USER")]
+        public async Task<IResult> Add(Guid Blogİd, BlogCommentDTO blogcommentdto, Guid userId)
         {
-           _blogcommentDal.Add(Blogİd, blogcommentdto);
+           _blogcommentDal.Add(Blogİd, blogcommentdto, userId);
             return new Result(true, Messages.BlogCommentAdded);
         }
-
-        public async Task<IResult> Delete(Guid İd)
+        [SecuredOperation("USER")]
+        public async Task<IResult> Delete(Guid İd, Guid userId)
         {
-            _blogcommentDal.Delete(İd);
+            _blogcommentDal.Delete(İd,userId);
             return new Result(true, Messages.BlogCommentDeleted);
         }
-
-        public async Task<IResult> Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
+        [ValidationAspect(typeof(BlogCommentValidator))]
+        [SecuredOperation("USER")]
+        public async Task<IResult> Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid userId)
         {
             try
             {
 
-               _blogcommentDal.Update(id, updatedCommentBlogDto);
+               _blogcommentDal.Update(id, updatedCommentBlogDto,userId);
                 return new Result(true, Messages.BlogCommentUpdated);
             }
             catch (Exception ex)

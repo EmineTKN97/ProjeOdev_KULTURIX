@@ -22,31 +22,47 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void Add(Guid Blogİd, BlogCommentDTO blogcommentdto)
+        public void Add(Guid Blogİd, BlogCommentDTO blogcommentdto,Guid UserId)
         {
-                var newBlogComment = new BlogComment
-                {
-                    CommentId = Guid.NewGuid(),
-                    Title = blogcommentdto.CommentTitle,
-                    CommentText = blogcommentdto.CommentDetail,
-                    UserId = blogcommentdto.UserId,
-                    CommentDate = DateTime.Now,
-                    BlogId = blogcommentdto.BlogId,
-                };
-                _context.BlogComments.Add(newBlogComment);
-                _context.SaveChanges();
+            var existingBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == Blogİd && b.Status == false);
+            if (existingBlog == null)
+            {
+                throw new Exception("Belirtilen blog bulunamadı.");
+            }
 
-            
+            if (string.IsNullOrEmpty(blogcommentdto.CommentTitle) || string.IsNullOrEmpty(blogcommentdto.CommentDetail))
+            { 
+                throw new Exception("Yorum başlık ve detayı boş olamaz.");
+            }
+
+            var newBlogComment = new BlogComment
+            {
+                CommentId = Guid.NewGuid(),
+                Title = blogcommentdto.CommentTitle,
+                CommentText = blogcommentdto.CommentDetail,
+                UserId = UserId,
+                CommentDate = DateTime.Now,
+                BlogId = Blogİd,
+            };
+
+            _context.BlogComments.Add(newBlogComment);
+            _context.SaveChanges();
+
+
         }
-        public void Delete(Guid id)
+        public void Delete(Guid id,Guid userId)
         {
-            var blogCommentToDelete = _context.BlogComments.FirstOrDefault(c => c.CommentId == id);
+            var blogCommentToDelete = _context.BlogComments.FirstOrDefault(c => c.CommentId == id && c.UserId == userId && c.Status == false);
 
             if (blogCommentToDelete != null)
             {
                 blogCommentToDelete.Status = true;
                 _context.BlogComments.Update(blogCommentToDelete);
                 _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Belirtilen yorum bulunamadı veya silme izinleri yok.");
             }
         }
         //Blog yorumunu like göre sıralama
@@ -90,23 +106,22 @@ namespace DataAccess.Concrete.EntityFramework
             
         }
 
-        public void Update(Guid id, BlogCommentDTO updatedCommentBlogDto)
+        public void Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid UserId)
         {
-          
-                var blogCommentToUpdate = _context.BlogComments.FirstOrDefault(c => c.CommentId == id);
-                if (blogCommentToUpdate != null && blogCommentToUpdate.Status == false)
-                {
-                    blogCommentToUpdate.Title = updatedCommentBlogDto.CommentTitle;
-                    blogCommentToUpdate.CommentText = updatedCommentBlogDto.CommentDetail;
-                    blogCommentToUpdate.CommentDate = DateTime.Now;
+            var blogCommentToUpdate = _context.BlogComments.FirstOrDefault(c => c.CommentId == id && c.UserId == UserId && c.Status == false);
 
-                     _context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Blog Yorum güncellenemedi");
-                }
-            
+            if (blogCommentToUpdate != null)
+            {
+                blogCommentToUpdate.Title = updatedCommentBlogDto.CommentTitle;
+                blogCommentToUpdate.CommentText = updatedCommentBlogDto.CommentDetail;
+                blogCommentToUpdate.CommentDate = DateTime.Now;
+                _context.SaveChanges();
+            }
+            else
+            {  
+                throw new Exception("Belirtilen blog yorumu bulunamadı veya güncelleme izinleri yok.");
+            }
+
         }
     }
 }
