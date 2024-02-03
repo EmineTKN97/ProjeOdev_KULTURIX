@@ -14,15 +14,14 @@ namespace Business.ValidationRules.FluentValidation
         public BlogLikeValidator()
         {
 
-            RuleFor(bl => bl.Userid)
+            RuleFor(bl => bl.Name)
                 .NotEmpty().WithMessage("Kullanıcı ID boş olamaz.")
-                .Must(BeValidGuid).WithMessage("Geçerli bir Kullanıcı ID olmalıdır.");
+                .WithMessage("Geçerli bir Kullanıcı ID olmalıdır.");
+            RuleFor(bl => bl.Surname)
+              .NotEmpty().WithMessage("Kullanıcı ID boş olamaz.")
+              .WithMessage("Geçerli bir Kullanıcı ID olmalıdır.");
         }
 
-        private bool BeValidGuid(Guid id)
-        {
-            return id != Guid.Empty;
-
-        }
+      
     }
 }

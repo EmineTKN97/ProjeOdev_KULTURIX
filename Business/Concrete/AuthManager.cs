@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
@@ -27,7 +29,7 @@ namespace Business.Concrete
             _tokenHelper = tokenHelper;
             _adminService = adminService;
         }
-
+        [ValidationAspect(typeof(UserValidator))]
         public IDataResult<User> Register(UserForRegisterDTO userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -38,6 +40,7 @@ namespace Business.Concrete
                 Email = userForRegisterDto.Email,
                 Name = userForRegisterDto.Name,
                 SurName = userForRegisterDto.SurName,
+                BirthDate= userForRegisterDto.BirthDate,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = false,
@@ -107,7 +110,7 @@ namespace Business.Concrete
             var accessToken = _tokenHelper.CreateToken(user, claims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
-
+        [ValidationAspect(typeof(AdminValidator))]
         public IDataResult<Admin> RegisterAdmin(AdminForRegisterDTO adminForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;

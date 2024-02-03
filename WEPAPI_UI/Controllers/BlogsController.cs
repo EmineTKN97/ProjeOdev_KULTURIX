@@ -5,6 +5,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace WEPAPI_UI.Controllers
 {
@@ -18,9 +19,6 @@ namespace WEPAPI_UI.Controllers
             _blogService = blogService;
 
         }
-
-      
-
         [HttpGet("GetBlogsByCommentAndLikeCount")]
         public async Task<IActionResult> GetBlogsByCommentAndLikeCounts()
         {

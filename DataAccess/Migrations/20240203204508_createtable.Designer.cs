@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    [Migration("20240131233536_addtables")]
-    partial class addtables
+    [Migration("20240203204508_createtable")]
+    partial class createtable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -11,7 +11,7 @@ namespace Business.Abstract
 {public interface IAdminService
     {
         List<OperationClaim> GetClaims(Admin admin);
-        void Add(Admin admin);
+        Task<IResult>Add(Admin admin);
         Admin GetByMail(string email);
         Task<IResult> Delete(Guid İd);
         Task<IResult> Update(Guid id, AdminDTO adminDto);

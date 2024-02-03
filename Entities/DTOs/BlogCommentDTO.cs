@@ -10,10 +10,9 @@ namespace Entities.DTOs
 {
     public class BlogCommentDTO : IDto
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
-        public Guid BlogId { get; set; }
         public string CommentTitle { get; set; }
+        public string UserName { get; set; }
+        public string UserSurname { get; set; }
         public string CommentDetail { get; set; }
         public int BlogLikeCount { get; set; }
         public DateTime CommentDate { get; set; }

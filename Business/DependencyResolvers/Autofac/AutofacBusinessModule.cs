@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Core;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
@@ -39,6 +40,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfAdminDal>().As<IAdminDal>().InstancePerLifetimeScope();
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+    
 
             builder.RegisterType<ProjeOdevContext>().InstancePerLifetimeScope();
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

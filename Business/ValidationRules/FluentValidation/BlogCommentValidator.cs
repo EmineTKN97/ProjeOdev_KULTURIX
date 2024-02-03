@@ -15,19 +15,19 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(bc => bc.CommentDetail)
            .NotEmpty().WithMessage("Yorum içeriği boş olamaz.")
             .Length(5, 500).WithMessage("Yorum içeriği 5 ile 500 karakter arasında olmalıdır.");
-            RuleFor(bc => bc.UserId)
+            RuleFor(bc => bc.UserName)
                 .NotEmpty().WithMessage("Kullanıcı isimi boş olamaz.")
-                .Must(NotBeNull).WithMessage("Yorum eklemek için giriş yapmalısınız.");
+               .WithMessage("Yorum eklemek için giriş yapmalısınız.");
+            RuleFor(bc => bc.UserSurname)
+             .NotEmpty().WithMessage("Kullanıcı isimi boş olamaz.")
+            .WithMessage("Yorum eklemek için giriş yapmalısınız.");
             RuleFor(bc => bc.CommentTitle)
             .NotEmpty().WithMessage("Yorum başlığı boş olamaz.")
             .MaximumLength(100).WithMessage("Yorum başlığı en fazla 100 karakter olmalıdır.");
-           
-        }
-        private bool NotBeNull(Guid userId)
-        {
-            return userId != Guid.Empty;
+
         }
 
     }
-    }
+   
+}
 

@@ -46,8 +46,6 @@ namespace DataAccess.Concrete.EntityFramework
                 {
                     LikeId = Guid.NewGuid(),
                     LikeDate = DateTime.Now,
-                    BlogId = bloglikedto.Blogid,
-                    UserId = bloglikedto.Userid
                 };
                 _context.BlogLikes.Add(newBlogLike);
                 _context.SaveChanges();
@@ -71,12 +69,8 @@ namespace DataAccess.Concrete.EntityFramework
             var result = _context.BlogLikes
                         .Where(l => l.Status == false)
                         .Select(l => new BlogLikeDTO
-                        {
-                          Likeİd = l.LikeId,
-                          Blogid = l.BlogId ?? Guid.Empty,
-                          BlogCommentid = l.BlogCommentId ?? Guid.Empty,
+                        { 
                           LikeDate = l.LikeDate,
-                          Userid =l. UserId,
                         }).ToList();
 
             return result;
@@ -89,9 +83,6 @@ namespace DataAccess.Concrete.EntityFramework
                      .Select(l => new BlogLikeDTO
                      {
                          LikeDate = l.LikeDate,
-                         Userid = l.UserId,
-                         Likeİd = l.LikeId,
-                         Blogid = BlogId
                      })
                      .OrderByDescending(l => l.LikeDate)
                      .ToList();

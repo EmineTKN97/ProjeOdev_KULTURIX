@@ -14,6 +14,5 @@ namespace Entities.DTOs
         public  string Name { get; set; }
         public string SurName { get; set; }
         public DateTime BirthDate { get; set; }
-        public string İmagePath { get; set; }
     }
 }

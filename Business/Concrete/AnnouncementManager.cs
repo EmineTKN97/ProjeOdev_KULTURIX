@@ -2,6 +2,7 @@
 using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -24,25 +25,28 @@ namespace Business.Concrete
         {
             _announcementDal = announcementDal;
         }
+
         [SecuredOperation("ADMİN")]
         [ValidationAspect(typeof(AnnouncementValidator))]
+        [CacheRemoveAspect("IBlogAnnouncementService.Get")]
         public async Task<IResult> Add(AnnouncementDTO announcementdto, Guid AdminId)
         {
             _announcementDal.Add(announcementdto,AdminId);
             return new SuccessResult(Messages.AnnouncementAdded);
         }
         [SecuredOperation("ADMİN")]
+        [CacheRemoveAspect("IBlogAnnouncementService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid AdminId)
         {
             _announcementDal.Delete(İd,AdminId);
             return new Result(true, Messages.AnnouncementDeleted);
         }
-
+        [CacheAspect]
         public async Task<IDataResult<Announcement>> GetById(Guid id)
         {
             return new SuccessDataResult<Announcement>(_announcementDal.Get(ac => ac.Id == id), Messages.AnnouncementListed);
         }
-
+        [CacheAspect]
         public async Task<IDataResult<Announcement>> GetLatestAnnouncement()
         {
             return new SuccessDataResult<Announcement>(
@@ -50,8 +54,10 @@ namespace Business.Concrete
         Messages.AnnouncementListed
             );
         }
+
         [SecuredOperation("ADMİN")]
         [ValidationAspect(typeof(AnnouncementValidator))]
+        [CacheRemoveAspect("IBlogAnnouncementService.Get")]
         public async Task<IResult> Update(Guid id, AnnouncementDTO updatedannouncementdto, Guid AdminId)
         {
             try

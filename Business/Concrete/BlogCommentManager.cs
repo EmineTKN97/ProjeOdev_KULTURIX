@@ -2,6 +2,7 @@
 using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -24,21 +25,24 @@ namespace Business.Concrete
         {
             _blogcommentDal = blogcommentDal;
         }
-        [ValidationAspect(typeof(BlogCommentValidator))]
         [SecuredOperation("USER")]
+        [ValidationAspect(typeof(BlogCommentValidator))]
+        [CacheRemoveAspect("IBlogCommentService.Get")]
         public async Task<IResult> Add(Guid Blogİd, BlogCommentDTO blogcommentdto, Guid userId)
         {
            _blogcommentDal.Add(Blogİd, blogcommentdto, userId);
             return new Result(true, Messages.BlogCommentAdded);
         }
         [SecuredOperation("USER")]
+        [CacheRemoveAspect("IBlogCommentService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid userId)
         {
             _blogcommentDal.Delete(İd,userId);
             return new Result(true, Messages.BlogCommentDeleted);
         }
-        [ValidationAspect(typeof(BlogCommentValidator))]
         [SecuredOperation("USER")]
+        [ValidationAspect(typeof(BlogCommentValidator))]
+        [CacheRemoveAspect("IBlogCommentService.Get")]
         public async Task<IResult> Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid userId)
         {
             try
@@ -52,13 +56,13 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.BlogCommentNotUpdated);
             }
         }
-
+        [CacheAspect]
         public async Task<IDataResult<List<BlogCommentDTO>>> GetAllCommentsDetails()
         {
             return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetAllCommentDetails());
         }
-
-       public async Task<IDataResult<List<BlogCommentDTO>>> GetCommentsByBlogId(Guid BlogId)
+        [CacheAspect]
+        public async Task<IDataResult<List<BlogCommentDTO>>> GetCommentsByBlogId(Guid BlogId)
         {
             return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetCommentsByBlogId(BlogId), Messages.BlogCommentListed);
         }

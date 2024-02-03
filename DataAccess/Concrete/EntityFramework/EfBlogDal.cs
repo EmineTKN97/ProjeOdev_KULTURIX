@@ -49,6 +49,10 @@ namespace DataAccess.Concrete.EntityFramework
                 _context.Blogs.Update(blogToDelete);
                 _context.SaveChanges();
             }
+            else 
+            {
+                throw new Exception("Blog bulunamadı veya silinemedi.");
+            }
 
         }
         //bloğu yorum sayısı ve like sayısına göre sıralama
@@ -65,7 +69,6 @@ namespace DataAccess.Concrete.EntityFramework
                                group new { b, m } by b.BlogId into groupedBlogs
                                select new BlogDetailsDTO
                                {
-                                   İd = groupedBlogs.Key,
                                    BlogTitle = groupedBlogs.First().b.Title,
                                    BlogContent = groupedBlogs.First().b.Content,
                                    BlogDate = groupedBlogs.First().b.Date,

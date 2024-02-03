@@ -69,16 +69,23 @@ namespace DataAccess.Concrete.EntityFramework
 
             if (admin != null)
             {
-                byte[] newPasswordHash, newPasswordSalt;
-                HashingHelper.CreatePasswordHash(newPassword, out newPasswordHash, out newPasswordSalt);
-                admin.PasswordHash = newPasswordHash;
-                admin.PasswordSalt = newPasswordSalt;
-                _context.SaveChanges();
+                if (HashingHelper.VerifyPasswordHash(currentPassword, admin.PasswordHash, admin.PasswordSalt))
+                {
+                    byte[] newPasswordHash, newPasswordSalt;
+                    HashingHelper.CreatePasswordHash(newPassword, out newPasswordHash, out newPasswordSalt);
+                    admin.PasswordHash = newPasswordHash;
+                    admin.PasswordSalt = newPasswordSalt;
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Mevcut şifre geçerli değil.");
+                }
             }
             else
             {
-                throw new Exception("Şifre Değiştirilemedi.");
-            }
+                throw new Exception("Admin bulunamadı veya şifre değiştirme izni yok.");
+            }   
         }
     }
 }

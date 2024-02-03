@@ -73,11 +73,19 @@ namespace DataAccess.Concrete.EntityFramework
 
             if (user != null)
             {
-                byte[] newPasswordHash, newPasswordSalt;
-                HashingHelper.CreatePasswordHash(newPassword, out newPasswordHash, out newPasswordSalt);
-                user.PasswordHash = newPasswordHash;
-                user.PasswordSalt = newPasswordSalt;
-                _context.SaveChanges();
+                if (HashingHelper.VerifyPasswordHash(currentPassword, user.PasswordHash, user.PasswordSalt))
+                {
+                    byte[] newPasswordHash, newPasswordSalt;
+                    HashingHelper.CreatePasswordHash(newPassword, out newPasswordHash, out newPasswordSalt);
+                    user.PasswordHash = newPasswordHash;
+                    user.PasswordSalt = newPasswordSalt;
+
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Mevcut şifre geçerli değil.");
+                }
             }
             else
             {
@@ -85,7 +93,8 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
     }
+}
 
    
     
-}
+

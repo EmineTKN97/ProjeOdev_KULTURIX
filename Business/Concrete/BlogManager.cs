@@ -3,6 +3,7 @@ using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.Helper;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -31,23 +32,25 @@ namespace Business.Concrete
             _blogDal = blogDal;
         }
         [SecuredOperation("USER")]
+       // [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid UserId)
         {
             _blogDal.Delete(İd, UserId);
             return new Result(true, Messages.BlogDeleted);
         }
-        [SecuredOperation("USER")]
+        [CacheAspect]
         public async Task<IDataResult<List<BlogDetailsDTO>>> GetBlogsByCommentAndLikeCount()
         {
             return new SuccessDataResult<List<BlogDetailsDTO>>(_blogDal.GetBlogsByCommentAndLikeCount(), Messages.BlogListed);
         }
-
+        [CacheAspect]
         public async Task<IDataResult<Blog>> GetById(Guid id)
         {
             return new SuccessDataResult<Blog>(_blogDal.Get(blog => blog.BlogId == id), Messages.BlogListed);
         }
-        [ValidationAspect(typeof(BlogValidator))]
         [SecuredOperation("USER")]
+        [ValidationAspect(typeof(BlogValidator))]
+       //[CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult>Update(Guid id, BlogDTO updatedBlogDto,Guid UserId)
         {  
             try
@@ -60,13 +63,15 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.BlogNotUpdated);
             }
         }
-        [ValidationAspect(typeof(BlogValidator))]
         [SecuredOperation("USER")]
+        [ValidationAspect(typeof(BlogValidator))]
+       // [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult> Add(BlogDTO blogdto, Guid userId)
         {
             _blogDal.Add(blogdto,userId);
             return new SuccessResult(Messages.BlogAdded);
         }
+        [CacheAspect]
         public async  Task<IDataResult<List<Blog>>> GetByUserId(Guid UserId)
         {
             return new SuccessDataResult<List<Blog>>(_blogDal.GetByUserId(UserId), Messages.BlogListed);

@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspect.Autofac;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstarct;
 using Entities.Concrete;
@@ -8,6 +10,7 @@ using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +34,7 @@ namespace Business.Concrete
             return _userDal.Get(u => u.Email == email);
         }
         [SecuredOperation("USER")]
+        [ValidationAspect(typeof(UserValidator))]
         public async Task<IResult> Add(User user)
         {
             _userDal.Add(user);
@@ -43,6 +47,7 @@ namespace Business.Concrete
             return new Result(true, Messages.UserDeleted);
         }
         [SecuredOperation("USER")]
+        [ValidationAspect(typeof(UserValidator))]
         public async Task<IResult> Update(Guid id, UserDTO userdto)
         {
             try
@@ -59,15 +64,23 @@ namespace Business.Concrete
         public async Task<IDataResult<User>> GetById(Guid Userİd)
         {
             
-                return new SuccessDataResult<User>(_userDal.Get(u=> u.Id == Userİd), Messages.UserListed);
+            return new SuccessDataResult<User>(_userDal.Get(u=> u.Id == Userİd), Messages.UserListed);
             
         }
         [SecuredOperation("USER")]
         public async Task<IResult> ChangePassword(string currentPassword, string newPassword, Guid UserId)
         {
+            ValidationResult validationResult = ChangePasswordValidator.ValidateChangePassword(currentPassword, newPassword);
+            if (!validationResult.IsValid)
+            {
+                string errorMessages = string.Join(Environment.NewLine, validationResult.Errors);
+                return new ErrorResult(errorMessages);
+            }
+
             _userDal.UpdatePassword(currentPassword, newPassword, UserId);
             return new Result(true, Messages.ChangePassword);
         }
+        
     }
 }
 

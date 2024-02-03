@@ -78,8 +78,6 @@ namespace DataAccess.Concrete.EntityFramework
                         CommentDate = bc.CommentDate,
                         CommentDetail = bc.CommentText,
                         CommentTitle = bc.Title,
-                        Id = bc.CommentId,
-                        UserId = bc.UserId,
                         BlogLikeCount = _context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId)
                     }).OrderByDescending(b => b.BlogLikeCount).ToList();
                 return result;
@@ -88,22 +86,25 @@ namespace DataAccess.Concrete.EntityFramework
         //Blog yorumunu Blogunid'sine göre sıralama
         public List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId)
         {
-                var comments = (from bc in _context.BlogComments
-                                join b in _context.Blogs
-                                on bc.BlogId equals b.BlogId
-                                where bc.BlogId == BlogId && bc.Status == false && b.Status == false
-                                select new BlogCommentDTO
-                                {
-                                    CommentDate = bc.CommentDate,
-                                    CommentDetail = bc.CommentText,
-                                    CommentTitle = bc.Title,
-                                    Id = bc.CommentId,
-                                    UserId = bc.UserId,
-                                    BlogLikeCount = _context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId && l.Status == false)
-                                }).OrderByDescending(bc => bc.CommentDate).ToList();
-                return comments;
+            var comments = (from bc in _context.BlogComments
+                            join b in _context.Blogs
+                            on bc.BlogId equals b.BlogId
+                            where bc.BlogId == BlogId && bc.Status == false && b.Status == false
+                            select new BlogCommentDTO
+                            {
+                                UserName = bc.User.Name,
+                                UserSurname = bc.User.SurName,
+                                CommentDate = bc.CommentDate,
+                                CommentDetail = bc.CommentText,
+                                CommentTitle = bc.Title,
+                                BlogLikeCount = _context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId && l.Status == false)
+                            })
+                 .OrderByDescending(bc => bc.CommentDate)
+                 .ToList();
 
-            
+            return comments;
+
+
         }
 
         public void Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid UserId)
