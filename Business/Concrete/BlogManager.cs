@@ -17,12 +17,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.ConstrainedExecution;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 namespace Business.Concrete
 {
     public class BlogManager : IBlogService
     {
+       
         IBlogDal _blogDal;
         public BlogManager(IBlogDal blogDal)
         {

@@ -21,9 +21,8 @@ namespace Business.ValidationRules.FluentValidation
 
         private bool BeValidGuid(Guid id)
         {
-            return id != Guid.Empty; // Geçerli bir GUID kontrolü yapılıyor.
-        }
+            return id != Guid.Empty;
 
-       
+        }
     }
 }

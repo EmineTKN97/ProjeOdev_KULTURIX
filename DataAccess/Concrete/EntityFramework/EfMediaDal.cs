@@ -25,31 +25,26 @@ namespace DataAccess.Concrete.EntityFramework
             var existingBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == blogId && b.UserId == UserId && b.Status == false);
 
             if (existingBlog != null)
-            {
-                if (string.Equals(existingBlog.ImagePath, "wwwroot\\Uploads\\StaticContent\\default.jpg", StringComparison.OrdinalIgnoreCase))
+            { 
+                var imageEntity = new Media
                 {
-                    var imageEntity = new Media
-                    {
-                        ImagePath = fileName,
-                        BlogId = blogId,
-                        CreateDate = DateTime.Now,
-                    };
+                    ImagePath = fileName,
+                    BlogId = blogId,
+                    CreateDate = DateTime.Now,
+                };
 
-                    _context.Medias.Add(imageEntity);
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    
-                    throw new Exception("Kullanıcının resmi default resim değil. Medya eklemek için izin yok.");
-                }
+                _context.Medias.Add(imageEntity);
+                _context.SaveChanges();
+
+                // Blogun ImagePath alanını güncelle.
+                existingBlog.ImagePath = fileName;
+                _context.SaveChanges();
             }
             else
             {
                 throw new Exception("Belirtilen blog bulunamadı veya medya eklemek için izin yok.");
             }
         }
-    
 
         public void AddUserMedia(string fileName, Guid userId)
         {
@@ -79,9 +74,18 @@ namespace DataAccess.Concrete.EntityFramework
 
             if (mediaToDelete != null)
             {
+                // Medyayı sil
                 mediaToDelete.Status = true;
                 _context.Medias.Update(mediaToDelete);
                 _context.SaveChanges();
+
+                // Medya silindiğinde, kullanıcının resim alanını null yap
+                var userToUpdate = _context.Users.FirstOrDefault(u => u.Id == UserId);
+                if (userToUpdate != null)
+                {
+                    userToUpdate.ImagePath ="wwwroot\\Uploads\\StaticContent\\default.jpg";
+                    _context.SaveChanges();
+                }
             }
             else
             {
@@ -89,15 +93,29 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public void DeleteBlogMedia(Guid id, Guid blogId)
+        public void DeleteBlogMedia(Guid id, Guid blogId, Guid UserId)
         {
-            var mediaToDelete = _context.Medias.FirstOrDefault(m => m.MediaId == id && m.BlogId==blogId) ;
+            var mediaToDelete = _context.Medias.FirstOrDefault(m => m.MediaId == id && m.BlogId == blogId);
 
             if (mediaToDelete != null)
             {
-                mediaToDelete.Status = true;
-                _context.Medias.Update(mediaToDelete);
-                _context.SaveChanges();
+                // Medyayı silen kullanıcı, bu medyanın bağlı olduğu blogun sahibi mi kontrol et.
+                var associatedBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == blogId && b.UserId == UserId && b.Status == false);
+
+                if (associatedBlog != null)
+                {
+                    mediaToDelete.Status = true;
+                    _context.Medias.Update(mediaToDelete);
+                    _context.SaveChanges();
+
+                    // Medya silindiğinde, bağlı olduğu blogun ImagePath alanını null yap.
+                    associatedBlog.ImagePath ="wwwroot\\Uploads\\StaticContent\\default.jpg";
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Belirtilen medya bulunamadı veya silmek için izin yok.");
+                }
             }
             else
             {
@@ -144,18 +162,34 @@ namespace DataAccess.Concrete.EntityFramework
                 throw new Exception("Belirtilen medya bulunamadı veya güncellemek için izin yok.");
             }
         }
-            public void UpdateBlogMedia(string fileName, Guid mediaId, Guid blogId)
-        {
-            var existingMedia = _context.Medias.SingleOrDefault(m => m.MediaId == mediaId && m.BlogId == blogId);
-
-            if (existingMedia != null && existingMedia.Status == false)
+        public void UpdateBlogMedia(string fileName, Guid mediaId, Guid blogId, Guid UserId)
             {
-                existingMedia.ImagePath = fileName;
-                _context.SaveChanges();
+            // Bloğu yazan kullanıcıyı kontrol et.
+            var existingBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == blogId && b.UserId == UserId && b.Status == false);
+
+            if (existingBlog != null)
+            {
+                // Bloğu yazan kullanıcı, bloğun yazarı ve bloğun durumu false ise bu bloğa gir.
+                var existingMedia = _context.Medias.SingleOrDefault(m => m.MediaId == mediaId && m.BlogId == blogId && m.Status == false);
+
+                if (existingMedia != null)
+                {
+                    // existingMedia null değilse ve durumu false ise bu bloğa gir.
+                    existingMedia.ImagePath = fileName;
+
+                    // Blogun ImagePath alanını güncelle.
+                    existingBlog.ImagePath = fileName;
+
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Belirtilen medya bulunamadı veya güncellemek için izin yok.");
+                }
             }
             else
             {
-                throw new Exception("Belirtilen medya bulunamadı veya güncellemek için izin yok.");
+                throw new Exception("Belirtilen blog bulunamadı veya medya eklemek için izin yok.");
             }
         }
     }

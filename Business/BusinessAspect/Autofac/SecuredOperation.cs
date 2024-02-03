@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Extensions;
 using Core.Utilities.İnterceptors;
+using System.Security.Claims;
 
 namespace Business.BusinessAspect.Autofac
 {
@@ -28,15 +29,16 @@ namespace Business.BusinessAspect.Autofac
 
         protected override void OnBefore(IInvocation invocation)
         {
-            var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
-            foreach (var role in _roles)
+        var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+        foreach (var role in _roles)
+        {
+            if (roleClaims.Contains(role))
             {
-                if (roleClaims.Contains(role))
-                {
-                    return;
-                }
+                return;
             }
-            throw new Exception(Messages.AuthorizationDenied);
         }
+        throw new Exception(Messages.AuthorizationDenied);
+    }
+       
     }
 }

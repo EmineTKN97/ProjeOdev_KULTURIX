@@ -33,7 +33,7 @@ namespace Business.Constants
         public static string BlogCommentListed = "Yorumlar listelendi";
         public static string AddBlogİmage="Blog için resim başarı ile eklendi";
         public static string AddUserİmage = "Profil resiminiz başarı ile yüklendi";
-        public static string MediaNotAdded="Resim eklenemedi";
+        public static string MediaNotAdded="Bir tane resim ekleyebilirsiniz";
         public static string UserAdded="Kullanıcı eklendi";
         public static string UserNotAdded="Kullanıcı eklenemedi";
         public static string MediaNotListed="Resimler listelenemedi";
@@ -64,5 +64,20 @@ namespace Business.Constants
         public static string AnnouncementNotListed="Duyurular Listelenemedi";
         public static string AnnouncementNotAdded="Duyuru eklenemedi";
         public static string AnnouncementNotDeleted="Duyuru silinemedi";
+        public static string UserNotDeleted="Kullanıcı Silinemedi";
+        public static string UserDeleted="Kullanıcı silindi";
+        public static string UserListed="Kullanıcılar listelendi";
+        public static string UserUpdated="Bilgileriniz Güncellendi";
+        public static string UserNotUpdated="Bilgileriniz Güncellenemedi";
+        public static string ChangePassword="Şifre değiştirme başarılı";
+        public static string ChangeNotPassword="Şifre değiştirilemedi";
+        public static string AdminNotDeleted="Yönetici silenemedi";
+         public static string ChangeAdminPassword="Şifre Güncellendi";
+        public static string AdminDeleted="Yönetici silindi";
+        public static string AdminListed="Yönetici Listelendi";
+        public static string AdminUpdated="Bilgiler Güncellendi";
+        public static string AdminNotUpdated="Bilgiler Güncellenemedi";
+        public static string UserNotActive="Böyle bir kullanıcı bulunamadı";
+        public static string AdminNotActive="Böyle bir yönetici bulunamadı";
     }
 }

@@ -15,7 +15,7 @@ namespace Business.ValidationRules.FluentValidation
 
     public class BlogValidator : AbstractValidator<BlogDTO>
     {
-        private static readonly string[] ImageFormats = { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff", ".webp" };
+       
 
         public BlogValidator()
         {
@@ -34,10 +34,6 @@ namespace Business.ValidationRules.FluentValidation
         private bool BeValidContent(string content)
         {
             return !content.Contains("<script>");
-        }
-        private bool NotBeNull(Guid userId)
-        {
-            return userId != Guid.Empty;
         }
 
     }

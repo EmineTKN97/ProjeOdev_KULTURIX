@@ -40,12 +40,12 @@ namespace Business.Concrete
                 SurName = userForRegisterDto.SurName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true,
+                Status = false,
                 ImagePath = "wwwroot\\Uploads\\StaticContent\\default.jpg",
                 CreateDate = DateTime.Now,
             };
 
-            using (var unitOfWork =new ProjeOdevContext())
+            using (var unitOfWork = new ProjeOdevContext())
             {
                 try
                 {
@@ -55,7 +55,7 @@ namespace Business.Concrete
                     var userOperationClaim = new UserOperationClaim
                     {
                         UserId = user.Id,
-                        OperationClaimsId = OperationClaimsStaticId.DefaultUserOperationClaimId 
+                        OperationClaimsId = OperationClaimsStaticId.DefaultUserOperationClaimId
                     };
 
                     unitOfWork.UserOperationClaims.Add(userOperationClaim);
@@ -65,11 +65,11 @@ namespace Business.Concrete
                 }
                 catch (Exception ex)
                 {
-                    return new ErrorDataResult<User>( Messages.UserRegistrationFailed);
+                    return new ErrorDataResult<User>(Messages.UserRegistrationFailed);
                 }
             }
         }
-    
+
 
         public IDataResult<User> Login(UserForLoginDTO userForLoginDto)
         {
@@ -77,6 +77,11 @@ namespace Business.Concrete
             if (userToCheck == null)
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);
+            }
+
+            if (userToCheck.Status == true)
+            {
+                return new ErrorDataResult<User>(Messages.UserNotActive);
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
@@ -108,15 +113,15 @@ namespace Business.Concrete
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
-            var admin= new Admin
+            var admin = new Admin
             {
                 Email = adminForRegisterDto.Email,
                 FirstName = adminForRegisterDto.FirstName,
                 LastName = adminForRegisterDto.LastName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true,
-  
+                Status = false,
+
             };
 
             using (var unitOfWork = new ProjeOdevContext())
@@ -151,6 +156,10 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<Admin>(Messages.AdminNotFound);
             }
+            if (adminToCheck.Status == true)
+            {
+                return new ErrorDataResult<Admin>(Messages.AdminNotActive);
+            }
 
             if (!HashingHelper.VerifyPasswordHash(adminForLoginDto.Password, adminToCheck.PasswordHash, adminToCheck.PasswordSalt))
             {
@@ -175,5 +184,8 @@ namespace Business.Concrete
             var accessToken = _tokenHelper.CreateToken(admin, claims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
+
+       
+
     }
 }

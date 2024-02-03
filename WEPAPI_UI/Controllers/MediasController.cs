@@ -20,6 +20,7 @@ namespace WEPAPI_UI.Controllers
         [HttpPost("AddBlogMedia")]
         public async Task<IActionResult> AddBlogMedia(IFormFile file,Guid BlogId, Guid UserId)
         {
+
             var result = await _mediaService.AddBlogMedia(file,BlogId, UserId);
             return !result.Success ? BadRequest(Messages.MediaNotAdded) : Ok(result);
         }
@@ -68,17 +69,17 @@ namespace WEPAPI_UI.Controllers
             return !result.Success ? BadRequest(Messages.MediaNotListed) : Ok(result.Data);
         }
         [HttpPut("UpdateBlogMedia")]
-        public async Task<IActionResult> UpdateBlogMedia(Guid MediaId, IFormFile file,Guid BlogId)
+        public async Task<IActionResult> UpdateBlogMedia(Guid MediaId, IFormFile file,Guid BlogId,Guid UserId)
         {
-            var result = await _mediaService.UpdateBlogMedia(file, MediaId,BlogId);
+            var result = await _mediaService.UpdateBlogMedia(file, MediaId,BlogId,UserId);
             return !result.Success ? BadRequest(Messages.MediaNotUpdated) : Ok(result);
         }
         [HttpDelete("DeleteBlogMedia")]
-        public async Task<IActionResult> DeleteBlogMedia(Guid MediaId, Guid BlogId)
+        public async Task<IActionResult> DeleteBlogMedia(Guid MediaId, Guid BlogId, Guid UserId)
         {
             try
             {
-                await _mediaService.DeleteBlogMedia(MediaId, BlogId);
+                await _mediaService.DeleteBlogMedia(MediaId, BlogId, UserId);
                 return Ok(Messages.MediaDeleted);
             }
             catch (Exception ex)

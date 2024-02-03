@@ -14,6 +14,5 @@ namespace Entities.DTOs
         public Guid? BlogId { get; set; }
         public string ImagePath { get; set; }
         public DateTime CreateDate { get; set; }
-        public bool Status { get; set; }
     }
 }

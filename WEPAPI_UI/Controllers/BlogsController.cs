@@ -12,11 +12,14 @@ namespace WEPAPI_UI.Controllers
     [ApiController]
     public class BlogsController : ControllerBase
     {
-         IBlogService _blogService;
+        IBlogService _blogService;
         public BlogsController(IBlogService blogService)
         {
             _blogService = blogService;
+
         }
+
+      
 
         [HttpGet("GetBlogsByCommentAndLikeCount")]
         public async Task<IActionResult> GetBlogsByCommentAndLikeCounts()

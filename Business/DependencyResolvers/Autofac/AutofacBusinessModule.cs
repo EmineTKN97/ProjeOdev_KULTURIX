@@ -33,11 +33,11 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfMediaDal>().As<IMediaDal>().InstancePerLifetimeScope();
             builder.RegisterType<AnnouncementManager>().As<IAnnouncementService>().InstancePerLifetimeScope();
             builder.RegisterType<EfAnnouncementDal>().As<IAnnouncementDal>().InstancePerLifetimeScope();
-            builder.RegisterType<UserManager>().As<IUserService>();
-            builder.RegisterType<EfUserDal>().As<IUserDal>();
-            builder.RegisterType<AdminManager>().As<IAdminService>();
-            builder.RegisterType<EfAdminDal>().As<IAdminDal>();
-            builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<UserManager>().As<IUserService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfUserDal>().As<IUserDal>().InstancePerLifetimeScope();
+            builder.RegisterType<AdminManager>().As<IAdminService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfAdminDal>().As<IAdminDal>().InstancePerLifetimeScope();
+            builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
             builder.RegisterType<ProjeOdevContext>().InstancePerLifetimeScope();
