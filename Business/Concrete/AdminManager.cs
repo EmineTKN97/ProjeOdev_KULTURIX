@@ -63,7 +63,7 @@ namespace Business.Concrete
             return _adminDal.GetClaims(admin);
         }
         [SecuredOperation("ADMİN")]
-        [ValidationAspect(typeof(AdminValidator))]
+        [ValidationAspect(typeof(AdminUpdateValidator))]
         public async Task<IResult> Update(Guid id, AdminDTO adminDto)
         {
             try

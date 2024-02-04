@@ -47,7 +47,7 @@ namespace Business.Concrete
             return new Result(true, Messages.UserDeleted);
         }
         [SecuredOperation("USER")]
-        [ValidationAspect(typeof(UserValidator))]
+        [ValidationAspect(typeof(UserUpdateValidator))]
         public async Task<IResult> Update(Guid id, UserDTO userdto)
         {
             try

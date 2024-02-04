@@ -14,6 +14,5 @@ namespace Entities.DTOs
         public string SurName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
-        public string Password { get; set; }
     }
 }
