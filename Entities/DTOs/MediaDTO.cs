@@ -9,9 +9,10 @@ namespace Entities.DTOs
 {
     public class MediaDTO:IDto
     {
-        public Guid MediaId { get; set; }
-        public Guid? UserId { get; set; }
-        public Guid? BlogId { get; set; }
+        public string Name { get; set; }
+        public string SurName { get; set; }
+        public  string BlogTitle { get; set; }
+        public  string  BlogDescription { get; set; }
         public string ImagePath { get; set; }
         public DateTime CreateDate { get; set; }
     }

@@ -23,7 +23,7 @@ namespace WEPAPI_UI.Controllers
         public async Task<IActionResult> GetBlogsByCommentAndLikeCounts()
         {
             var result = await _blogService.GetBlogsByCommentAndLikeCount();
-            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
+            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result);
         }
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(Guid id)

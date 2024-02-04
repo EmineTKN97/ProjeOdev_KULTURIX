@@ -27,7 +27,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogLikeValidator))]
-        [CacheRemoveAspect("IBlogLikeService.Get")]
+       // [CacheRemoveAspect("IBlogLikeService.Get")]
         public async Task<IResult> AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto, Guid UserId)
         {
             _bloglikeDal.AddBlogLike(Blogİd, bloglikedto,UserId);
@@ -35,14 +35,14 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogLikeValidator))]
-        [CacheRemoveAspect("IBlogLikeService.Get")]
+       // [CacheRemoveAspect("IBlogLikeService.Get")]
         public async Task<IResult> AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto, Guid UserId)
         {
             _bloglikeDal.AddBlogCommentLike(BlogCommentİd, bloglikedto,UserId);
             return new Result(true, Messages.BlogLikeAdded);
         }
         [SecuredOperation("USER")]
-        [CacheRemoveAspect("IBlogLikeService.Get")]
+       // [CacheRemoveAspect("IBlogLikeService.Get")]
         public  async Task<IResult> Delete(Guid İd, Guid UserId)
         {
             _bloglikeDal.Delete(İd,UserId);

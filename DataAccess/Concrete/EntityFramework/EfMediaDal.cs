@@ -129,11 +129,12 @@ namespace DataAccess.Concrete.EntityFramework
                      .Where(m => m.Status == false)
                       .Select(m => new MediaDTO
                       {
-                          MediaId = m.MediaId,
-                          BlogId=m.BlogId.HasValue ? m.BlogId.Value : Guid.Empty,
-                          UserId=m.UserId.HasValue ? m.UserId.Value : Guid.Empty,
-                          CreateDate=m.CreateDate,
-                          ImagePath=m.ImagePath,
+                         Name=m.User.Name,
+                         SurName=m.User.SurName,
+                         BlogDescription=m.blog.Content,
+                         BlogTitle=m.blog.Title,
+                         CreateDate=m.CreateDate,
+                         ImagePath=m.ImagePath,
                       }).ToList();
 
             return result;

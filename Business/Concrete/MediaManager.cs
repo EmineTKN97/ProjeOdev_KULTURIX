@@ -32,7 +32,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(MediaValidator))]
-        [CacheRemoveAspect("IMediaService.Get")]
+       // [CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> AddBlogMedia(IFormFile file,Guid BlogId, Guid UserId)
         {
             IResult result = BusinessRules.Run(IsBlogWithoutMedia(BlogId));
@@ -55,7 +55,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(MediaValidator))]
-        [CacheRemoveAspect("IMediaService.Get")]
+      //  [CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> AddUserMedia(IFormFile file,Guid UserId)
         {
             IResult result = BusinessRules.Run(IsUserWithoutMedia(UserId));
@@ -76,7 +76,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.AddUserİmage);
         }
         [SecuredOperation("USER")]
-        [CacheRemoveAspect("IMediaService.Get")]
+        //[CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid UserId)
         {
             _mediaDal.Delete(İd,UserId);
@@ -100,7 +100,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(MediaValidator))]
-        [CacheRemoveAspect("IMediaService.Get")]
+        //[CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult>Update(IFormFile file, Guid MediaId, Guid UserId)
         {
             string fileName = FileHelper.GenerateFileName(file);
@@ -115,7 +115,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UpdateMedia);
         }
         [SecuredOperation("USER")]
-        [CacheRemoveAspect("IMediaService.Get")]
+        //[CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> DeleteBlogMedia(Guid İd, Guid BlogId, Guid UserId)
         {
             _mediaDal.DeleteBlogMedia(İd,BlogId,UserId);
@@ -123,7 +123,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(MediaValidator))]
-        [CacheRemoveAspect("IMediaService.Get")]
+        //[CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> UpdateBlogMedia(IFormFile file, Guid MediaId, Guid BlogId, Guid UserId)
         {
             string fileName = FileHelper.GenerateFileName(file);
@@ -142,7 +142,7 @@ namespace Business.Concrete
         {
 
             var result = _mediaDal.GetAll(m => m.BlogId == blogId && m.Status == false).Count();
-            if (result >1)
+            if (result >0)
             {
                 return new ErrorResult("Sadece bir adet resim ekleyebilirsiniz");
 
@@ -154,7 +154,7 @@ namespace Business.Concrete
         {
 
             var result = _mediaDal.GetAll(m => m.UserId == userId && m.Status == false).Count();
-            if (result > 1)
+            if (result > 0)
             {
                 return new ErrorResult("Sadece bir adet resim ekleyebilirsiniz");
 

@@ -75,6 +75,8 @@ namespace DataAccess.Concrete.EntityFramework
                     where bc.Status == false && l.Status == false
                     select new BlogCommentDTO
                     {
+                        UserName = bc.User.Name,
+                        UserSurname = bc.User.SurName,
                         CommentDate = bc.CommentDate,
                         CommentDetail = bc.CommentText,
                         CommentTitle = bc.Title,

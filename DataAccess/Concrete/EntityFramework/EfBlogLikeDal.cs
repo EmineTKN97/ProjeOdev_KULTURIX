@@ -3,6 +3,8 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -21,9 +23,11 @@ namespace DataAccess.Concrete.EntityFramework
             _context = context;
         }
 
-        public void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto,Guid UserId)
+        public void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto, Guid UserId)
         {
-            if (!_context.BlogLikes.Any(l => l.BlogCommentId == blogCommentİd && l.UserId == UserId))
+            var existingLike = _context.BlogLikes.FirstOrDefault(l => l.BlogCommentId == blogCommentİd && l.UserId == UserId);
+
+            if (existingLike == null)
             {
                 var newBlogCommentLike = new BlogLike
                 {
@@ -36,21 +40,35 @@ namespace DataAccess.Concrete.EntityFramework
                 _context.BlogLikes.Add(newBlogCommentLike);
                 _context.SaveChanges();
             }
+            else
+            {
+                throw new InvalidOperationException("Beğeni işlemi bir kere yapılabilir");
+            }
         }
-
         public void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto, Guid UserId)
         {
-            if (!_context.BlogLikes.Any(l => l.BlogId == blogİd && l.UserId == UserId))
+            var existingLike = _context.BlogLikes.FirstOrDefault(l => l.BlogId == blogİd && l.UserId == UserId);
+
+            if (existingLike == null)
             {
                 var newBlogLike = new BlogLike
                 {
                     LikeId = Guid.NewGuid(),
                     LikeDate = DateTime.Now,
+                    BlogId = blogİd,
+                    UserId = UserId
                 };
+
                 _context.BlogLikes.Add(newBlogLike);
                 _context.SaveChanges();
             }
+            else
+            {
+                throw new InvalidOperationException("Beğeni işlemi bir kere yapılabilir");
+            }
+
         }
+        
 
         public void Delete(Guid id, Guid UserId)
         {
@@ -70,7 +88,9 @@ namespace DataAccess.Concrete.EntityFramework
                         .Where(l => l.Status == false)
                         .Select(l => new BlogLikeDTO
                         { 
-                          LikeDate = l.LikeDate,
+                         Name=l.User.Name,
+                         Surname =l.User.SurName,
+                         LikeDate = l.LikeDate,
                         }).ToList();
 
             return result;
@@ -82,6 +102,8 @@ namespace DataAccess.Concrete.EntityFramework
                      .Where(l => l.BlogId == BlogId && l.Status == false)
                      .Select(l => new BlogLikeDTO
                      {
+                         Name=l.User.Name,
+                         Surname =l.User.SurName,
                          LikeDate = l.LikeDate,
                      })
                      .OrderByDescending(l => l.LikeDate)

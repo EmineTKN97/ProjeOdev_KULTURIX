@@ -3,6 +3,7 @@ using DataAccess.Concrete.Context;
 using Entities.Concrete;
 using Entities.DTOs;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,37 +18,57 @@ namespace Business.ValidationRules.FluentValidation
     public class MediaValidator : AbstractValidator<MediaDTO>
     {
         private static readonly string[] ImageFormats = { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff", ".webp" };
+
         public MediaValidator()
         {
-            RuleFor(m => m.ImagePath)
-            .NotEmpty().WithMessage("Resim yolu boş olamaz.")
-            .Must(BeAValidImagePath).WithMessage("Geçerli bir resim yolu belirtmelisiniz.");
-        }
+
+           
+                RuleFor(m => m.ImagePath)
+                    .NotEmpty().WithMessage("Resim yolu boş olamaz.")
+                    .Must(BeAValidImagePath).WithMessage("Geçerli bir resim yolu belirtmelisiniz.");
+         }
+
         private bool BeAValidImagePath(string imagePath)
-        {
-            return !string.IsNullOrEmpty(imagePath) && IsImageFile(imagePath);
-        }
+            {
+                if (string.IsNullOrEmpty(imagePath))
+                {
+                    return false;
+                }
+
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp", ".gif" };
+                var extension = Path.GetExtension(imagePath)?.ToLowerInvariant();
+
+                return !string.IsNullOrEmpty(extension) && allowedExtensions.Contains(extension);
+          }
         private bool IsImageFile(string filePath)
         {
-            string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp" };
+            string[] allowedImageExtensions = { ".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp" };
 
-            if (!IsPathValid(filePath, allowedExtensions))
+            if (!IsPathValid(filePath, allowedImageExtensions))
             {
                 return false;
             }
 
-            try
+            string extension = Path.GetExtension(filePath);
+
+            if (allowedImageExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
             {
-                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                try
                 {
-                    return ContainsImageFormat(stream);
+                    using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        return ContainsImageFormat(stream);
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            return false;
         }
+
         private bool ContainsImageFormat(Stream stream)
         {
             try
@@ -62,6 +83,7 @@ namespace Business.ValidationRules.FluentValidation
             {
                 return false;
             }
+
         }
         private bool IsPathValid(string filePath, string[] allowedExtensions)
         {
@@ -74,7 +96,7 @@ namespace Business.ValidationRules.FluentValidation
 
             return !string.IsNullOrEmpty(extension) && allowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
         }
+
     }
-    
-}
+    }
 

@@ -34,7 +34,7 @@ namespace Business.Concrete
             return new Result(true, Messages.BlogCommentAdded);
         }
         [SecuredOperation("USER")]
-        [CacheRemoveAspect("IBlogCommentService.Get")]
+       // [CacheRemoveAspect("IBlogCommentService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid userId)
         {
             _blogcommentDal.Delete(İd,userId);
@@ -42,7 +42,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogCommentValidator))]
-        [CacheRemoveAspect("IBlogCommentService.Get")]
+        //[CacheRemoveAspect("IBlogCommentService.Get")]
         public async Task<IResult> Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid userId)
         {
             try

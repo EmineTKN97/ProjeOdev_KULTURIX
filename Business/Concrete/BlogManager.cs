@@ -38,7 +38,7 @@ namespace Business.Concrete
             _blogDal.Delete(İd, UserId);
             return new Result(true, Messages.BlogDeleted);
         }
-        [CacheAspect]
+       // [CacheAspect]
         public async Task<IDataResult<List<BlogDetailsDTO>>> GetBlogsByCommentAndLikeCount()
         {
             return new SuccessDataResult<List<BlogDetailsDTO>>(_blogDal.GetBlogsByCommentAndLikeCount(), Messages.BlogListed);
