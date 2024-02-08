@@ -77,6 +77,7 @@ namespace DataAccess.Concrete.EntityFramework
                     {
                         UserName = bc.User.Name,
                         UserSurname = bc.User.SurName,
+                        UserİmagePath = bc.User.ImagePath,  
                         CommentDate = bc.CommentDate,
                         CommentDetail = bc.CommentText,
                         CommentTitle = bc.Title,

@@ -69,10 +69,13 @@ namespace DataAccess.Concrete.EntityFramework
                                group new { b, m } by b.BlogId into groupedBlogs
                                select new BlogDetailsDTO
                                {
-                                   BlogTitle = groupedBlogs.First().b.Title,
-                                   BlogContent = groupedBlogs.First().b.Content,
+                                   İd= groupedBlogs.First().b.BlogId,
+                                   Title = groupedBlogs.First().b.Title,
+                                   Content = groupedBlogs.First().b.Content,
                                    BlogDate = groupedBlogs.First().b.Date,
                                    İmagePath = groupedBlogs.First().m.ImagePath,
+                                   Name = groupedBlogs.First().b.User.Name,
+                                   SurName = groupedBlogs.First().b.User.SurName,
                                    BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == groupedBlogs.Key),
                                    BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == groupedBlogs.Key)
                                })
@@ -127,7 +130,28 @@ namespace DataAccess.Concrete.EntityFramework
 
             return blogs;
         }
+
+        public BlogDetailsDTO GetById(Guid BlogId)
+        {
+            var blogDetails = (from blog in _context.Blogs
+                               where blog.BlogId == BlogId && blog.Status == false
+                               select new BlogDetailsDTO
+                               {
+                                   İd = blog.BlogId,
+                                   Title=blog.Title,
+                                   Content = blog.Content,
+                                   Name = blog.User.Name,
+                                   SurName = blog.User.SurName,
+                                   İmagePath = blog.ImagePath,
+                                   BlogDate = blog.Date,
+                                   BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == BlogId),
+                                   BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == BlogId)
+                               }).FirstOrDefault();
+
+            return blogDetails;
+        }
     }
+    
 }
 
 

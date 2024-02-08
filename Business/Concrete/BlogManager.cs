@@ -44,9 +44,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<BlogDetailsDTO>>(_blogDal.GetBlogsByCommentAndLikeCount(), Messages.BlogListed);
         }
         [CacheAspect]
-        public async Task<IDataResult<Blog>> GetById(Guid id)
+        public async Task<IDataResult<BlogDetailsDTO>> GetById(Guid BlogId)
         {
-            return new SuccessDataResult<Blog>(_blogDal.Get(blog => blog.BlogId == id), Messages.BlogListed);
+            return new SuccessDataResult<BlogDetailsDTO>(_blogDal.GetById(BlogId), Messages.BlogListed);
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogValidator))]
@@ -63,7 +63,7 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.BlogNotUpdated);
             }
         }
-        [SecuredOperation("USER")]
+       [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogValidator))]
        // [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult> Add(BlogDTO blogdto, Guid userId)
