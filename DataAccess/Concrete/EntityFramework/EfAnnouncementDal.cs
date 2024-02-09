@@ -21,7 +21,7 @@ namespace DataAccess.Concrete.EntityFramework
         {
             _context = context;
         }
-        public void Add(AnnouncementDTO announcementdto,Guid AdminId)
+        public void Add(AnnouncementDTO announcementdto, Guid AdminId)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -57,6 +57,25 @@ namespace DataAccess.Concrete.EntityFramework
                 _context.Entry(announcementToDelete).State = EntityState.Modified;
                 _context.SaveChanges();
             }
+        }
+
+        public List<AnnouncementDTO> GetLatestAnnouncement()
+        {
+            var announcementDTOs = _context.Announcements
+                        .OrderByDescending(ac => ac.CreateDate) 
+                        .Take(5) 
+                        .Select(ac => new AnnouncementDTO
+                         {
+                             AnnouncementId = ac.Id,
+                             AnnouncementTitle = ac.AnnouncementTitle,
+                             AnnouncementContent = ac.AnnouncementContent,
+                             CreateDate = ac.CreateDate
+                         }) .ToList();
+
+            return announcementDTOs;
+
+
+
         }
 
         public void Update(Guid id, AnnouncementDTO updatedannouncementdto, Guid adminId)

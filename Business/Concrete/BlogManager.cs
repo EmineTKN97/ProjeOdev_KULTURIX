@@ -75,6 +75,11 @@ namespace Business.Concrete
         public async  Task<IDataResult<List<Blog>>> GetByUserId(Guid UserId)
         {
             return new SuccessDataResult<List<Blog>>(_blogDal.GetByUserId(UserId), Messages.BlogListed);
-        } 
+        }
+
+        public async Task<IDataResult<List<BlogDTO>>> GetLatestBlog()
+        {
+            return new SuccessDataResult<List<BlogDTO>>(_blogDal.GetLatestBlog(), Messages.BlogListed);
+        }
     }
 }

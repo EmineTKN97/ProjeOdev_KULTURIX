@@ -18,5 +18,6 @@ namespace Business.Abstract
         Task<IDataResult<BlogDetailsDTO>> GetById(Guid BlogId);
         Task<IDataResult<List<Blog>>> GetByUserId(Guid UserId);
         Task<IDataResult<List<BlogDetailsDTO>>>GetBlogsByCommentAndLikeCount();
+        Task<IDataResult<List<BlogDTO>>> GetLatestBlog();
     }
 }

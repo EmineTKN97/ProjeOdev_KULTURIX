@@ -13,6 +13,7 @@ namespace DataAccess.Abstract
     {
         void Add(AnnouncementDTO announcementdto, Guid adminId);
         void Delete(Guid id, Guid adminId);
+        List<AnnouncementDTO> GetLatestAnnouncement();
         void Update(Guid id, AnnouncementDTO updatedannouncementdto, Guid adminId);
     }
 }

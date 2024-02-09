@@ -14,7 +14,7 @@ namespace Business.Abstract
         Task<IResult> Add(AnnouncementDTO announcementdto,Guid AdminId);
         Task<IResult> Delete(Guid İd, Guid AdminId);
         Task<IResult> Update(Guid id, AnnouncementDTO updatedannouncementdto, Guid AdminId);
-        Task<IDataResult<Announcement>> GetLatestAnnouncement();
+        Task<IDataResult<List<AnnouncementDTO>>> GetLatestAnnouncement();
         Task<IDataResult<Announcement>> GetById(Guid id);
     }
 }

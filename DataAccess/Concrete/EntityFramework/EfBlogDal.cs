@@ -29,7 +29,7 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 BlogId = Guid.NewGuid(),
                 Title = blogdto.Title,
-                Content = blogdto.Description,
+                Content = blogdto.Content,
                 Date = DateTime.Now,
                 ImagePath = "wwwroot\\Uploads\\StaticContent\\default.jpg",
                 UserId = userId
@@ -102,7 +102,7 @@ namespace DataAccess.Concrete.EntityFramework
             if (blogToUpdate != null && blogToUpdate.Status == false)
             {
                 blogToUpdate.Title = updatedBlogDto.Title;
-                blogToUpdate.Content = updatedBlogDto.Description;
+                blogToUpdate.Content = updatedBlogDto.Content;
                 blogToUpdate.Date = DateTime.Now;
                 _context.Entry(blogToUpdate).State = EntityState.Modified;
                 _context.SaveChanges();
@@ -149,6 +149,22 @@ namespace DataAccess.Concrete.EntityFramework
                                }).FirstOrDefault();
 
             return blogDetails;
+        }
+
+        public List<BlogDTO> GetLatestBlog()
+        {
+            var blogDTOs = _context.Blogs
+                       .OrderByDescending(b => b.Date)
+                       .Take(3)
+                       .Select(b => new BlogDTO
+                       {
+                          İd = b.BlogId,
+                          Title=b.Title,   
+                          Content=b.Content,
+                          İmagePath=b.ImagePath,
+                       }).ToList();
+
+            return blogDTOs;
         }
     }
     

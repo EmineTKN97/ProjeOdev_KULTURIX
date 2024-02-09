@@ -3,6 +3,7 @@ using Business.Constants;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,6 +12,7 @@ namespace WEPAPI_UI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class BlogsController : ControllerBase
     {
         IBlogService _blogService;
@@ -75,6 +77,12 @@ namespace WEPAPI_UI.Controllers
             return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
 
 
+        }
+        [HttpGet("GetLatestBlog")]
+        public async Task<IActionResult> GetLatestBlog()
+        {
+            var result = await _blogService.GetLatestBlog();
+            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
         }
     }
 }

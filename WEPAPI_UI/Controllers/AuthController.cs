@@ -3,6 +3,7 @@ using Business.Abstract;
 using Business.Constants;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,6 +12,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class AuthController : Controller
     {
         private IAuthService _authService;

@@ -46,13 +46,10 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Announcement>(_announcementDal.Get(ac => ac.Id == id), Messages.AnnouncementListed);
         }
-        [CacheAspect]
-        public async Task<IDataResult<Announcement>> GetLatestAnnouncement()
+       // [CacheAspect]
+        public async Task<IDataResult<List<AnnouncementDTO>>> GetLatestAnnouncement()
         {
-            return new SuccessDataResult<Announcement>(
-                _announcementDal.GetAll().Where(ac => ac.Status == false).OrderByDescending(ac => ac.CreateDate).FirstOrDefault(),
-        Messages.AnnouncementListed
-            );
+            return new SuccessDataResult<List<AnnouncementDTO>>(_announcementDal.GetLatestAnnouncement(), Messages.AnnouncementListed);
         }
 
         [SecuredOperation("ADMİN")]

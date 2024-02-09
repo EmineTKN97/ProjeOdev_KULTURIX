@@ -24,7 +24,7 @@ namespace Business.ValidationRules.FluentValidation
                 .MaximumLength(50).WithMessage("Başlık en fazla 50 karakter olmalıdır.")
                 .Matches("^[a-zA-Z0-9 ]+$").WithMessage("Başlık yalnızca harf, sayı ve boşluk içerebilir.");
 
-            RuleFor(b => b.Description)
+            RuleFor(b => b.Content)
                 .NotEmpty().WithMessage("İçerik boş olamaz.")
                 .MinimumLength(100).WithMessage("İçerik en az 100 karakter içermelidir.")
                 .Must(BeValidContent).WithMessage("İçerik geçerli değil.");

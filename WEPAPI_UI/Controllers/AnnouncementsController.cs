@@ -62,7 +62,13 @@ namespace WEPAPI_UI.Controllers
                 return BadRequest(Messages.AnnouncementNotUpdated);
             }  
         }
-       
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _announcementService.GetById(id);
+            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
+        }
+
     }
 }
 
