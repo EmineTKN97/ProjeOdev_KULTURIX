@@ -37,20 +37,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddDependencyResolvers(new ICoreModule[] { new CoreModule() });
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-    {
-        builder
-            .WithOrigins("https://localhost:7019/")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
-
-
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

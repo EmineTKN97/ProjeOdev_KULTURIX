@@ -32,7 +32,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(MediaValidator))]
-       // [CacheRemoveAspect("IMediaService.Get")]
+        [CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> AddBlogMedia(IFormFile file,Guid BlogId, Guid UserId)
         {
             IResult result = BusinessRules.Run(IsBlogWithoutMedia(BlogId));
@@ -55,7 +55,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(MediaValidator))]
-      //  [CacheRemoveAspect("IMediaService.Get")]
+        [CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> AddUserMedia(IFormFile file,Guid UserId)
         {
             IResult result = BusinessRules.Run(IsUserWithoutMedia(UserId));
@@ -76,7 +76,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.AddUserİmage);
         }
         [SecuredOperation("USER")]
-        //[CacheRemoveAspect("IMediaService.Get")]
+        [CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid UserId)
         {
             _mediaDal.Delete(İd,UserId);

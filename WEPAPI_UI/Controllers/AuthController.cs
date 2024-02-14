@@ -57,6 +57,7 @@ namespace WebAPI.Controllers
             }
 
             return BadRequest(result.Message);
+        
         }
         [HttpPost("loginAdmin")]
         public ActionResult Login(AdminForLoginDTO adminForLoginDto)

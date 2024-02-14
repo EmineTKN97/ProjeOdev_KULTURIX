@@ -45,7 +45,11 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
             foreach (var cacheItem in cacheEntriesCollection)
             {
                 ICacheEntry cacheItemValue = cacheItem.GetType().GetProperty("Value").GetValue(cacheItem, null);
-                cacheCollectionValues.Add(cacheItemValue);
+
+                if (cacheItemValue != null)
+                {
+                    cacheCollectionValues.Add(cacheItemValue);
+                }
             }
 
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);

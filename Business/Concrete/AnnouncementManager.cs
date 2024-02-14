@@ -28,25 +28,25 @@ namespace Business.Concrete
 
         [SecuredOperation("ADMİN")]
         [ValidationAspect(typeof(AnnouncementValidator))]
-        [CacheRemoveAspect("IBlogAnnouncementService.Get")]
+        [CacheRemoveAspect("IAnnouncementService.Get")]
         public async Task<IResult> Add(AnnouncementDTO announcementdto, Guid AdminId)
         {
             _announcementDal.Add(announcementdto,AdminId);
             return new SuccessResult(Messages.AnnouncementAdded);
         }
         [SecuredOperation("ADMİN")]
-        [CacheRemoveAspect("IBlogAnnouncementService.Get")]
+        [CacheRemoveAspect("IAnnouncementService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid AdminId)
         {
             _announcementDal.Delete(İd,AdminId);
             return new Result(true, Messages.AnnouncementDeleted);
         }
-        [CacheAspect]
+        [CacheAspect(duration:10)]
         public async Task<IDataResult<Announcement>> GetById(Guid id)
         {
             return new SuccessDataResult<Announcement>(_announcementDal.Get(ac => ac.Id == id), Messages.AnnouncementListed);
         }
-       // [CacheAspect]
+        [CacheAspect]
         public async Task<IDataResult<List<AnnouncementDTO>>> GetLatestAnnouncement()
         {
             return new SuccessDataResult<List<AnnouncementDTO>>(_announcementDal.GetLatestAnnouncement(), Messages.AnnouncementListed);
@@ -54,7 +54,7 @@ namespace Business.Concrete
 
         [SecuredOperation("ADMİN")]
         [ValidationAspect(typeof(AnnouncementValidator))]
-        [CacheRemoveAspect("IBlogAnnouncementService.Get")]
+        [CacheRemoveAspect("IAnnouncementService.Get")]
         public async Task<IResult> Update(Guid id, AnnouncementDTO updatedannouncementdto, Guid AdminId)
         {
             try
