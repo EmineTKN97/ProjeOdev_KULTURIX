@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -38,18 +40,20 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
         }
         public void RemoveByPattern(string pattern)
         {
-            var cacheEntriesCollectionDefinition = typeof(MemoryCache).GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var cacheEntriesCollection = cacheEntriesCollectionDefinition.GetValue(_memoryCache) as dynamic;
-            List<ICacheEntry> cacheCollectionValues = new List<ICacheEntry>();
+            var coherentState = typeof(MemoryCache).GetField("_coherentState", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            foreach (var cacheItem in cacheEntriesCollection)
+            var coherentStateValue = coherentState.GetValue(_memoryCache);
+
+            var entriesCollection = coherentStateValue.GetType().GetProperty("EntriesCollection", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            var entriesCollectionValue = entriesCollection.GetValue(coherentStateValue) as ICollection;
+
+            List<ICacheEntry> cacheCollectionValues = new();
+
+            foreach (var cacheItem in entriesCollectionValue)
             {
-                ICacheEntry cacheItemValue = cacheItem.GetType().GetProperty("Value").GetValue(cacheItem, null);
-
-                if (cacheItemValue != null)
-                {
-                    cacheCollectionValues.Add(cacheItemValue);
-                }
+                ICacheEntry cacheItemValue = (ICacheEntry)cacheItem.GetType().GetProperty("Value").GetValue(cacheItem, null);
+                cacheCollectionValues.Add(cacheItemValue);
             }
 
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);

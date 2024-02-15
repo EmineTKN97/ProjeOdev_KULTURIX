@@ -32,6 +32,8 @@ namespace DataAccess.Concrete.Context
             modelBuilder.ApplyConfiguration(new OperationClaimConfiguration());
             modelBuilder.ApplyConfiguration(new UserOperationClaimConfiguration());
             modelBuilder.ApplyConfiguration(new AdminOperationClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new DistrictConfiguration());
+            modelBuilder.ApplyConfiguration(new CityConfiguration());
         
         }
         public DbSet<Blog> Blogs { get; set; }
@@ -44,6 +46,9 @@ namespace DataAccess.Concrete.Context
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<AdminOperationClaim> AdminOperationClaims { get; set; }
         public  DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<City> Cities { get; set; }
+
+        public DbSet<District> Districts { get; set; }  
         
 
     }

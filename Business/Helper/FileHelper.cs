@@ -11,10 +11,20 @@ namespace Business.Helper
     {
         public static string GenerateFileName(IFormFile file)
         {
-            string uniqueFileName = Guid.NewGuid().ToString();
-            string fileExtension = Path.GetExtension(file.FileName);
-            return uniqueFileName + fileExtension;
-        }
+			if (file == null || file.Length == 0 || string.IsNullOrEmpty(file.FileName))
+			{
+				throw new ArgumentNullException("file", "Dosya boş veya geçersiz.");
+			}
+			string[] allowedExtensions = { ".jpg", ".jpeg", ".png" };
+
+			string fileExtension = Path.GetExtension(file.FileName);
+			if (!allowedExtensions.Contains(fileExtension.ToLower()))
+			{
+				throw new NotSupportedException("Desteklenmeyen dosya uzantısı.");
+			}
+			string uniqueFileName = Guid.NewGuid().ToString();
+			return uniqueFileName + fileExtension;
+		}
         
     }
 }

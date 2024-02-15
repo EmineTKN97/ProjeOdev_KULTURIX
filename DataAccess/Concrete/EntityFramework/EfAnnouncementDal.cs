@@ -59,6 +59,21 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
+        public List<AnnouncementDTO> GetAllAnnouncement()
+        {
+            var announcementDTOs = _context.Announcements
+                .OrderByDescending(ac => ac.CreateDate)
+                .Where(ac => ac.Status == false)
+                .Select(ac => new AnnouncementDTO
+                {
+                   AnnouncementId = ac.Id,
+                    AnnouncementContent=ac.AnnouncementContent,
+                    AnnouncementTitle=ac.AnnouncementTitle,
+                    CreateDate= ac.CreateDate,
+                }).ToList();
+            return announcementDTOs;
+        }
+
         public List<AnnouncementDTO> GetLatestAnnouncement()
         {
             var announcementDTOs = _context.Announcements

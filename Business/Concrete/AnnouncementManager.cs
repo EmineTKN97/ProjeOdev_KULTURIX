@@ -41,7 +41,13 @@ namespace Business.Concrete
             _announcementDal.Delete(İd,AdminId);
             return new Result(true, Messages.AnnouncementDeleted);
         }
-        [CacheAspect(duration:10)]
+
+        public async Task<IDataResult<List<AnnouncementDTO>>> GetAllAnnouncement()
+        {
+            return new SuccessDataResult<List<AnnouncementDTO>>(_announcementDal.GetAllAnnouncement(), Messages.AnnouncementListed);
+        }
+
+        [CacheAspect]
         public async Task<IDataResult<Announcement>> GetById(Guid id)
         {
             return new SuccessDataResult<Announcement>(_announcementDal.Get(ac => ac.Id == id), Messages.AnnouncementListed);

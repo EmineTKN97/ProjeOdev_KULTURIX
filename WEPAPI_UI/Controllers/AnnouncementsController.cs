@@ -25,6 +25,12 @@ namespace WEPAPI_UI.Controllers
             var result = await _announcementService.GetLatestAnnouncement();
             return !result.Success ? BadRequest(Messages.AnnouncementNotListed) : Ok(result.Data);
         }
+        [HttpGet("GetAllAnnouncement")]
+        public async Task<IActionResult> GetAllAnnouncement()
+        {
+            var result = await _announcementService.GetAllAnnouncement();
+            return !result.Success ? BadRequest(Messages.AnnouncementNotListed) : Ok(result.Data);
+        }
         [HttpPost("AddAnnouncement")]
         public async Task<IActionResult> AddAnnouncement(AnnouncementDTO announcementdto,Guid adminId)
         {

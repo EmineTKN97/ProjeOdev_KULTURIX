@@ -16,5 +16,6 @@ namespace Business.Abstract
         Task<IResult> Update(Guid id, AnnouncementDTO updatedannouncementdto, Guid AdminId);
         Task<IDataResult<List<AnnouncementDTO>>> GetLatestAnnouncement();
         Task<IDataResult<Announcement>> GetById(Guid id);
+        Task<IDataResult<List<AnnouncementDTO>>> GetAllAnnouncement();
     }
 }

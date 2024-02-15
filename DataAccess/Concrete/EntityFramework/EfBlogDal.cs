@@ -31,7 +31,7 @@ namespace DataAccess.Concrete.EntityFramework
                 Title = blogdto.Title,
                 Content = blogdto.Content,
                 Date = DateTime.Now,
-                ImagePath = "wwwroot\\Uploads\\StaticContent\\default.jpg",
+                ImagePath = "default.jpg",
                 UserId = userId
             };
 
@@ -155,6 +155,7 @@ namespace DataAccess.Concrete.EntityFramework
         {
             var blogDTOs = _context.Blogs
                        .OrderByDescending(b => b.Date)
+                       .Where(b =>b.Status == false)
                        .Take(3)
                        .Select(b => new BlogDTO
                        {
