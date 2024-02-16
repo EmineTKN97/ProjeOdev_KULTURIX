@@ -18,6 +18,7 @@ namespace Entities.DTOs
         public string İmagePath { get; set; }
         public string Name{ get; set; }
         public string SurName { get; set; }
+        public string UserImagePath { get; set;}
 
     }
 

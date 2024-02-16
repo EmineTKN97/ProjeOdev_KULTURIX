@@ -95,6 +95,7 @@ namespace DataAccess.Concrete.EntityFramework
                             where bc.BlogId == BlogId && bc.Status == false && b.Status == false
                             select new BlogCommentDTO
                             {
+                                UserİmagePath= bc.User.ImagePath,
                                 UserName = bc.User.Name,
                                 UserSurname = bc.User.SurName,
                                 CommentDate = bc.CommentDate,
