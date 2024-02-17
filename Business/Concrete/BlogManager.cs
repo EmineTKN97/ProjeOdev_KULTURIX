@@ -32,13 +32,13 @@ namespace Business.Concrete
             _blogDal = blogDal;
         }
         [SecuredOperation("USER")]
-       // [CacheRemoveAspect("IBlogService.Get")]
+      [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid UserId)
         {
             _blogDal.Delete(İd, UserId);
             return new Result(true, Messages.BlogDeleted);
         }
-       // [CacheAspect]
+        [CacheAspect]
         public async Task<IDataResult<List<BlogDetailsDTO>>> GetBlogsByCommentAndLikeCount()
         {
             return new SuccessDataResult<List<BlogDetailsDTO>>(_blogDal.GetBlogsByCommentAndLikeCount(), Messages.BlogListed);
@@ -50,7 +50,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogValidator))]
-       //[CacheRemoveAspect("IBlogService.Get")]
+       [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult>Update(Guid id, BlogDTO updatedBlogDto,Guid UserId)
         {  
             try
@@ -65,7 +65,7 @@ namespace Business.Concrete
         }
        [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogValidator))]
-       // [CacheRemoveAspect("IBlogService.Get")]
+        [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult> Add(BlogDTO blogdto, Guid userId)
         {
             _blogDal.Add(blogdto,userId);
