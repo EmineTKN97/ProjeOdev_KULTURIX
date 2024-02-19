@@ -59,40 +59,32 @@ namespace DataAccess.Concrete.EntityFramework
         public List<BlogDetailsDTO> GetBlogsByCommentAndLikeCount()
         {
             var blogDetails = (from b in _context.Blogs
-                               join l in _context.BlogLikes on b.BlogId equals l.BlogId
-                               join bc in _context.BlogComments on b.BlogId equals bc.BlogId
-                               where (b.Status == false)
-                                    && (l.Status == false)
-                                    && (bc.Status == false)
-                               group new { b} by b.BlogId into groupedBlogs
+                               where b.Status == false
+                               orderby b.Date descending 
                                select new BlogDetailsDTO
                                {
-                                   İd = groupedBlogs.First().b.BlogId,
-                                   Title = groupedBlogs.First().b.Title,
-                                   Content = groupedBlogs.First().b.Content,
-                                   BlogDate = groupedBlogs.First().b.Date,
-                                   İmagePath = string.IsNullOrEmpty(groupedBlogs.First().b.ImagePath)
-                                               ? "default.jpg" 
-                                               : groupedBlogs.First().b.ImagePath,
-                                   Name = groupedBlogs.First().b.User.Name,
-                                   SurName = groupedBlogs.First().b.User.SurName,
-                                   UserImagePath = groupedBlogs.First().b.User.ImagePath,
-                                   BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == groupedBlogs.Key),
-                                   BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == groupedBlogs.Key)
+                                   İd = b.BlogId,
+                                   Title = b.Title,
+                                   Content = b.Content,
+                                   BlogDate = b.Date,
+                                   İmagePath = string.IsNullOrEmpty(b.ImagePath) ? "default.jpg" : b.ImagePath,
+                                   Name = b.User.Name,
+                                   SurName = b.User.SurName,
+                                   UserImagePath = b.User.ImagePath,
+                                   BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == b.BlogId && c.Status == false),
+                                   BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == b.BlogId && l.Status == false)
                                })
                 .ToList();
 
             foreach (var blogDetail in blogDetails)
             {
-               
-                blogDetail.BlogLikeCount = Math.Max(blogDetail.BlogLikeCount, 0);
-                blogDetail.BlogCommentCount = Math.Max(blogDetail.BlogCommentCount, 0);
+                blogDetail.BlogLikeCount = Math.Max(blogDetail.BlogLikeCount ?? 0, 0);
+                blogDetail.BlogCommentCount = Math.Max(blogDetail.BlogCommentCount ?? 0, 0);
             }
 
             return blogDetails;
         }
-
-            public void Update(Guid id, BlogDTO updatedBlogDto, Guid UserId)
+        public void Update(Guid id, BlogDTO updatedBlogDto, Guid UserId)
         {
             var blogToUpdate = _context.Blogs.FirstOrDefault(b => b.BlogId == id && b.UserId == UserId);
 
@@ -151,16 +143,17 @@ namespace DataAccess.Concrete.EntityFramework
         public List<BlogDTO> GetLatestBlog()
         {
             var blogDTOs = _context.Blogs
-                       .OrderByDescending(b => b.Date)
-                       .Where(b =>b.Status == false)
-                       .Take(3)
-                       .Select(b => new BlogDTO
-                       {
-                          İd = b.BlogId,
-                          Title=b.Title,   
-                          Content=b.Content,
-                          İmagePath=b.ImagePath,
-                       }).ToList();
+                .Where(b => b.Status == false)
+                .OrderByDescending(b => _context.BlogLikes.Count(bl => bl.BlogId == b.BlogId) + _context.BlogComments.Count(bc => bc.BlogId == b.BlogId))
+                .Take(3)
+                .Select(b => new BlogDTO
+                {
+                    İd = b.BlogId,
+                    Title = b.Title,
+                    Content = b.Content,
+                    İmagePath = b.ImagePath
+                })
+                .ToList();
 
             return blogDTOs;
         }
