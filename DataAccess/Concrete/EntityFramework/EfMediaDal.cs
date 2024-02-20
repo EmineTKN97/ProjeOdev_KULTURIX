@@ -35,8 +35,6 @@ namespace DataAccess.Concrete.EntityFramework
 
                 _context.Medias.Add(imageEntity);
                 _context.SaveChanges();
-
-                // Blogun ImagePath alanını güncelle.
                 existingBlog.ImagePath = fileName;
                 _context.SaveChanges();
             }
@@ -58,7 +56,7 @@ namespace DataAccess.Concrete.EntityFramework
 
             if (existingUser != null)
             {
-                if (string.Equals(existingUser.ImagePath, "wwwroot\\Uploads\\StaticContent\\default.jpg", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(existingUser.ImagePath, "default.jpg", StringComparison.OrdinalIgnoreCase))
                 {
                     existingUser.ImagePath = fileName;
                     _context.SaveChanges();

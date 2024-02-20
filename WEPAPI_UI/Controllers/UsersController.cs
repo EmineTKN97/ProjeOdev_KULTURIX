@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -57,6 +58,11 @@ namespace WEPAPI_UI.Controllers
 
             return BadRequest(Messages.ChangeNotPassword);
         }
-
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(Guid Userİd)
+        {
+            var result = await _userService.GetById(Userİd);
+            return !result.Success ? BadRequest(Messages.UserNotListed) : Ok(result.Data);
+        }
     }
 }

@@ -80,5 +80,6 @@ namespace Business.Constants
         public static string UserNotActive="Böyle bir kullanıcı bulunamadı";
         public static string AdminNotActive="Böyle bir yönetici bulunamadı";
         public static string AdminAdded="Yönetici eklendi";
+        public static string UserNotListed = "Kullanıcı bilgileri getirilemedi";
     }
 }

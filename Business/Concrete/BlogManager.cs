@@ -62,7 +62,7 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.BlogNotUpdated);
             }
         }
-       [SecuredOperation("USER")]
+         [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogValidator))]
         [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult> Add(BlogDTO blogdto, Guid userId)

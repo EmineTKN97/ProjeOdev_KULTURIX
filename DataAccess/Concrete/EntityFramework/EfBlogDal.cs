@@ -63,11 +63,11 @@ namespace DataAccess.Concrete.EntityFramework
                                orderby b.Date descending 
                                select new BlogDetailsDTO
                                {
-                                   İd = b.BlogId,
+                                   BlogId = b.BlogId,
                                    Title = b.Title,
                                    Content = b.Content,
                                    BlogDate = b.Date,
-                                   İmagePath = string.IsNullOrEmpty(b.ImagePath) ? "default.jpg" : b.ImagePath,
+                                   ImagePath = string.IsNullOrEmpty(b.ImagePath) ? "default.jpg" : b.ImagePath,
                                    Name = b.User.Name,
                                    SurName = b.User.SurName,
                                    UserImagePath = b.User.ImagePath,
@@ -126,12 +126,12 @@ namespace DataAccess.Concrete.EntityFramework
                                where blog.BlogId == BlogId && blog.Status == false
                                select new BlogDetailsDTO
                                {
-                                   İd = blog.BlogId,
+                                   BlogId = blog.BlogId,
                                    Title=blog.Title,
                                    Content = blog.Content,
                                    Name = blog.User.Name,
                                    SurName = blog.User.SurName,
-                                   İmagePath = blog.ImagePath,
+                                   ImagePath = blog.ImagePath,
                                    BlogDate = blog.Date,
                                    BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == BlogId),
                                    BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == BlogId)
@@ -148,10 +148,10 @@ namespace DataAccess.Concrete.EntityFramework
                 .Take(3)
                 .Select(b => new BlogDTO
                 {
-                    İd = b.BlogId,
+                   BlogId = b.BlogId,
                     Title = b.Title,
                     Content = b.Content,
-                    İmagePath = b.ImagePath
+                    ImagePath = b.ImagePath
                 })
                 .ToList();
 

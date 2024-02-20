@@ -17,7 +17,7 @@ namespace Business.Abstract
         User GetByMail(string email);
         Task<IResult> Delete(Guid İd);
         Task<IResult> Update(Guid id, UserDTO userDto);
-        Task<IDataResult<User>> GetById(Guid Userİd);
+        Task<IDataResult<UserDTO>> GetById(Guid Userİd);
         Task<IResult> ChangePassword(string currentPassword, string newPassword, Guid UserıD);
         //Task<List<UserActivity>> GetUserActivities(Guid userId);
 

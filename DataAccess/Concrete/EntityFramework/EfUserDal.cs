@@ -34,6 +34,23 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
+        public UserDTO GetById(Guid userId)
+        {
+            var user = _context.Users
+                              .Where(u => u.Id == userId)
+                              .Select(u => new UserDTO
+                              {
+                                  BirthDate = u.BirthDate,
+                                  ImagePath = u.ImagePath,
+                                  Name = u.Name,
+                                  SurName = u.SurName,
+                                  Email = u.Email,
+                              })
+                              .FirstOrDefault(); 
+
+            return user;
+        }
+
         public List<OperationClaim> GetClaims(User user)
         {
             
