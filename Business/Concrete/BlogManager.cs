@@ -71,9 +71,9 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BlogAdded);
         }
         [CacheAspect]
-        public async  Task<IDataResult<List<Blog>>> GetByUserId(Guid UserId)
+        public async  Task<IDataResult<List<BlogDTO>>> GetByUserId(Guid UserId)
         {
-            return new SuccessDataResult<List<Blog>>(_blogDal.GetByUserId(UserId), Messages.BlogListed);
+            return new SuccessDataResult<List<BlogDTO>>(_blogDal.GetByUserId(UserId), Messages.BlogListed);
         }
 
         public async Task<IDataResult<List<BlogDTO>>> GetLatestBlog()

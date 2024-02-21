@@ -16,7 +16,7 @@ namespace Business.Abstract
         Task<IResult> Delete(Guid İd,Guid UserId);
         Task<IResult> Update(Guid id, BlogDTO updatedBlogDto,Guid UserId);
         Task<IDataResult<BlogDetailsDTO>> GetById(Guid BlogId);
-        Task<IDataResult<List<Blog>>> GetByUserId(Guid UserId);
+        Task<IDataResult<List<BlogDTO>>> GetByUserId(Guid UserId);
         Task<IDataResult<List<BlogDetailsDTO>>>GetBlogsByCommentAndLikeCount();
         Task<IDataResult<List<BlogDTO>>> GetLatestBlog();
     }

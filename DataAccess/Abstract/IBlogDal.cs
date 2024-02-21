@@ -15,7 +15,7 @@ namespace DataAccess.Abstract
         void Delete(Guid id, Guid userId);
         void Update(Guid id, BlogDTO updatedBlogDto,Guid UserId);
         void Add(BlogDTO blogdto, Guid userId);
-        List<Blog> GetByUserId(Guid userId);
+        List<BlogDTO> GetByUserId(Guid userId);
         BlogDetailsDTO GetById(Guid BlogId);
         List<BlogDTO> GetLatestBlog();
     }

@@ -59,9 +59,9 @@ namespace WEPAPI_UI.Controllers
             return BadRequest(Messages.ChangeNotPassword);
         }
         [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(Guid Userİd)
+        public async Task<IActionResult> GetById(Guid UserId)
         {
-            var result = await _userService.GetById(Userİd);
+            var result = await _userService.GetById(UserId);
             return !result.Success ? BadRequest(Messages.UserNotListed) : Ok(result.Data);
         }
     }

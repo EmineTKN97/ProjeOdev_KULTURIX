@@ -62,10 +62,10 @@ namespace Business.Concrete
             }
 
         }
-        public async Task<IDataResult<UserDTO>> GetById(Guid Userİd)
+        public async Task<IDataResult<UserDTO>> GetById(Guid UserId)
         {
             
-            return new SuccessDataResult<UserDTO>(_userDal.GetById(Userİd), Messages.UserListed);
+            return new SuccessDataResult<UserDTO>(_userDal.GetById(UserId), Messages.UserListed);
             
         }
         [SecuredOperation("USER")]

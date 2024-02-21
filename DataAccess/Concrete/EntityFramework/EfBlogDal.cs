@@ -102,20 +102,21 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
         //userın bloglarını eklenme tarihine göre sıralama
-        public List<Blog> GetByUserId(Guid userId)
+        public List<BlogDTO> GetByUserId(Guid userId)
         {
-
             var blogs = (from b in _context.Blogs
-                          join u in _context.Users on b.UserId equals u.Id
-                          where b.UserId == userId
-                          orderby b.Date descending
-                          select new Blog
-                          {
-                              BlogId = b.BlogId,
-                              Title = b.Title,
-                              Content = b.Content,
-                              ImagePath = b.ImagePath,    
-                          }).ToList();
+                         join u in _context.Users on b.UserId equals u.Id
+                         where b.UserId == userId && b.Status == false 
+                         orderby b.Date descending
+                         select new BlogDTO
+                         {
+                             BlogId = b.BlogId,
+                             Title = b.Title,
+                             Content = b.Content,
+                             ImagePath = b.ImagePath,
+                             BlogDate= b.Date,
+                         
+                         }).ToList();
 
             return blogs;
         }
