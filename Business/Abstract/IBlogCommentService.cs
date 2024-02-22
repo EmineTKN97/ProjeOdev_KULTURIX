@@ -17,6 +17,8 @@ namespace Business.Abstract
         Task<IResult> Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid userId);
         Task<IDataResult<List<BlogCommentDTO>>> GetAllCommentsDetails();
         Task<IDataResult<List<BlogCommentDTO>>> GetCommentsByBlogId(Guid BlogId);
+        Task<IDataResult<List<BlogCommentDTO>>> GetByCommentUserId(Guid UserId);
+        Task<IDataResult<BlogCommentDTO>> GetById(Guid CommentId);
 
     }
 }

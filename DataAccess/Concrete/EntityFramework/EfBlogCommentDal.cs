@@ -86,6 +86,48 @@ namespace DataAccess.Concrete.EntityFramework
                 return result;
             
         }
+
+        public List<BlogCommentDTO> GetByCommentUserId(Guid userId)
+        {
+
+            var blogComments = (from bc in _context.BlogComments
+                                join u in _context.Users on bc.UserId equals u.Id
+                                join b in _context.Blogs on bc.BlogId equals b.BlogId
+                                where bc.UserId == userId && bc.Status == false
+                                select new BlogCommentDTO
+                                {
+                                    CommentDate = bc.CommentDate,
+                                    CommentDetail = bc.CommentText,
+                                    CommentTitle = bc.Title,
+                                    BlogTitle = b.Title, 
+                                    UserName = b.User.Name,
+                                    UserSurname = b.User.SurName,
+                                    UserİmagePath= bc.User.ImagePath,
+                                    BlogId=b.BlogId,
+                                   CommentId= bc.CommentId
+                                }).ToList();
+
+            return blogComments;
+        }
+
+        public BlogCommentDTO GetById(Guid commentId)
+        {
+            var blogCommentDetails = (from bc in _context.BlogComments
+                               where bc.CommentId == commentId && bc.Status == false
+                               select new BlogCommentDTO
+                               {
+                                   CommentDate = bc.CommentDate,
+                                   CommentDetail = bc.CommentText,
+                                   CommentTitle = bc.Title,
+                                   CommentId = bc.CommentId,
+                                   UserName= bc.User.Name,
+                                   UserSurname= bc.User.SurName
+                               }).FirstOrDefault();
+
+            return blogCommentDetails;
+        }
+    
+
         //Blog yorumunu Blogunid'sine göre sıralama
         public List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId)
         {

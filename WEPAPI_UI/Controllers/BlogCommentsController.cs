@@ -17,7 +17,12 @@ namespace WEPAPI_UI.Controllers
         {
             _blogcommentService = blogcommentService;
         }
-
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(Guid CommentId)
+        {
+            var result = await _blogcommentService.GetById(CommentId);
+            return !result.Success ? BadRequest(Messages.BlogCommentNotListed) : Ok(result.Data);
+        }
 
         [HttpGet("GetBlogCommentsDetails")]
         public async Task<IActionResult> GetAllCommentsDetails()
@@ -52,7 +57,14 @@ namespace WEPAPI_UI.Controllers
                 return BadRequest(Messages.BlogCommentNotDeleted);
             }
         }
+        [HttpGet("GetByUserId")]
+        public async Task<IActionResult> GetByUserId(Guid UserId)
+        {
+            var result = await _blogcommentService.GetByCommentUserId(UserId);
+            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
 
+
+        }
         [HttpPut("UpdateBlogComment")]
         public async Task<IActionResult> Update(Guid id, BlogCommentDTO updatedcommentBlogDto,Guid UserId)
         {

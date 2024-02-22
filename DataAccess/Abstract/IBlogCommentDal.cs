@@ -16,6 +16,7 @@ namespace DataAccess.Abstract
         void Delete(Guid id, Guid userId);
         void Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid userId);
         List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId);
-
+        List<BlogCommentDTO> GetByCommentUserId(Guid userId);
+        BlogCommentDTO GetById(Guid commentId);
     }
 }

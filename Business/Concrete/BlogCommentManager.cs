@@ -34,7 +34,7 @@ namespace Business.Concrete
             return new Result(true, Messages.BlogCommentAdded);
         }
         [SecuredOperation("USER")]
-       // [CacheRemoveAspect("IBlogCommentService.Get")]
+       [CacheRemoveAspect("IBlogCommentService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid userId)
         {
             _blogcommentDal.Delete(İd,userId);
@@ -42,7 +42,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogCommentValidator))]
-        //[CacheRemoveAspect("IBlogCommentService.Get")]
+       [CacheRemoveAspect("IBlogCommentService.Get")]
         public async Task<IResult> Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid userId)
         {
             try
@@ -65,6 +65,16 @@ namespace Business.Concrete
         public async Task<IDataResult<List<BlogCommentDTO>>> GetCommentsByBlogId(Guid BlogId)
         {
             return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetCommentsByBlogId(BlogId), Messages.BlogCommentListed);
+        }
+
+        public async Task<IDataResult<List<BlogCommentDTO>>> GetByCommentUserId(Guid UserId)
+        {
+            return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetByCommentUserId(UserId), Messages.BlogCommentListed);
+        }
+
+        public async Task<IDataResult<BlogCommentDTO>> GetById(Guid CommentId)
+        {
+            return new SuccessDataResult<BlogCommentDTO>(_blogcommentDal.GetById(CommentId), Messages.BlogCommentListed);
         }
     }
 }
