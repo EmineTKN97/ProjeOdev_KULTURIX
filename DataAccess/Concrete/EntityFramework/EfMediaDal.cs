@@ -56,7 +56,7 @@ namespace DataAccess.Concrete.EntityFramework
 
             if (existingUser != null)
             {
-                if (string.Equals(existingUser.ImagePath, "default.jpg", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(existingUser.ImagePath, "user.jpg", StringComparison.OrdinalIgnoreCase))
                 {
                     existingUser.ImagePath = fileName;
                     _context.SaveChanges();
@@ -81,7 +81,7 @@ namespace DataAccess.Concrete.EntityFramework
                 var userToUpdate = _context.Users.FirstOrDefault(u => u.Id == UserId);
                 if (userToUpdate != null)
                 {
-                    userToUpdate.ImagePath ="wwwroot\\Uploads\\StaticContent\\default.jpg";
+                    userToUpdate.ImagePath ="user.jpg";
                     _context.SaveChanges();
                 }
             }
@@ -107,7 +107,7 @@ namespace DataAccess.Concrete.EntityFramework
                     _context.SaveChanges();
 
                     // Medya silindiğinde, bağlı olduğu blogun ImagePath alanını null yap.
-                    associatedBlog.ImagePath ="wwwroot\\Uploads\\StaticContent\\default.jpg";
+                    associatedBlog.ImagePath ="default.jpg";
                     _context.SaveChanges();
                 }
                 else

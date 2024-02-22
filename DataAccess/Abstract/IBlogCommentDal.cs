@@ -12,7 +12,7 @@ namespace DataAccess.Abstract
    public interface IBlogCommentDal : IEntityRepository<BlogComment>
     {
         List<BlogCommentDTO> GetAllCommentDetails();
-        void Add(Guid Blogİd, BlogCommentDTO blogcommentdto, Guid userId);
+        void Add(Guid Blogİd,BlogCommentDTO blogcommentdto, Guid userId);
         void Delete(Guid id, Guid userId);
         void Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid userId);
         List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId);

@@ -44,7 +44,7 @@ namespace Business.Concrete
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = false,
-                ImagePath = "wwwroot\\Uploads\\StaticContent\\default.jpg",
+                ImagePath = "user.jpg",
                 CreateDate = DateTime.Now,
             };
 
