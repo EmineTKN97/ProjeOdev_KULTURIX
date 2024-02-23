@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\Uploads\**" />
-    <Content Remove="wwwroot\Uploads\**" />
-    <EmbeddedResource Remove="wwwroot\Uploads\**" />
-    <None Remove="wwwroot\Uploads\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
@@ -36,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\StaticContent\Uploads\" />
+    <Folder Include="wwwroot\Uploads\StaticContent\" />
   </ItemGroup>
 
 </Project>

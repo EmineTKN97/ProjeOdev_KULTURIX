@@ -100,8 +100,8 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(MediaValidator))]
-        //[CacheRemoveAspect("IMediaService.Get")]
-        public async Task<IResult>Update(IFormFile file, Guid MediaId, Guid UserId)
+        [CacheRemoveAspect("IMediaService.Get")]
+        public async Task<IResult>Update(IFormFile file, Guid UserId)
         {
             string fileName = FileHelper.GenerateFileName(file);
             var filePath = Common.GetFilePath(fileName);
@@ -109,13 +109,13 @@ namespace Business.Concrete
             {
                 await file.CopyToAsync(fileStream);
             }
-
-            _mediaDal.Update(fileName,MediaId,UserId);
+  
+            _mediaDal.Update(fileName,UserId);
 
             return new SuccessResult(Messages.UpdateMedia);
         }
         [SecuredOperation("USER")]
-        //[CacheRemoveAspect("IMediaService.Get")]
+        [CacheRemoveAspect("IMediaService.Get")]
         public async Task<IResult> DeleteBlogMedia(Guid İd, Guid BlogId, Guid UserId)
         {
             _mediaDal.DeleteBlogMedia(İd,BlogId,UserId);
@@ -123,8 +123,8 @@ namespace Business.Concrete
         }
         [SecuredOperation("USER")]
         [ValidationAspect(typeof(MediaValidator))]
-        //[CacheRemoveAspect("IMediaService.Get")]
-        public async Task<IResult> UpdateBlogMedia(IFormFile file, Guid MediaId, Guid BlogId, Guid UserId)
+        [CacheRemoveAspect("IMediaService.Get")]
+        public async Task<IResult> UpdateBlogMedia(IFormFile file, Guid BlogId, Guid UserId)
         {
             string fileName = FileHelper.GenerateFileName(file);
             var filePath = Common.GetFilePath(fileName);
@@ -134,7 +134,7 @@ namespace Business.Concrete
                 await file.CopyToAsync(fileStream);
             }
 
-            _mediaDal.UpdateBlogMedia(fileName, MediaId,BlogId,UserId);
+            _mediaDal.UpdateBlogMedia(fileName,BlogId,UserId);
 
             return new SuccessResult(Messages.UpdateMedia);
         }

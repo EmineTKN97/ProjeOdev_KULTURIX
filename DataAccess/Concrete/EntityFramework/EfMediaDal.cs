@@ -139,45 +139,28 @@ namespace DataAccess.Concrete.EntityFramework
         }
 
 
-        public void Update(string fileName, Guid mediaId, Guid UserId)
+        public void Update(string fileName, Guid UserId)
         {
-            var existingMedia = _context.Medias.SingleOrDefault(m => m.MediaId == mediaId && m.UserId == UserId);
+            var existingUser = _context.Users.FirstOrDefault(u => u.Id == UserId);
 
-            if (existingMedia != null && existingMedia.Status == false)
+            if (existingUser != null)
             {
-                var existingUser = _context.Users.FirstOrDefault(u => u.Id == UserId);
-
-                // Eğer güncellenen media, kullanıcının profil resmi ise, User tablosundaki ImagePath'i güncelle
-                if (existingUser != null && existingUser.ImagePath == existingMedia.ImagePath)
-                {
-                    existingUser.ImagePath = fileName;
-                }
-
-                existingMedia.ImagePath = fileName;
-
+                existingUser.ImagePath = fileName;
                 _context.SaveChanges();
             }
-            else
-            {
-                throw new Exception("Belirtilen medya bulunamadı veya güncellemek için izin yok.");
-            }
+
         }
-        public void UpdateBlogMedia(string fileName, Guid mediaId, Guid blogId, Guid UserId)
+        public void UpdateBlogMedia(string fileName, Guid blogId, Guid UserId)
             {
-            // Bloğu yazan kullanıcıyı kontrol et.
             var existingBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == blogId && b.UserId == UserId && b.Status == false);
 
             if (existingBlog != null)
             {
-                // Bloğu yazan kullanıcı, bloğun yazarı ve bloğun durumu false ise bu bloğa gir.
-                var existingMedia = _context.Medias.SingleOrDefault(m => m.MediaId == mediaId && m.BlogId == blogId && m.Status == false);
+                var existingMedia = _context.Medias.SingleOrDefault(m => m.BlogId == blogId && m.Status == false);
 
                 if (existingMedia != null)
                 {
-                    // existingMedia null değilse ve durumu false ise bu bloğa gir.
                     existingMedia.ImagePath = fileName;
-
-                    // Blogun ImagePath alanını güncelle.
                     existingBlog.ImagePath = fileName;
 
                     _context.SaveChanges();

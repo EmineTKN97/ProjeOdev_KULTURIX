@@ -16,8 +16,8 @@ namespace Business.Abstract
         Task<IResult> AddBlogMedia(IFormFile file, Guid BlogId,Guid UserId);
         Task<IResult> Delete(Guid İd, Guid UserId);
         Task<IResult> DeleteBlogMedia(Guid İd,Guid BlogId,Guid UserId);
-        Task<IResult>Update(IFormFile file, Guid MediaId, Guid UserId);
-        Task<IResult> UpdateBlogMedia(IFormFile file, Guid MediaId,Guid BlogId,Guid UserId);
+        Task<IResult>Update(IFormFile file, Guid UserId);
+        Task<IResult> UpdateBlogMedia(IFormFile file, Guid BlogId,Guid UserId);
         Task<IDataResult<List<MediaDTO>>> GetAllMediaDetails();
         Task<IDataResult<Media>> GetMediaByUserId(Guid UserId);
         Task<IDataResult<Media>> GetMediaByBlogId(Guid BlogId);

@@ -16,7 +16,7 @@ namespace DataAccess.Abstract
         void Delete(Guid id, Guid userId);
         void DeleteBlogMedia(Guid id,Guid blogId, Guid UserId);
         List<MediaDTO> GetAllMediaDetails();
-        void Update(string fileName, Guid mediaId, Guid userId);
-        void UpdateBlogMedia(string fileName, Guid mediaId, Guid blogId, Guid userId);
+        void Update(string fileName, Guid userId);
+        void UpdateBlogMedia(string fileName, Guid blogId, Guid userId);
     }
 }

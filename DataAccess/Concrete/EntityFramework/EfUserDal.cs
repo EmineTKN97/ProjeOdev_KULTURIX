@@ -45,6 +45,7 @@ namespace DataAccess.Concrete.EntityFramework
                                   Name = u.Name,
                                   SurName = u.SurName,
                                   Email = u.Email,
+                                  MediaId = u.Medias.FirstOrDefault().MediaId
                               })
                               .FirstOrDefault(); 
 

@@ -50,10 +50,10 @@ namespace WEPAPI_UI.Controllers
                 return BadRequest(Messages.MediaNotDeleted);
             }
         }
-        [HttpPut("UpdateMedia")]
-        public async Task<IActionResult> UpdateMedia(Guid MediaId,IFormFile file, Guid UserId)
+        [HttpPost("UpdateMedia")]
+        public async Task<IActionResult> UpdateMedia(IFormFile file, Guid UserId)
         {
-            var result = await _mediaService.Update(file, MediaId,UserId);
+            var result = await _mediaService.Update(file ,UserId);
             return !result.Success ? BadRequest(Messages.MediaNotUpdated) : Ok(result);
         }
         [HttpGet("GetMediaByBlogId")]
@@ -69,9 +69,9 @@ namespace WEPAPI_UI.Controllers
             return !result.Success ? BadRequest(Messages.MediaNotListed) : Ok(result.Data);
         }
         [HttpPut("UpdateBlogMedia")]
-        public async Task<IActionResult> UpdateBlogMedia(Guid MediaId, IFormFile file,Guid BlogId,Guid UserId)
+        public async Task<IActionResult> UpdateBlogMedia( IFormFile file,Guid BlogId,Guid UserId)
         {
-            var result = await _mediaService.UpdateBlogMedia(file, MediaId,BlogId,UserId);
+            var result = await _mediaService.UpdateBlogMedia(file,BlogId,UserId);
             return !result.Success ? BadRequest(Messages.MediaNotUpdated) : Ok(result);
         }
         [HttpDelete("DeleteBlogMedia")]
