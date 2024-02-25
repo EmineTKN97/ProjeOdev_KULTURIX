@@ -62,7 +62,7 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.BlogNotUpdated);
             }
         }
-         [SecuredOperation("USER")]
+        [SecuredOperation("USER")]
         [ValidationAspect(typeof(BlogValidator))]
         [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult> Add(BlogDTO blogdto, Guid userId)
@@ -79,6 +79,11 @@ namespace Business.Concrete
         public async Task<IDataResult<List<BlogDTO>>> GetLatestBlog()
         {
             return new SuccessDataResult<List<BlogDTO>>(_blogDal.GetLatestBlog(), Messages.BlogListed);
+        }
+
+        public async Task<IDataResult<BlogDTO>> GetLastBlogByUserId(Guid UserId)
+        {
+            return new SuccessDataResult<BlogDTO>(_blogDal.GetLatestBlogByUserId(UserId), Messages.BlogListed);
         }
     }
 }

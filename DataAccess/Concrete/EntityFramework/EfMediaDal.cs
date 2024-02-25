@@ -33,7 +33,6 @@ namespace DataAccess.Concrete.EntityFramework
                     BlogId = blogId,
                     CreateDate = DateTime.Now,
                 };
-
                 _context.Medias.Add(imageEntity);
                 _context.SaveChanges();
                 existingBlog.ImagePath = fileName;

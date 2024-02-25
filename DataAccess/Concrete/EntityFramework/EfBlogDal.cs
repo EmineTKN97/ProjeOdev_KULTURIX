@@ -26,8 +26,7 @@ namespace DataAccess.Concrete.EntityFramework
         public void Add(BlogDTO blogdto, Guid userId)
         {
             var newBlog = new Blog
-            {
-                BlogId = Guid.NewGuid(),
+            { 
                 Title = blogdto.Title,
                 Content = blogdto.Content,
                 Date = DateTime.Now,
@@ -158,6 +157,24 @@ namespace DataAccess.Concrete.EntityFramework
                 .ToList();
 
             return blogDTOs;
+        }
+
+        public BlogDTO GetLatestBlogByUserId(Guid UserId)
+        {
+            var lastBlog = (from b in _context.Blogs
+                            join u in _context.Users on b.UserId equals u.Id
+                            where b.UserId == UserId && b.Status == false
+                            orderby b.Date descending
+                            select new BlogDTO
+                            {
+                                BlogId = b.BlogId,
+                                Title = b.Title,
+                                Content = b.Content,
+                                ImagePath = b.ImagePath,
+                                BlogDate = b.Date,
+                            }).FirstOrDefault();
+
+            return lastBlog;
         }
     }
     

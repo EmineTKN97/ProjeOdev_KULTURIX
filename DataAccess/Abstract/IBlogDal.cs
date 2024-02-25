@@ -18,5 +18,6 @@ namespace DataAccess.Abstract
         List<BlogDTO> GetByUserId(Guid userId);
         BlogDetailsDTO GetById(Guid BlogId);
         List<BlogDTO> GetLatestBlog();
+        BlogDTO GetLatestBlogByUserId(Guid UserId);
     }
 }
