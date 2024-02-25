@@ -32,7 +32,7 @@ namespace Business.Concrete
             _blogDal = blogDal;
         }
         [SecuredOperation("USER")]
-      [CacheRemoveAspect("IBlogService.Get")]
+        [CacheRemoveAspect("IBlogService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid UserId)
         {
             _blogDal.Delete(İd, UserId);

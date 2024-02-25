@@ -19,6 +19,7 @@ namespace Entities.DTOs
         public string Name{ get; set; }
         public string SurName { get; set; }
         public string UserImagePath { get; set;}
+        public Guid? MediaId { get; set; }
 
     }
 

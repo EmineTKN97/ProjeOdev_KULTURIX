@@ -115,7 +115,6 @@ namespace DataAccess.Concrete.EntityFramework
                              Content = b.Content,
                              ImagePath = b.ImagePath,
                              BlogDate= b.Date,
-                         
                          }).ToList();
 
             return blogs;
@@ -134,6 +133,8 @@ namespace DataAccess.Concrete.EntityFramework
                                    SurName = blog.User.SurName,
                                    ImagePath = blog.ImagePath,
                                    BlogDate = blog.Date,
+                                   UserImagePath = blog.User.ImagePath,
+                                   MediaId = blog.Medias.FirstOrDefault().MediaId,
                                    BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == BlogId),
                                    BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == BlogId)
                                }).FirstOrDefault();

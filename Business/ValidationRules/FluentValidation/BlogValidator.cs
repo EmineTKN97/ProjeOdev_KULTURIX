@@ -23,13 +23,10 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(b => b.Title)
 
             .NotEmpty().WithMessage("Başlık boş olamaz.")
-            .MaximumLength(50).WithMessage("Başlık en fazla 50 karakter olmalıdır.")
-            .Matches("^[a-zA-Z0-9\\p{L}\\p{P}\\p{S} ]+$").WithMessage("Başlık yalnızca harf, sayı, boşluk ve özel karakterler içerebilir.");
-           RuleFor(b => b.Content)
-            .NotEmpty().WithMessage("İçerik boş olamaz.")
-            .MinimumLength(100).WithMessage("İçerik en az 100 karakter içermelidir.")
-            .Matches("^[a-zA-Z0-9\\s!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\r\\n]+$")
-            .WithMessage("İçerik geçerli değil. Özel karakterler içerebilir.");
+            .MaximumLength(50).WithMessage("Başlık en fazla 50 karakter olmalıdır.");
+            RuleFor(b => b.Content)
+             .NotEmpty().WithMessage("İçerik boş olamaz.")
+             .MinimumLength(100).WithMessage("İçerik en az 100 karakter içermelidir.");
 
 
         }

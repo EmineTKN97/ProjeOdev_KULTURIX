@@ -1,4 +1,5 @@
-﻿using Core.DataAccess.EntityFramework;
+﻿using Autofac.Features.Metadata;
+using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Context;
 using Entities.Concrete;
@@ -97,7 +98,6 @@ namespace DataAccess.Concrete.EntityFramework
 
             if (mediaToDelete != null)
             {
-                // Medyayı silen kullanıcı, bu medyanın bağlı olduğu blogun sahibi mi kontrol et.
                 var associatedBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == blogId && b.UserId == UserId && b.Status == false);
 
                 if (associatedBlog != null)
@@ -105,8 +105,6 @@ namespace DataAccess.Concrete.EntityFramework
                     mediaToDelete.Status = true;
                     _context.Medias.Update(mediaToDelete);
                     _context.SaveChanges();
-
-                    // Medya silindiğinde, bağlı olduğu blogun ImagePath alanını null yap.
                     associatedBlog.ImagePath ="default.jpg";
                     _context.SaveChanges();
                 }
@@ -151,7 +149,7 @@ namespace DataAccess.Concrete.EntityFramework
 
         }
         public void UpdateBlogMedia(string fileName, Guid blogId, Guid UserId)
-            {
+        {
             var existingBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == blogId && b.UserId == UserId && b.Status == false);
 
             if (existingBlog != null)
@@ -162,13 +160,21 @@ namespace DataAccess.Concrete.EntityFramework
                 {
                     existingMedia.ImagePath = fileName;
                     existingBlog.ImagePath = fileName;
-
-                    _context.SaveChanges();
                 }
                 else
                 {
-                    throw new Exception("Belirtilen medya bulunamadı veya güncellemek için izin yok.");
+                    var newMedia = new Media
+                    {
+                        BlogId = blogId,
+                        ImagePath = fileName,
+                        CreateDate = DateTime.Now,
+                    };
+
+                    _context.Medias.Add(newMedia);
+                    existingBlog.ImagePath = fileName;
                 }
+                    existingBlog.ImagePath = fileName;
+                _context.SaveChanges();
             }
             else
             {
