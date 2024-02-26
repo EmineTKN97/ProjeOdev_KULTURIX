@@ -16,7 +16,7 @@ namespace Entities.Concrete
             public string Title { get; set; }
             public string Content { get; set; }
             public DateTime Date { get; set; }
-        public string ImagePath { get; set; }
+             public string ImagePath { get; set; }
             public bool Status { get; set; }
             public virtual ICollection<BlogComment> BlogComments { get; set; }
             public virtual ICollection<BlogLike> BlogLikes { get; set; }

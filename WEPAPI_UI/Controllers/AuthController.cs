@@ -19,7 +19,7 @@ namespace WebAPI.Controllers
 
         public AuthController(IAuthService authService)
         {
-            _authService = authService;
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         }
 
         [HttpPost("loginUser")]
@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
             var userToLogin = _authService.Login(userForLoginDto);
             if (!userToLogin.Success)
             {
-                return BadRequest(userToLogin.Message);
+                return BadRequest(userToLogin);
             }
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
                 return Ok(result.Data);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("registerUser")]
@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
             var userExists = _authService.UserExists(userForRegisterDto.Email);
             if (!userExists.Success)
             {
-                return BadRequest(userExists.Message);
+                return BadRequest(userExists);
             }
 
             var registerResult = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
                 return Ok(result.Data);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         
         }
         [HttpPost("loginAdmin")]
