@@ -22,13 +22,13 @@ namespace WEPAPI_UI.Controllers
         {
 
             var result = await _mediaService.AddBlogMedia(file,BlogId, UserId);
-            return !result.Success ? BadRequest(Messages.MediaNotAdded) : Ok(result);
+            return !result.Success ? BadRequest(Messages.MediaNotAdded) : Ok(Messages.AddBlogİmage);
         }
         [HttpPost("AddUserMedia")]
         public async Task<IActionResult> AddUserMedia(IFormFile file, Guid UserId)
         {
             var result = await _mediaService.AddUserMedia(file, UserId);
-            return !result.Success ? BadRequest(Messages.MediaNotAdded) : Ok(result); 
+            return !result.Success ? BadRequest(Messages.MediaNotAdded) : Ok(Messages.AddBlogİmage);
         }
         [HttpGet("GetAllMediaDetails")]
         public async Task<IActionResult> GetAllMediaDetails()
