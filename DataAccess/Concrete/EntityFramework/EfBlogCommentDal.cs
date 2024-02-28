@@ -70,9 +70,7 @@ namespace DataAccess.Concrete.EntityFramework
         {
               var result = (
                     from bc in _context.BlogComments
-                    join l in _context.BlogLikes
-                    on bc.CommentId equals l.BlogCommentId
-                    where bc.Status == false && l.Status == false
+                    where bc.Status == false 
                     select new BlogCommentDTO
                     {
                         UserName = bc.User.Name,
@@ -81,7 +79,6 @@ namespace DataAccess.Concrete.EntityFramework
                         CommentDate = bc.CommentDate,
                         CommentDetail = bc.CommentText,
                         CommentTitle = bc.Title,
-                        BlogLikeCount = _context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId)
                     }).OrderByDescending(b => b.BlogLikeCount).ToList();
                 return result;
             
@@ -143,7 +140,6 @@ namespace DataAccess.Concrete.EntityFramework
                                 CommentDate = bc.CommentDate,
                                 CommentDetail = bc.CommentText,
                                 CommentTitle = bc.Title,
-                                BlogLikeCount = _context.BlogLikes.Count(l => l.BlogCommentId == bc.CommentId && l.Status == false)
                             })
                  .OrderByDescending(bc => bc.CommentDate)
                  .ToList();

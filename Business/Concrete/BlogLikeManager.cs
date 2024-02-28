@@ -26,37 +26,33 @@ namespace Business.Concrete
             _bloglikeDal = bloglikeDal;
         }
         [SecuredOperation("USER")]
-        [ValidationAspect(typeof(BlogLikeValidator))]
-       // [CacheRemoveAspect("IBlogLikeService.Get")]
+         [CacheRemoveAspect("IBlogLikeService.Get")]
         public async Task<IResult> AddBlogLike(Guid Blogİd, BlogLikeDTO bloglikedto, Guid UserId)
         {
             _bloglikeDal.AddBlogLike(Blogİd, bloglikedto,UserId);
-            return new Result(true, Messages.BlogLikeAdded);
-        }
-        [SecuredOperation("USER")]
-        [ValidationAspect(typeof(BlogLikeValidator))]
-       // [CacheRemoveAspect("IBlogLikeService.Get")]
-        public async Task<IResult> AddBlogCommentLike(Guid BlogCommentİd, BlogLikeDTO bloglikedto, Guid UserId)
-        {
-            _bloglikeDal.AddBlogCommentLike(BlogCommentİd, bloglikedto,UserId);
-            return new Result(true, Messages.BlogLikeAdded);
-        }
-        [SecuredOperation("USER")]
-       // [CacheRemoveAspect("IBlogLikeService.Get")]
-        public  async Task<IResult> Delete(Guid İd, Guid UserId)
-        {
-            _bloglikeDal.Delete(İd,UserId);
-            return new Result(true, Messages.BlogLikeDeleted);
+            return new SuccessResult(Messages.BlogLikeAdded);
         }
         [CacheAspect]
         public async Task<IDataResult<List<BlogLikeDTO>>> GetAllLikeDetails()
         {
             return new SuccessDataResult<List<BlogLikeDTO>>(_bloglikeDal.GetAllLikeDetails(), Messages.BlogLikedListed);
         }
+
+        public async Task<IDataResult<List<BlogDetailsDTO>>> GetLikedBlogsByUserId(Guid userId)
+        {
+            return new SuccessDataResult<List<BlogDetailsDTO>>(_bloglikeDal.GetLikedBlogsByUserId(userId), Messages.BlogLikedListed);
+        }
+
         [CacheAspect]
         public async Task<IDataResult<List<BlogLikeDTO>>>GetLikesByBlogId(Guid BlogId)
         {
             return new SuccessDataResult<List<BlogLikeDTO>>(_bloglikeDal.GetLikesByBlogId(BlogId), Messages.BlogLikedListed);
+        }
+        [CacheRemoveAspect("IBlogLikeService.Get")]
+        public async Task<IResult> Delete(Guid İd, Guid UserId)
+        {
+            _bloglikeDal.Delete(İd, UserId);
+            return new Result(true, Messages.BlogLikeDeleted);
         }
     }
 }

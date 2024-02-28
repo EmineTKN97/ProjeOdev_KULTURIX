@@ -1,4 +1,5 @@
 ﻿using Core.DataAccess;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
@@ -13,9 +14,9 @@ namespace DataAccess.Abstract
     {
       
         void AddBlogLike(Guid blogİd, BlogLikeDTO bloglikedto, Guid userId);
-        void AddBlogCommentLike(Guid blogCommentİd, BlogLikeDTO bloglikedto, Guid userId);
-        void Delete(Guid id, Guid userId);
         List<BlogLikeDTO> GetAllLikeDetails();
+         void Delete(Guid İd,Guid UserId);
         List<BlogLikeDTO> GetLikesByBlogId(Guid BlogId);
+        List<BlogDetailsDTO> GetLikedBlogsByUserId(Guid userId);
     }
 }

@@ -69,16 +69,16 @@ namespace WebAPI.Controllers
             var adminToLogin = _authService.LoginAdmin(adminForLoginDto);
             if (!adminToLogin.Success)
             {
-                return BadRequest(adminToLogin.Message);
+                return BadRequest(Messages.ErrorLogin);
             }
 
             var result = _authService.CreateAccessTokenAdmin(adminToLogin.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(new { data = result.Data, message = Messages.SuccessfulLogin});
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("registerAdmin")]

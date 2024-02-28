@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -18,17 +19,12 @@ namespace WEPAPI_UI.Controllers
             _bloglikeService = bloglikeService;
         }
         [HttpPost("AddBlogLike")]
-        public async Task<IActionResult> AddBlogLike(Guid blogId, BlogLikeDTO bloglike,Guid UserId)
+        public async Task<IActionResult> AddBlogLike(Guid blogId, BlogLikeDTO bloglike, Guid UserId)
         {
-            var result = await _bloglikeService.AddBlogLike(blogId,bloglike,UserId);
+            var result = await _bloglikeService.AddBlogLike(blogId, bloglike, UserId);
             return !result.Success ? BadRequest(Messages.BlogLikeNotAdded) : Ok(Messages.BlogLikeAdded);
         }
-        [HttpPost("AddBlogCommentLike")]
-        public async Task<IActionResult> AddBlogCommentLike(Guid blogCommentId, BlogLikeDTO bloglike, Guid UserId)
-        {
-            var result = await _bloglikeService.AddBlogCommentLike(blogCommentId, bloglike, UserId);
-            return !result.Success ? BadRequest(Messages.BlogLikeNotAdded) : Ok(Messages.BlogLikeAdded);
-        }
+
         [HttpGet("GetBlogLikeDetails")]
         public async Task<IActionResult> GetAllLikeDetails()
         {
@@ -51,13 +47,24 @@ namespace WEPAPI_UI.Controllers
             return NotFound(Messages.BlogLikedNotListed);
 
         }
+        [HttpGet("GetLikesByBlogsByUserId")]
+        public async Task<IActionResult> GetLikedBlogsByUserId(Guid userId)
+        {
+            var result = await _bloglikeService.GetLikedBlogsByUserId(userId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return NotFound(Messages.BlogLikedNotListed);
+
+        }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete(Guid id,Guid UserId)
+        public async Task<IActionResult> Delete(Guid id, Guid UserId)
         {
             try
             {
-               await _bloglikeService.Delete(id, UserId);
+                await _bloglikeService.Delete(id, UserId);
                 return Ok(Messages.BlogLikeDeleted);
             }
             catch (Exception exception)
@@ -65,7 +72,6 @@ namespace WEPAPI_UI.Controllers
                 return BadRequest(Messages.BlogLikeNotDeleted);
             }
         }
-
 
     }
 }

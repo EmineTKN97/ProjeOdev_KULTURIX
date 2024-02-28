@@ -18,6 +18,5 @@ namespace Entities.Concrete
         public bool Status { get; set; }
         public Blog Blog { get; set; }
         public User User { get; set; }
-        public virtual ICollection<BlogLike> BlogLikes { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace WEPAPI_UI.Controllers
         public async Task<IActionResult> UpdateBlogMedia( IFormFile file,Guid BlogId,Guid UserId)
         {
             var result = await _mediaService.UpdateBlogMedia(file,BlogId,UserId);
-            return !result.Success ? BadRequest(Messages.MediaNotUpdated) : Ok(result);
+            return !result.Success ? BadRequest(Messages.MediaNotUpdated) : Ok(Messages.UpdateMedia);
         }
         [HttpDelete("DeleteBlogMedia")]
         public async Task<IActionResult> DeleteBlogMedia(Guid MediaId, Guid BlogId, Guid UserId)

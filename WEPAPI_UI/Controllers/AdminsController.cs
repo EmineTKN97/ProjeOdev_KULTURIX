@@ -56,6 +56,12 @@ namespace WEPAPI_UI.Controllers
 
             return BadRequest(Messages.ChangeNotPassword);
         }
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(Guid AdminId)
+        {
+            var result = await _adminService.GetById(AdminId);
+            return !result.Success ? BadRequest(Messages.AdminNotFound) : Ok(result.Data);
+        }
 
     }
 }

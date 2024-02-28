@@ -9,6 +9,7 @@ namespace Business.Constants
 {
     public static class Messages
     {
+      
         public static string BlogLikeNotDeleted="Beğeni işlemi geri alınamadı";
         public static string BlogAdded = "Blog başarı ile eklenmiştir.";
         public static string BlogNotAdded = "Blog ekleme işlemi başarısız.";

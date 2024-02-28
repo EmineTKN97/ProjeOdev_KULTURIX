@@ -18,5 +18,6 @@ namespace Core.Extensions
             }
             return ServiceTool.Create(serviceCollection);
         }
+
     }
 }
