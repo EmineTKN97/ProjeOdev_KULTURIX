@@ -4,6 +4,7 @@ using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WEPAPI_UI.Controllers
@@ -21,16 +22,10 @@ namespace WEPAPI_UI.Controllers
         [HttpDelete("DeleteUser")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            try
-            {
-                await _userService.Delete(id);
-                return Ok(Messages.UserDeleted);
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest(Messages.UserNotDeleted);
-            }
+           var result= await _userService.Delete(id);
+            return !result.Success ? BadRequest(Messages.UserNotDeleted) : Ok(Messages.UserDeleted);
+    
+            
         }
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> Update(Guid id, UserDTO userdto)

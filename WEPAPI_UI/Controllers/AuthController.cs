@@ -3,6 +3,7 @@ using Business.Abstract;
 using Business.Constants;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,33 +17,36 @@ namespace WebAPI.Controllers
     public class AuthController : Controller
     {
         private IAuthService _authService;
-
         public AuthController(IAuthService authService)
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+        
+            
         }
 
         [HttpPost("loginUser")]
         public ActionResult Login(UserForLoginDTO userForLoginDto)
         {
+
             var userToLogin = _authService.Login(userForLoginDto);
             if (!userToLogin.Success)
             {
-                return BadRequest(userToLogin);
+                return BadRequest(Messages.ErrorLogin);
             }
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(new { data = result.Data, message = Messages.SuccessfulLogin });
             }
 
-            return BadRequest(result);
+            return BadRequest(Messages.ErrorLogin);
         }
 
         [HttpPost("registerUser")]
-        public ActionResult Register(UserForRegisterDTO userForRegisterDto)
+        public async Task<IActionResult> Register(UserForRegisterDTO userForRegisterDto)
         {
+            
             var userExists = _authService.UserExists(userForRegisterDto.Email);
             if (!userExists.Success)
             {
@@ -53,7 +57,7 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(new { data = result.Data, message = Messages.UserRegistered } );
             }
 
             return BadRequest(result);

@@ -31,7 +31,7 @@ namespace Business.Concrete
         public async Task<IResult> Add(Guid Blogİd, BlogCommentDTO blogcommentdto, Guid userId)
         {
            _blogcommentDal.Add(Blogİd, blogcommentdto, userId);
-            return new Result(true, Messages.BlogCommentAdded);
+            return new SuccessResult(Messages.BlogCommentAdded);
         }
         [SecuredOperation("USER")]
        [CacheRemoveAspect("IBlogCommentService.Get")]
