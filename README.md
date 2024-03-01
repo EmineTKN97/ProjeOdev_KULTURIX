@@ -1,6 +1,6 @@
 # KÜLTÜRİX (BLOG-HABER-BİLET) SİTESİ
 
-Bu proje benim bitirme projem ve ben arkeoloji bölümü okuduğum için müze bileti satın alabileceğimiz müzelerle ilgili blogların ve haberlerin olduğu dinamik bir site yapıyorum.
+Bu proje benim ilk proje deneyimim Bu projede amaç en müze bileti satın alabileceğimiz müzelerle ilgili blogların ve duyuruların olduğu,user ve admin olarak iki yetkilendirmenin bulunduğu dinamik bir backend geliştiriyorum.
 Teknoloji olarak Asp.Net core Entity Framework Web API  kullanarak geliştirmeye çalışıyorum.
 ## Kurulum
 Şuan yapım aşamasında olduğu için bu adımlar sonra güncellenecektir.
