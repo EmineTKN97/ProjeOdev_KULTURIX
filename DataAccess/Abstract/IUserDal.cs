@@ -12,6 +12,7 @@ namespace DataAccess.Abstarct
     public interface IUserDal : IEntityRepository<User>
     {
         void Delete(Guid id);
+        List<UserDTO> GetAllUser();
         UserDTO GetById(Guid userId);
         List<OperationClaim> GetClaims(User user);
         void Update(Guid id, UserDTO userdto);

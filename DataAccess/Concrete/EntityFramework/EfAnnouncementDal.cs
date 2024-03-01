@@ -7,6 +7,7 @@ using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,26 +67,42 @@ namespace DataAccess.Concrete.EntityFramework
                 .Where(ac => ac.Status == false)
                 .Select(ac => new AnnouncementDTO
                 {
-                   AnnouncementId = ac.Id,
-                    AnnouncementContent=ac.AnnouncementContent,
-                    AnnouncementTitle=ac.AnnouncementTitle,
-                    CreateDate= ac.CreateDate,
+                    AnnouncementId = ac.Id,
+                    AnnouncementContent = ac.AnnouncementContent,
+                    AnnouncementTitle = ac.AnnouncementTitle,
+                    CreateDate = ac.CreateDate,
                 }).ToList();
             return announcementDTOs;
+        }
+
+        public AnnouncementDTO GetById(Guid id)
+        {
+            var announcementDetails = (from a in _context.Announcements
+                                       where a.Id == id && a.Status == false
+                                       select new AnnouncementDTO
+                                       {
+                                           AnnouncementId = a.Id,
+                                           AnnouncementContent = a.AnnouncementContent,
+                                           AnnouncementTitle = a.AnnouncementTitle,
+                                           CreateDate = a.CreateDate,
+
+                                       }).FirstOrDefault();
+
+            return announcementDetails;
         }
 
         public List<AnnouncementDTO> GetLatestAnnouncement()
         {
             var announcementDTOs = _context.Announcements
-                        .OrderByDescending(ac => ac.CreateDate) 
-                        .Take(5) 
+                        .OrderByDescending(ac => ac.CreateDate)
+                        .Take(5)
                         .Select(ac => new AnnouncementDTO
-                         {
-                             AnnouncementId = ac.Id,
-                             AnnouncementTitle = ac.AnnouncementTitle,
-                             AnnouncementContent = ac.AnnouncementContent,
-                             CreateDate = ac.CreateDate
-                         }) .ToList();
+                        {
+                            AnnouncementId = ac.Id,
+                            AnnouncementTitle = ac.AnnouncementTitle,
+                            AnnouncementContent = ac.AnnouncementContent,
+                            CreateDate = ac.CreateDate
+                        }).ToList();
 
             return announcementDTOs;
 

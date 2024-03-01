@@ -13,6 +13,7 @@ namespace Business.Abstract
     public interface IUserService
     {
         List<OperationClaim> GetClaims(User user);
+        IDataResult<List<UserDTO>> GetAll();
         Task<IResult> Add(User user);
         User GetByMail(string email);
         Task<IResult> Delete(Guid İd);

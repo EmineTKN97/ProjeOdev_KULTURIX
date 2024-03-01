@@ -48,9 +48,9 @@ namespace Business.Concrete
         }
 
         [CacheAspect]
-        public async Task<IDataResult<Announcement>> GetById(Guid id)
+        public async Task<IDataResult<AnnouncementDTO>> GetById(Guid id)
         {
-            return new SuccessDataResult<Announcement>(_announcementDal.Get(ac => ac.Id == id), Messages.AnnouncementListed);
+            return new SuccessDataResult<AnnouncementDTO>(_announcementDal.GetById(id), Messages.AnnouncementListed);
         }
         [CacheAspect]
         public async Task<IDataResult<List<AnnouncementDTO>>> GetLatestAnnouncement()

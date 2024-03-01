@@ -59,5 +59,11 @@ namespace WEPAPI_UI.Controllers
             var result = await _userService.GetById(UserId);
             return !result.Success ? BadRequest(Messages.UserNotListed) : Ok(result.Data);
         }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var result = _userService.GetAll();
+            return !result.Success ? BadRequest(Messages.UserNotListed) : Ok(result.Data);
+        }
     }
 }

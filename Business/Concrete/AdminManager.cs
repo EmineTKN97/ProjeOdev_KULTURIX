@@ -18,10 +18,12 @@ namespace Business.Concrete
     public class AdminManager : IAdminService
     {
         IAdminDal _adminDal;
+      IUserService _userService;
       
-        public AdminManager(IAdminDal admindal)
+        public AdminManager(IAdminDal admindal, IUserService userService)
         {
             _adminDal = admindal;
+            _userService = userService;
         }
         [ValidationAspect(typeof(AdminValidator))]
         public async Task<IResult> Add(Admin admin)
@@ -48,6 +50,10 @@ namespace Business.Concrete
             _adminDal.Delete(İd);
             return new Result(true, Messages.AdminDeleted);
         }
+
+       
+          
+        
 
         public async Task<IDataResult<Admin>> GetById(Guid Adminİd)
         {
@@ -76,5 +82,7 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.AdminNotUpdated);
             }
         }
+
+     
     }
 }

@@ -10,6 +10,7 @@ namespace Entities.DTOs
 {
     public class UserDTO:IDto
     {
+        public Guid? UserId { get; set; }
         public string Name { get; set; }
         public string SurName { get; set; }
         public string Email { get; set; }

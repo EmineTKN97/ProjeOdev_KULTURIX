@@ -17,5 +17,6 @@ namespace Business.Abstract
         Task<IResult> Update(Guid id, AdminDTO adminDto);
         Task<IDataResult<Admin>> GetById(Guid Adminİd);
         Task<IResult> ChangeAdminPassword(string currentPassword, string newPassword, Guid AdminID);
+      
     }
 }

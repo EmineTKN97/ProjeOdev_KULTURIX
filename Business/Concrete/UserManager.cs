@@ -81,7 +81,11 @@ namespace Business.Concrete
             _userDal.UpdatePassword(currentPassword, newPassword, UserId);
             return new Result(true, Messages.ChangePassword);
         }
-        
+        [SecuredOperation("ADMİN")]
+        public IDataResult<List<UserDTO>> GetAll()
+        {
+            return new SuccessDataResult<List<UserDTO>>(_userDal.GetAllUser(), Messages.UserListed);
+        }
     }
 }
 
