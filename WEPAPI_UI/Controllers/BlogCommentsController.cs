@@ -24,7 +24,7 @@ namespace WEPAPI_UI.Controllers
             return !result.Success ? BadRequest(Messages.BlogCommentNotListed) : Ok(result.Data);
         }
 
-        [HttpGet("GetBlogCommentsDetails")]
+        [HttpGet("GetCommentsDetails")]
         public async Task<IActionResult> GetAllCommentsDetails()
         {
             var result = await _blogcommentService.GetAllCommentsDetails();

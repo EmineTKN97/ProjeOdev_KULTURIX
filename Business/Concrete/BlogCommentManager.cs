@@ -56,6 +56,7 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.BlogCommentNotUpdated);
             }
         }
+        [SecuredOperation("ADMİN")]
         [CacheAspect]
         public async Task<IDataResult<List<BlogCommentDTO>>> GetAllCommentsDetails()
         {

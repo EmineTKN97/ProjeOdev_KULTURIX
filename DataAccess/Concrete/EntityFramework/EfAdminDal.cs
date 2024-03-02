@@ -27,6 +27,11 @@ namespace DataAccess.Concrete.EntityFramework
 
             if (adminToDelete != null)
             {
+                if (_context.Admins.Count() == 1)
+                {
+                    throw new InvalidOperationException("Sistemde sadece bir admin hesabı var, bu hesabı silemezsiniz.");
+                }
+
                 adminToDelete.Status = true;
                 _context.Admins.Update(adminToDelete);
                 _context.SaveChanges();

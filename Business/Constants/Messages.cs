@@ -73,7 +73,7 @@ namespace Business.Constants
         public static string UserNotUpdated="Bilgileriniz Güncellenemedi";
         public static string ChangePassword="Şifre değiştirme işleminiz başarılı bir şekilde gerçekleştirildi";
         public static string ChangeNotPassword="Şifre değiştirme işleminiz başarısız";
-        public static string AdminNotDeleted="Yönetici silenemedi";
+        public static string AdminNotDeleted= "Sistemde sadece bir admin hesabı var, bu hesabı silemezsiniz.";
          public static string ChangeAdminPassword="Şifre Güncellendi";
         public static string AdminDeleted="Yönetici silindi";
         public static string AdminListed="Yönetici Listelendi";

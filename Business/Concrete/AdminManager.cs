@@ -50,11 +50,6 @@ namespace Business.Concrete
             _adminDal.Delete(İd);
             return new Result(true, Messages.AdminDeleted);
         }
-
-       
-          
-        
-
         public async Task<IDataResult<Admin>> GetById(Guid Adminİd)
         {
             return new SuccessDataResult<Admin>(_adminDal.Get(a => a.Id == Adminİd), Messages.AdminListed);

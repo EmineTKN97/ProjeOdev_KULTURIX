@@ -65,25 +65,28 @@ namespace DataAccess.Concrete.EntityFramework
                 throw new Exception("Belirtilen yorum bulunamadı veya silme izinleri yok.");
             }
         }
-        //Blog yorumunu like göre sıralama
         public List<BlogCommentDTO> GetAllCommentDetails()
         {
-              var result = (
-                    from bc in _context.BlogComments
-                    where bc.Status == false 
-                    select new BlogCommentDTO
-                    {
-                        UserName = bc.User.Name,
-                        UserSurname = bc.User.SurName,
-                        UserİmagePath = bc.User.ImagePath,  
-                        CommentDate = bc.CommentDate,
-                        CommentDetail = bc.CommentText,
-                        CommentTitle = bc.Title,
-                    }).OrderByDescending(b => b.BlogLikeCount).ToList();
-                return result;
-            
-        }
+            var result = (
+                from bc in _context.BlogComments
+                where bc.Status == false
+                orderby bc.CommentDate descending
+                select new BlogCommentDTO
+                {
+                    Email = bc.User.Email,
+                    UserName = bc.User.Name,
+                    UserSurname = bc.User.SurName,
+                    UserİmagePath = bc.User.ImagePath,
+                    CommentDate = bc.CommentDate,
+                    CommentDetail = bc.CommentText,
+                    CommentTitle = bc.Title,
+                    CommentId = bc.CommentId,
+                    BlogTitle = bc.Blog.Title,
+                    BlogId = bc.BlogId
+                }).ToList();
 
+            return result;
+        }
         public List<BlogCommentDTO> GetByCommentUserId(Guid userId)
         {
 
