@@ -90,6 +90,12 @@ namespace WEPAPI_UI.Controllers
             var result = await _blogService.GetLastBlogByUserId(UserId);
             return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
         }
-        
+        [HttpGet("GetAllBlogsDetails")]
+        public async Task<IActionResult> GetAllBlogDetails()
+        {
+            var result = await _blogService.GetAllBlogsDetails();
+            return !result.Success ? BadRequest(Messages.BlogNotListed) : Ok(result.Data);
+        }
+
     }
 }

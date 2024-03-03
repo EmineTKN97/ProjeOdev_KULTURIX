@@ -33,8 +33,8 @@ namespace Business.Concrete
            _blogcommentDal.Add(Blogİd, blogcommentdto, userId);
             return new SuccessResult(Messages.BlogCommentAdded);
         }
-        [SecuredOperation("USER")]
-       [CacheRemoveAspect("IBlogCommentService.Get")]
+       [SecuredOperation("USER,ADMİN")]
+        [CacheRemoveAspect("IBlogCommentService.Get")]
         public async Task<IResult> Delete(Guid İd, Guid userId)
         {
             _blogcommentDal.Delete(İd,userId);
@@ -56,7 +56,7 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.BlogCommentNotUpdated);
             }
         }
-        [SecuredOperation("ADMİN")]
+       [SecuredOperation("ADMİN")]
         [CacheAspect]
         public async Task<IDataResult<List<BlogCommentDTO>>> GetAllCommentsDetails()
         {

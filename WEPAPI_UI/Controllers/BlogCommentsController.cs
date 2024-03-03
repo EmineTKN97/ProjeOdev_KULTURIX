@@ -47,15 +47,9 @@ namespace WEPAPI_UI.Controllers
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(Guid id,Guid UserId)
         {
-            try
-            {
-                await _blogcommentService.Delete(id,UserId);
-                return Ok(Messages.BlogCommentDeleted);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(Messages.BlogCommentNotDeleted);
-            }
+               var result = await _blogcommentService.Delete(id,UserId);
+                return !result.Success ?BadRequest(Messages.BlogCommentNotDeleted) : Ok(Messages.BlogCommentDeleted);
+            
         }
         [HttpGet("GetByUserId")]
         public async Task<IActionResult> GetByUserId(Guid UserId)

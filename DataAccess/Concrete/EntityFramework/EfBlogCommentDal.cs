@@ -62,7 +62,7 @@ namespace DataAccess.Concrete.EntityFramework
             }
             else
             {
-                throw new Exception("Belirtilen yorum bulunamadı veya silme izinleri yok.");
+                throw new Exception($"Yorum silinemedi. Yorum ID: {id}, Kullanıcı ID: {userId}");
             }
         }
         public List<BlogCommentDTO> GetAllCommentDetails()
@@ -82,7 +82,8 @@ namespace DataAccess.Concrete.EntityFramework
                     CommentTitle = bc.Title,
                     CommentId = bc.CommentId,
                     BlogTitle = bc.Blog.Title,
-                    BlogId = bc.BlogId
+                    BlogId = bc.BlogId,
+                    UserId = bc.UserId  
                 }).ToList();
 
             return result;

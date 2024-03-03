@@ -176,6 +176,30 @@ namespace DataAccess.Concrete.EntityFramework
 
             return lastBlog;
         }
+
+        public List<BlogDetailsDTO> GetAllBlogsDetails()
+        {
+            var result = (
+                from b in _context.Blogs
+                where b.Status == false
+                orderby b.Date descending
+                select new BlogDetailsDTO
+                {
+                    BlogId = b.BlogId,
+                    Title = b.Title,
+                    Content = b.Content,
+                    Name = b.User.Name,
+                    SurName = b.User.SurName,
+                    ImagePath = b.ImagePath,
+                    BlogDate = b.Date,
+                    UserImagePath = b.User.ImagePath,
+                    BlogCommentCount = _context.BlogComments.Count(c => c.BlogId == b.BlogId),
+                    BlogLikeCount = _context.BlogLikes.Count(l => l.BlogId == b.BlogId)
+
+                }).ToList();
+
+            return result;
+        }
     }
     
 }

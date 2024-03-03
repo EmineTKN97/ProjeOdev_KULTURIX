@@ -5,6 +5,7 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.Context;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
@@ -18,12 +19,10 @@ namespace Business.Concrete
     public class AdminManager : IAdminService
     {
         IAdminDal _adminDal;
-      IUserService _userService;
-      
-        public AdminManager(IAdminDal admindal, IUserService userService)
+        public AdminManager(IAdminDal admindal)
         {
             _adminDal = admindal;
-            _userService = userService;
+    
         }
         [ValidationAspect(typeof(AdminValidator))]
         public async Task<IResult> Add(Admin admin)
@@ -31,6 +30,9 @@ namespace Business.Concrete
             _adminDal.Add(admin);
             return new SuccessResult(Messages.AdminAdded);
         }
+
+     
+
         [SecuredOperation("ADMİN")]
         public async Task<IResult> ChangeAdminPassword(string currentPassword, string newPassword, Guid AdminID)
         {
@@ -78,6 +80,6 @@ namespace Business.Concrete
             }
         }
 
-     
+       
     }
 }
