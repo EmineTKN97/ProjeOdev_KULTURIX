@@ -68,7 +68,7 @@ namespace WEPAPI_UI.Controllers
             var result = await _mediaService.GetMediaByUserId(UserId);
             return !result.Success ? BadRequest(Messages.MediaNotListed) : Ok(result.Data);
         }
-        [HttpPost("UpdateBlogMedia")]
+        [HttpPut("UpdateBlogMedia")]
         public async Task<IActionResult> UpdateBlogMedia( IFormFile file,Guid BlogId,Guid UserId)
         {
             var result = await _mediaService.UpdateBlogMedia(file,BlogId,UserId);

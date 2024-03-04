@@ -21,12 +21,12 @@ namespace DataAccess.Concrete.EntityFramework
         {
             _context = context;
         }
-        public void AddBlogMedia(string fileName, Guid blogId,Guid UserId)
+        public void AddBlogMedia(string fileName, Guid blogId, Guid UserId)
         {
             var existingBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == blogId && b.UserId == UserId && b.Status == false);
 
             if (existingBlog != null)
-            { 
+            {
                 var imageEntity = new Media
                 {
                     ImagePath = fileName,
@@ -81,7 +81,7 @@ namespace DataAccess.Concrete.EntityFramework
                 var userToUpdate = _context.Users.FirstOrDefault(u => u.Id == UserId);
                 if (userToUpdate != null)
                 {
-                    userToUpdate.ImagePath ="user.jpg";
+                    userToUpdate.ImagePath = "user.jpg";
                     _context.SaveChanges();
                 }
             }
@@ -104,7 +104,7 @@ namespace DataAccess.Concrete.EntityFramework
                     mediaToDelete.Status = true;
                     _context.Medias.Update(mediaToDelete);
                     _context.SaveChanges();
-                    associatedBlog.ImagePath ="default.jpg";
+                    associatedBlog.ImagePath = "default.jpg";
                     _context.SaveChanges();
                 }
                 else
@@ -124,12 +124,12 @@ namespace DataAccess.Concrete.EntityFramework
                      .Where(m => m.Status == false)
                       .Select(m => new MediaDTO
                       {
-                         Name=m.User.Name,
-                         SurName=m.User.SurName,
-                         BlogDescription=m.blog.Content,
-                         BlogTitle=m.blog.Title,
-                         CreateDate=m.CreateDate,
-                         ImagePath=m.ImagePath,
+                          Name = m.User.Name,
+                          SurName = m.User.SurName,
+                          BlogDescription = m.blog.Content,
+                          BlogTitle = m.blog.Title,
+                          CreateDate = m.CreateDate,
+                          ImagePath = m.ImagePath,
                       }).ToList();
 
             return result;
@@ -147,17 +147,16 @@ namespace DataAccess.Concrete.EntityFramework
             }
 
         }
-        public void UpdateBlogMedia(string fileName, Guid blogId, Guid UserId)
+        public void UpdateBlogMedia(string fileName, Guid blogId, Guid userId)
         {
-            var existingBlog = _context.Blogs.FirstOrDefault(b => b.BlogId == blogId && b.UserId == UserId && b.Status == false);
+            var existingBlog = _context.Blogs
+                .Include(b => b.Medias)
+                .FirstOrDefault(b => b.BlogId == blogId && b.UserId == userId && !b.Status);
 
             if (existingBlog != null)
             {
-                var existingMedia = _context.Medias.SingleOrDefault(m => m.BlogId == blogId && m.Status == false);
-
-                if (existingMedia != null)
+                if (existingBlog.Medias != null)
                 {
-                    existingMedia.ImagePath = fileName;
                     existingBlog.ImagePath = fileName;
                 }
                 else
@@ -170,9 +169,9 @@ namespace DataAccess.Concrete.EntityFramework
                     };
 
                     _context.Medias.Add(newMedia);
-                    existingBlog.ImagePath = fileName;
                 }
-                    existingBlog.ImagePath = fileName;
+
+                existingBlog.ImagePath = fileName;
                 _context.SaveChanges();
             }
             else

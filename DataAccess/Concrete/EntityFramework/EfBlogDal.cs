@@ -30,7 +30,7 @@ namespace DataAccess.Concrete.EntityFramework
                 Title = blogdto.Title,
                 Content = blogdto.Content,
                 Date = DateTime.Now,
-                ImagePath = "default.jpg",
+                ImagePath = "default.jpeg",
                 UserId = userId
             };
 
@@ -66,7 +66,7 @@ namespace DataAccess.Concrete.EntityFramework
                                    Title = b.Title,
                                    Content = b.Content,
                                    BlogDate = b.Date,
-                                   ImagePath = string.IsNullOrEmpty(b.ImagePath) ? "default.jpg" : b.ImagePath,
+                                   ImagePath = string.IsNullOrEmpty(b.ImagePath) ? "default.jpeg" : b.ImagePath,
                                    Name = b.User.Name,
                                    SurName = b.User.SurName,
                                    UserImagePath = b.User.ImagePath,
@@ -113,7 +113,8 @@ namespace DataAccess.Concrete.EntityFramework
                              Title = b.Title,
                              Content = b.Content,
                              ImagePath = b.ImagePath,
-                             BlogDate= b.Date,
+                             MediaId = b.Medias.FirstOrDefault().MediaId,
+                             BlogDate = b.Date,
                          }).ToList();
 
             return blogs;
@@ -170,6 +171,7 @@ namespace DataAccess.Concrete.EntityFramework
                                 BlogId = b.BlogId,
                                 Title = b.Title,
                                 Content = b.Content,
+                                MediaId = b.Medias.FirstOrDefault().MediaId,
                                 ImagePath = b.ImagePath,
                                 BlogDate = b.Date,
                             }).FirstOrDefault();

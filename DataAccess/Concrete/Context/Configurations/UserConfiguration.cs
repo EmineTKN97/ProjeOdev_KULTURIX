@@ -9,6 +9,7 @@ namespace DataAccess.Concrete.Context.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(u => u.Id);
+          
         }
     }
 }

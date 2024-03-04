@@ -14,7 +14,7 @@ namespace Business.ValidationRules.FluentValidation
         {
             RuleFor(bc => bc.CommentDetail)
            .NotEmpty().WithMessage("Yorum içeriği boş olamaz.")
-            .Length(5, 500).WithMessage("Yorum içeriği 5 ile 500 karakter arasında olmalıdır.");
+            .Length(5, 1000).WithMessage("Yorum içeriği 5 ile 1000 karakter arasında olmalıdır.");
             RuleFor(bc => bc.UserName)
                 .NotEmpty().WithMessage("Kullanıcı isimi boş olamaz.")
                .WithMessage("Yorum eklemek için giriş yapmalısınız.");

@@ -13,7 +13,7 @@ namespace DataAccess.Abstract
     {
         List<BlogCommentDTO> GetAllCommentDetails();
         void Add(Guid Blogİd,BlogCommentDTO blogcommentdto, Guid userId);
-        void Delete(Guid id, Guid userId);
+       Task Delete(Guid id, Guid userId);
         void Update(Guid id, BlogCommentDTO updatedCommentBlogDto, Guid userId);
         List<BlogCommentDTO> GetCommentsByBlogId(Guid BlogId);
         List<BlogCommentDTO> GetByCommentUserId(Guid userId);

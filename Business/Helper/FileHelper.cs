@@ -15,7 +15,7 @@ namespace Business.Helper
 			{
 				throw new ArgumentNullException("file", "Dosya boş veya geçersiz.");
 			}
-			string[] allowedExtensions = { ".jpg", ".jpeg", ".png" };
+			string[] allowedExtensions = { ".jpg", ".jpeg", ".png","webp"};
 
 			string fileExtension = Path.GetExtension(file.FileName);
 			if (!allowedExtensions.Contains(fileExtension.ToLower()))

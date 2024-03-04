@@ -50,15 +50,16 @@ namespace DataAccess.Concrete.EntityFramework
 
 
         }
-        public void Delete(Guid id,Guid userId)
+        public async Task Delete(Guid id, Guid userId)
         {
-            var blogCommentToDelete = _context.BlogComments.FirstOrDefault(c => c.CommentId == id && c.UserId == userId && c.Status == false);
+            var blogCommentToDelete = await _context.BlogComments
+                .FirstOrDefaultAsync(c => c.CommentId == id && c.UserId == userId && c.Status == false);
 
             if (blogCommentToDelete != null)
             {
                 blogCommentToDelete.Status = true;
                 _context.BlogComments.Update(blogCommentToDelete);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             else
             {

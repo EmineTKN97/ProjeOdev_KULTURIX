@@ -15,6 +15,7 @@ public class BlogDTO:IDto
         public string? ImagePath { get; set; }
         public DateTime BlogDate { get; set; }
         public Guid UserId { get; set; }
-    
+        public Guid? MediaId { get; set; }
+
     }
 }

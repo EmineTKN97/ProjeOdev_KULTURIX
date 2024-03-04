@@ -8,7 +8,7 @@ namespace Business.Constants
 {
     public static class OperationClaimsStaticId
     {
-        public static readonly Guid DefaultUserOperationClaimId = new Guid("14D18191-4891-400F-9BC6-4D0656A1F33C");
-        public static readonly Guid DefaultAdminOperationClaimId = new Guid("A0A34587-E1F5-438B-9E9F-76F2F6B1D664");
+        public static readonly Guid DefaultUserOperationClaimId = new Guid("DCD510FE-D336-4862-AC63-B30F40CA0F06");
+        public static readonly Guid DefaultAdminOperationClaimId = new Guid("3ED2A6FF-5D20-4844-BFF5-6C686984031A");
     }
 }

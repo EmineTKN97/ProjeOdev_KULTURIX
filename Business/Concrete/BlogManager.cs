@@ -42,7 +42,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<BlogDetailsDTO>>(_blogDal.GetBlogsByCommentAndLikeCount(), Messages.BlogListed);
         }
-        [CacheAspect]
+        [CacheAspect(duration: 10)]
         public async Task<IDataResult<BlogDetailsDTO>> GetById(Guid BlogId)
         {
             return new SuccessDataResult<BlogDetailsDTO>(_blogDal.GetById(BlogId), Messages.BlogListed);
@@ -70,22 +70,22 @@ namespace Business.Concrete
             _blogDal.Add(blogdto,userId);
             return new SuccessResult(Messages.BlogAdded);
         }
-        [CacheAspect]
+        [CacheAspect(duration: 5)]
         public async  Task<IDataResult<List<BlogDTO>>> GetByUserId(Guid UserId)
         {
             return new SuccessDataResult<List<BlogDTO>>(_blogDal.GetByUserId(UserId), Messages.BlogListed);
         }
-
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<List<BlogDTO>>> GetLatestBlog()
         {
             return new SuccessDataResult<List<BlogDTO>>(_blogDal.GetLatestBlog(), Messages.BlogListed);
         }
-
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<BlogDTO>> GetLastBlogByUserId(Guid UserId)
         {
             return new SuccessDataResult<BlogDTO>(_blogDal.GetLatestBlogByUserId(UserId), Messages.BlogListed);
         }
-
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<List<BlogDetailsDTO>>> GetAllBlogsDetails()
         {
             return new SuccessDataResult<List<BlogDetailsDTO>>(_blogDal.GetAllBlogsDetails());

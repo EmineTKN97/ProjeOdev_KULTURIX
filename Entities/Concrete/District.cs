@@ -13,5 +13,7 @@ namespace Entities.Concrete
         public int SehirId { get; set; }
         public string DistrictName { get; set; }
         public City City { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
+
     }
 }

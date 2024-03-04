@@ -47,12 +47,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<AnnouncementDTO>>(_announcementDal.GetAllAnnouncement(), Messages.AnnouncementListed);
         }
 
-        [CacheAspect]
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<AnnouncementDTO>> GetById(Guid id)
         {
             return new SuccessDataResult<AnnouncementDTO>(_announcementDal.GetById(id), Messages.AnnouncementListed);
         }
-        [CacheAspect]
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<List<AnnouncementDTO>>> GetLatestAnnouncement()
         {
             return new SuccessDataResult<List<AnnouncementDTO>>(_announcementDal.GetLatestAnnouncement(), Messages.AnnouncementListed);

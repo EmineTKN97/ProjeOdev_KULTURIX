@@ -21,6 +21,7 @@ namespace Entities.Concrete
         public string ImagePath { get; set; }
         public virtual ICollection<BlogComment> BlogComments { get; set; }
         public virtual ICollection<Blog> Blogs { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
         public virtual ICollection<Media> Medias { get; set; }
         public virtual ICollection<BlogLike> BlogLikes { get; set; }
         public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; }

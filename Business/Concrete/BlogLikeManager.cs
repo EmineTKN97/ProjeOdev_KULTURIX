@@ -32,7 +32,7 @@ namespace Business.Concrete
             _bloglikeDal.AddBlogLike(Blogİd, bloglikedto,UserId);
             return new SuccessResult(Messages.BlogLikeAdded);
         }
-        [CacheAspect]
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<List<BlogLikeDTO>>> GetAllLikeDetails()
         {
             return new SuccessDataResult<List<BlogLikeDTO>>(_bloglikeDal.GetAllLikeDetails(), Messages.BlogLikedListed);
@@ -43,7 +43,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<BlogDetailsDTO>>(_bloglikeDal.GetLikedBlogsByUserId(userId), Messages.BlogLikedListed);
         }
 
-        [CacheAspect]
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<List<BlogLikeDTO>>>GetLikesByBlogId(Guid BlogId)
         {
             return new SuccessDataResult<List<BlogLikeDTO>>(_bloglikeDal.GetLikesByBlogId(BlogId), Messages.BlogLikedListed);

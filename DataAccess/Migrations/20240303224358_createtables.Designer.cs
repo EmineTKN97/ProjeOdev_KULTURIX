@@ -4,6 +4,7 @@ using DataAccess.Concrete.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    partial class ProjeOdevContextModelSnapshot : ModelSnapshot
+    [Migration("20240303224358_createtables")]
+    partial class createtables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,48 +286,6 @@ namespace DataAccess.Migrations
                     b.ToTable("OperationClaims");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.Ticket", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DistrictId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MuseumName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityId");
-
-                    b.HasIndex("DistrictId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Tickets");
-                });
-
             modelBuilder.Entity("Entities.Concrete.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -478,30 +439,6 @@ namespace DataAccess.Migrations
                     b.Navigation("blog");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.Ticket", b =>
-                {
-                    b.HasOne("Entities.Concrete.City", "city")
-                        .WithMany("Tickets")
-                        .HasForeignKey("CityId")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.District", "District")
-                        .WithMany("Tickets")
-                        .HasForeignKey("DistrictId")
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.User", "user")
-                        .WithMany("Tickets")
-                        .HasForeignKey("UserId")
-                        .IsRequired();
-
-                    b.Navigation("District");
-
-                    b.Navigation("city");
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Entities.Concrete.UserOperationClaim", b =>
                 {
                     b.HasOne("Entities.Concrete.OperationClaim", "OperationClaim")
@@ -538,13 +475,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concrete.City", b =>
                 {
                     b.Navigation("Districts");
-
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("Entities.Concrete.District", b =>
-                {
-                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
@@ -563,8 +493,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Blogs");
 
                     b.Navigation("Medias");
-
-                    b.Navigation("Tickets");
 
                     b.Navigation("UserOperationClaims");
                 });

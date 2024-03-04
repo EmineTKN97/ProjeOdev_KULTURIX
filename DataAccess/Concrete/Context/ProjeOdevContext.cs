@@ -2,6 +2,7 @@
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,9 @@ namespace DataAccess.Concrete.Context
             modelBuilder.ApplyConfiguration(new AdminOperationClaimConfiguration());
             modelBuilder.ApplyConfiguration(new DistrictConfiguration());
             modelBuilder.ApplyConfiguration(new CityConfiguration());
-        
+            modelBuilder.ApplyConfiguration(new TicketConfiguration());
+
+
         }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<User> Users { get; set; }
@@ -47,9 +50,9 @@ namespace DataAccess.Concrete.Context
         public DbSet<AdminOperationClaim> AdminOperationClaims { get; set; }
         public  DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<City> Cities { get; set; }
-
-        public DbSet<District> Districts { get; set; }  
-        
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }   
+ 
 
     }
 }

@@ -57,12 +57,12 @@ namespace Business.Concrete
             }
         }
        [SecuredOperation("ADMİN")]
-        [CacheAspect]
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<List<BlogCommentDTO>>> GetAllCommentsDetails()
         {
             return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetAllCommentDetails());
         }
-        [CacheAspect]
+        [CacheAspect(duration: 5)]
         public async Task<IDataResult<List<BlogCommentDTO>>> GetCommentsByBlogId(Guid BlogId)
         {
             return new SuccessDataResult<List<BlogCommentDTO>>(_blogcommentDal.GetCommentsByBlogId(BlogId), Messages.BlogCommentListed);
