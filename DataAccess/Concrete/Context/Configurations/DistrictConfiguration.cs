@@ -8,12 +8,12 @@ namespace DataAccess.Concrete.Context.Configurations
     {
         public void Configure(EntityTypeBuilder<District> builder)
         {
-            builder.HasKey(d =>d.Id);
-            builder.Property(d => d.Id).UseIdentityColumn();
+            builder.HasKey(d =>d.DistrictId);
+            builder.Property(d => d.DistrictId).UseIdentityColumn();
             builder.HasOne(d => d.City)
                 .WithMany(c => c.Districts) 
-                .HasForeignKey(d => d.SehirId)
-                .HasPrincipalKey(c =>c.Id)
+                .HasForeignKey(d => d.CityId)
+                .HasPrincipalKey(c =>c.CityId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         
         }

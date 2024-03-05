@@ -79,25 +79,32 @@ namespace DataAccess.Concrete.EntityFramework
             return result;
         }
 
-        public List<TicketDTO> GetByUserId(Guid userId)
+        public TicketDTO GetByUserId(Guid userId)
         {
-            var result = (from t in _context.Tickets
-                         join u in _context.Users on t.UserId equals u.Id
-                         where t.UserId == userId && t.Status == false
-                         orderby t.Time descending
-                         select new TicketDTO
-                         {
-                             UserName = t.user.Name,
-                             UserSurname = t.user.SurName,
-                             DistrictName = t.District.DistrictName,
-                             CityName = t.city.CityName,
-                             Quantity = t.Quantity,
-                             Price = t.Price,
-                             MuseumName = t.MuseumName,
-                             Time = t.Time,
-                         }).ToList();
+            
+                var lastTicket = (from t in _context.Tickets
+                                  join u in _context.Users on t.UserId equals u.Id
+                                  where t.UserId == userId && t.Status == false
+                                  orderby t.Time descending
+                                  select new TicketDTO
+                                  {
+                                      UserName = t.user.Name,
+                                      UserSurname = t.user.SurName,
+                                      DistrictName = t.District.DistrictName,
+                                      CityName = t.city.CityName,
+                                      Quantity = t.Quantity,
+                                      Price = t.Price,
+                                      MuseumName = t.MuseumName,
+                                      Time = t.Time,
+                                      CityId = t.CityId,
+                                      DistrictId= t.DistrictId,
+                                      Id = t.Id,
+                                      UserId = t.UserId
+                                      
+                                  }).FirstOrDefault();
 
-            return result;
+                return lastTicket;
+            
         }
 
         public void Update(Guid id, TicketDTO ticketDTO, Guid userId)

@@ -22,7 +22,7 @@ namespace DataAccess.Concrete.EntityFramework
         public List<District> GetCityId(int cityId)
         {
             var districts = _context.Districts
-       .Where(d => d.SehirId == cityId)
+       .Where(d => d.CityId == cityId)
        .ToList();
 
             return districts;

@@ -4,6 +4,7 @@ using DataAccess.Concrete.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    partial class ProjeOdevContextModelSnapshot : ModelSnapshot
+    [Migration("20240305201625_editcitiesanddistrictname")]
+    partial class editcitiesanddistrictname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,16 +226,16 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DistrictId"));
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("DistrictName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SehirId")
+                        .HasColumnType("int");
+
                     b.HasKey("DistrictId");
 
-                    b.HasIndex("CityId");
+                    b.HasIndex("SehirId");
 
                     b.ToTable("Districts");
                 });
@@ -457,7 +460,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Entities.Concrete.City", "City")
                         .WithMany("Districts")
-                        .HasForeignKey("CityId")
+                        .HasForeignKey("SehirId")
                         .IsRequired();
 
                     b.Navigation("City");

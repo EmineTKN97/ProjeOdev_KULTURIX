@@ -40,9 +40,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<TicketDTO>>(_ticketDal.GetAllTicketDetails());
         }
         [SecuredOperation("USER")]
-        public async Task<IDataResult<List<TicketDTO>>> GetByUserId(Guid UserId)
+        public async Task<IDataResult<TicketDTO>> GetByUserId(Guid UserId)
         {
-            return new SuccessDataResult<List<TicketDTO>>(_ticketDal.GetByUserId(UserId), Messages.TicketListed);
+            return new SuccessDataResult<TicketDTO>(_ticketDal.GetByUserId(UserId), Messages.TicketListed);
         }
         [SecuredOperation("USER")]
         public async Task<IResult> Update(Guid id, TicketDTO ticketDTO, Guid UserId)

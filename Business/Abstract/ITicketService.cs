@@ -14,6 +14,6 @@ namespace Business.Abstract
         Task<IResult> Delete(Guid Id, Guid UserId);
         Task<IResult> Update(Guid Id, TicketDTO ticketDTO , Guid UserId);
         Task<IDataResult<List<TicketDTO>>> GetAllTicketDetails();
-        Task<IDataResult<List<TicketDTO>>> GetByUserId(Guid UserId);
+        Task<IDataResult<TicketDTO>> GetByUserId(Guid UserId);
     }
 }

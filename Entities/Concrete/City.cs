@@ -9,7 +9,7 @@ namespace Entities.Concrete
 {
     public class City:IEntity
     {
-        public int Id { get; set; }
+        public int CityId { get; set; }
 
         public string CityName { get; set; }
         public virtual ICollection<District> Districts { get; set; }

@@ -19,13 +19,13 @@ namespace DataAccess.Concrete.Context.Configurations
               .HasOne(t => t.city)
               .WithMany(c => c.Tickets)
               .HasForeignKey(t => t.CityId)
-              .HasPrincipalKey(c => c.Id)
+              .HasPrincipalKey(c => c.CityId)
               .OnDelete(DeleteBehavior.ClientSetNull);
             builder
             .HasOne(t => t.District)
             .WithMany(c => c.Tickets)
             .HasForeignKey(t => t.DistrictId)
-            .HasPrincipalKey(c => c.Id)
+            .HasPrincipalKey(c =>  c.DistrictId)
             .OnDelete(DeleteBehavior.ClientSetNull);
 
         }

@@ -8,8 +8,8 @@ namespace DataAccess.Concrete.Context.Configurations
     {
         public void Configure(EntityTypeBuilder<City> builder)
         {
-            builder.HasKey(c => c.Id);
-            builder.Property(c => c.Id).UseIdentityColumn();
+            builder.HasKey(c => c.CityId);
+            builder.Property(c => c.CityId).UseIdentityColumn();
            
 
         }

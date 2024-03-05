@@ -14,7 +14,7 @@ namespace DataAccess.Abstract
         void Add(TicketDTO ticketDTO, Guid userId);
         void Delete(Guid ıd, Guid userId);
         List<TicketDTO> GetAllTicketDetails();
-        List<TicketDTO> GetByUserId(Guid userId);
+        TicketDTO GetByUserId(Guid userId);
         void Update(Guid id, TicketDTO ticketDTO, Guid userId);
     }
 }

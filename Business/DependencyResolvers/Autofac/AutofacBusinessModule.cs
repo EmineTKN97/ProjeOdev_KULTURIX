@@ -43,6 +43,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfCityDal>().As<ICityDal>().InstancePerLifetimeScope();
             builder.RegisterType<DistrictManager>().As<IDistrictService>().InstancePerLifetimeScope();
             builder.RegisterType<EfDistrictDal>().As<IDistrictDal>().InstancePerLifetimeScope();
+            builder.RegisterType<TicketManager>().As<ITicketService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfTicketDal>().As<ITicketDal>().InstancePerLifetimeScope();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
     
 
