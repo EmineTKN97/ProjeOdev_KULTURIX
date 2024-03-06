@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class createtables : Migration
+    public partial class tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,13 +47,25 @@ namespace DataAccess.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    CityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CityName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cities", x => x.Id);
+                    table.PrimaryKey("PK_Cities", x => x.CityId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Costs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Costs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,19 +104,19 @@ namespace DataAccess.Migrations
                 name: "Districts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    DistrictId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SehirId = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false),
                     DistrictName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Districts", x => x.Id);
+                    table.PrimaryKey("PK_Districts", x => x.DistrictId);
                     table.ForeignKey(
-                        name: "FK_Districts_Cities_SehirId",
-                        column: x => x.SehirId,
+                        name: "FK_Districts_Cities_CityId",
+                        column: x => x.CityId,
                         principalTable: "Cities",
-                        principalColumn: "Id");
+                        principalColumn: "CityId");
                 });
 
             migrationBuilder.CreateTable(
@@ -177,6 +189,46 @@ namespace DataAccess.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DistrictId = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    MuseumName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "CityId");
+                    table.ForeignKey(
+                        name: "FK_Tickets_Costs_CostId",
+                        column: x => x.CostId,
+                        principalTable: "Costs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Tickets_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalTable: "Districts",
+                        principalColumn: "DistrictId");
+                    table.ForeignKey(
+                        name: "FK_Tickets_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -293,9 +345,9 @@ namespace DataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Districts_SehirId",
+                name: "IX_Districts_CityId",
                 table: "Districts",
-                column: "SehirId");
+                column: "CityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Medias_BlogId",
@@ -305,6 +357,26 @@ namespace DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Medias_UserId",
                 table: "Medias",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_CityId",
+                table: "Tickets",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_CostId",
+                table: "Tickets",
+                column: "CostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_DistrictId",
+                table: "Tickets",
+                column: "DistrictId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_UserId",
+                table: "Tickets",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -334,10 +406,10 @@ namespace DataAccess.Migrations
                 name: "BlogLikes");
 
             migrationBuilder.DropTable(
-                name: "Districts");
+                name: "Medias");
 
             migrationBuilder.DropTable(
-                name: "Medias");
+                name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "UserOperationClaims");
@@ -346,16 +418,22 @@ namespace DataAccess.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
-                name: "Cities");
+                name: "Blogs");
 
             migrationBuilder.DropTable(
-                name: "Blogs");
+                name: "Costs");
+
+            migrationBuilder.DropTable(
+                name: "Districts");
 
             migrationBuilder.DropTable(
                 name: "OperationClaims");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Cities");
         }
     }
 }

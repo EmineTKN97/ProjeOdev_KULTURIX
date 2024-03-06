@@ -215,6 +215,20 @@ namespace DataAccess.Migrations
                     b.ToTable("Cities");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.Cost", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Costs");
+                });
+
             modelBuilder.Entity("Entities.Concrete.District", b =>
                 {
                     b.Property<int>("DistrictId")
@@ -292,6 +306,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("CostId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("DistrictId")
                         .HasColumnType("int");
 
@@ -317,6 +334,8 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("CostId");
 
                     b.HasIndex("DistrictId");
 
@@ -485,6 +504,11 @@ namespace DataAccess.Migrations
                         .HasForeignKey("CityId")
                         .IsRequired();
 
+                    b.HasOne("Entities.Concrete.Cost", "Cost")
+                        .WithMany("Tickets")
+                        .HasForeignKey("CostId")
+                        .IsRequired();
+
                     b.HasOne("Entities.Concrete.District", "District")
                         .WithMany("Tickets")
                         .HasForeignKey("DistrictId")
@@ -494,6 +518,8 @@ namespace DataAccess.Migrations
                         .WithMany("Tickets")
                         .HasForeignKey("UserId")
                         .IsRequired();
+
+                    b.Navigation("Cost");
 
                     b.Navigation("District");
 
@@ -539,6 +565,11 @@ namespace DataAccess.Migrations
                 {
                     b.Navigation("Districts");
 
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Cost", b =>
+                {
                     b.Navigation("Tickets");
                 });
 

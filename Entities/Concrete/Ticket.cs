@@ -18,13 +18,16 @@ namespace Entities.Concrete
         public int Quantity { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
+           
+        public Guid CostId{ get; set; }
         public bool Status { get; set; }
         public DateTime Time { get; set; }
         public User user { get; set; }
         public City city { get; set; }
         public District District {  get; set; }
-      
-   
+        public virtual Cost Cost { get; set; }
+
+
 
     }
 }

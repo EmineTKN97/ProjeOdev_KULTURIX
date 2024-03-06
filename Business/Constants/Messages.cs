@@ -91,13 +91,18 @@ namespace Business.Constants
         public static string AdminAdded = "Yönetici eklendi";
         public static string UserNotListed = "Kullanıcı bilgileri getirilemedi";
 
-        public static string TicketAdded = "Bilet satın alındı";
-        public static string TicketDeleted = "Bilet iptal edildi.Geri ödemeniz 15 gün içinde gerçekleşek";
+        public static string TicketAdded = "Biletiniz oluşturuldu";
+        public static string TicketDeleted = "Bilet bilgileriniz silindi";
         public static string TicketListed = "Biletleriniz Listelendi";
         public static string TicketUpdated = "Biletiniz Güncellendi";
         public static string TicketNotUpdated = "Biletiniz Güncellenemedi";
         public static string TicketNotDeleted = "Bilet silinemedi";
-        public static string TicketNotAdded = "Bilet eklenemedi";
+        public static string TicketNotAdded = "Bilet oluşturulamadı";
         public static string TicketNotListed = "Bilet Listelenemdi";
+
+       public static string TicketPriceUpdated="Fiyat Güncellendi";
+       public static string TicketPriceNotUpdated="Fiyat Güncellenemedi";
+       public static string AddTicketPrice = "Fiyat oluşturuldu";
+        public static string  NotAddTicketPrice="Fiyat oluşturulamadı";
     };
 }

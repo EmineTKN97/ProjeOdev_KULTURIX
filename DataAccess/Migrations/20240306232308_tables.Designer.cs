@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    [Migration("20240305201625_editcitiesanddistrictname")]
-    partial class editcitiesanddistrictname
+    [Migration("20240306232308_tables")]
+    partial class tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -218,6 +218,20 @@ namespace DataAccess.Migrations
                     b.ToTable("Cities");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.Cost", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Costs");
+                });
+
             modelBuilder.Entity("Entities.Concrete.District", b =>
                 {
                     b.Property<int>("DistrictId")
@@ -226,16 +240,16 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DistrictId"));
 
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("DistrictName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SehirId")
-                        .HasColumnType("int");
-
                     b.HasKey("DistrictId");
 
-                    b.HasIndex("SehirId");
+                    b.HasIndex("CityId");
 
                     b.ToTable("Districts");
                 });
@@ -295,6 +309,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("CostId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("DistrictId")
                         .HasColumnType("int");
 
@@ -320,6 +337,8 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("CostId");
 
                     b.HasIndex("DistrictId");
 
@@ -460,7 +479,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Entities.Concrete.City", "City")
                         .WithMany("Districts")
-                        .HasForeignKey("SehirId")
+                        .HasForeignKey("CityId")
                         .IsRequired();
 
                     b.Navigation("City");
@@ -488,6 +507,11 @@ namespace DataAccess.Migrations
                         .HasForeignKey("CityId")
                         .IsRequired();
 
+                    b.HasOne("Entities.Concrete.Cost", "Cost")
+                        .WithMany("Tickets")
+                        .HasForeignKey("CostId")
+                        .IsRequired();
+
                     b.HasOne("Entities.Concrete.District", "District")
                         .WithMany("Tickets")
                         .HasForeignKey("DistrictId")
@@ -497,6 +521,8 @@ namespace DataAccess.Migrations
                         .WithMany("Tickets")
                         .HasForeignKey("UserId")
                         .IsRequired();
+
+                    b.Navigation("Cost");
 
                     b.Navigation("District");
 
@@ -542,6 +568,11 @@ namespace DataAccess.Migrations
                 {
                     b.Navigation("Districts");
 
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Cost", b =>
+                {
                     b.Navigation("Tickets");
                 });
 

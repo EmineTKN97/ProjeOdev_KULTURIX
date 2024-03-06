@@ -27,7 +27,12 @@ namespace DataAccess.Concrete.Context.Configurations
             .HasForeignKey(t => t.DistrictId)
             .HasPrincipalKey(c =>  c.DistrictId)
             .OnDelete(DeleteBehavior.ClientSetNull);
-
+            builder
+ .HasOne(t => t.Cost)
+ .WithMany(cs => cs.Tickets)
+ .HasForeignKey(t => t.CostId)
+ .HasPrincipalKey(cs => cs.Id)
+ .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

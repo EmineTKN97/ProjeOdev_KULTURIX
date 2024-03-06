@@ -24,6 +24,12 @@ namespace WEPAPI_UI.Controllers
             var result = await _ticketService.Add(ticketdto, UserId);
             return !result.Success ? BadRequest(Messages.TicketNotAdded) : Ok(Messages.TicketAdded);
         }
+        [HttpPost("AddTicketPrice")]
+        public async Task<IActionResult> AddTicketPrice(decimal Price)
+        {
+            var result = await _ticketService.AddTicketPrice(Price);
+            return !result.Success ? BadRequest(Messages.NotAddTicketPrice) : Ok(Messages.AddTicketPrice);
+        }
 
         [HttpDelete("DeleteTicket")]
         public async Task<IActionResult> Delete(Guid id, Guid UserId)
@@ -49,6 +55,16 @@ namespace WEPAPI_UI.Controllers
             return !result.Success ? BadRequest(Messages.TicketNotUpdated) : Ok(Messages.TicketUpdated);
               
             
+        }
+        [HttpPut("UpdateTicketPrice")]
+        public async Task<IActionResult> UpdatePrice(decimal Price)
+        {
+
+            var result = await _ticketService.UpdateTicketPrice(Price);
+
+            return !result.Success ? BadRequest(Messages.TicketPriceNotUpdated) : Ok(Messages.TicketPriceUpdated);
+
+
         }
         [HttpGet("GetByUserId")]
         public async Task<IActionResult> GetByUserId(Guid UserId)

@@ -36,7 +36,18 @@ namespace DataAccess.Concrete.EntityFramework
             _context.Tickets.Add(newTicket);
             _context.SaveChanges();
         }
-    
+
+        public void AddTicket(decimal price)
+        {
+            var ticket = new Ticket
+            {
+                Price = price,
+
+            };
+            _context.Tickets.Add(ticket);
+            _context.SaveChanges();
+
+        }
 
         public void Delete(Guid ıd, Guid userId)
         {
@@ -126,6 +137,18 @@ namespace DataAccess.Concrete.EntityFramework
             {
                 throw new Exception("Bilet bulunamadı veya güncellenemedi.");
             }
+        }
+
+        public void UpdateTicket(decimal price)
+        {
+            var ticket = new Ticket
+            {
+                Price = price,
+
+            };
+            _context.Tickets.Update(ticket);
+            _context.SaveChanges();
+
         }
     }
 }

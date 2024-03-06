@@ -44,6 +44,13 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<TicketDTO>(_ticketDal.GetByUserId(UserId), Messages.TicketListed);
         }
+        [SecuredOperation("ADMİN")]
+        public async Task<IResult> AddTicketPrice(decimal price)
+        {
+            _ticketDal.AddTicket(price);
+            return new SuccessResult(Messages.AddTicketPrice);
+        }
+
         [SecuredOperation("USER")]
         public async Task<IResult> Update(Guid id, TicketDTO ticketDTO, Guid UserId)
         {
@@ -56,6 +63,19 @@ namespace Business.Concrete
             catch (Exception ex)
             {
                 return new ErrorResult(Messages.TicketNotUpdated);
+            }
+        }
+        [SecuredOperation("ADMİN")]
+        public async Task<IResult> UpdateTicketPrice(decimal price)
+        {
+            try
+            {
+                _ticketDal.UpdateTicket(price);
+                return new Result(true, Messages.TicketPriceUpdated);
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult(Messages.TicketPriceNotUpdated);
             }
         }
     }

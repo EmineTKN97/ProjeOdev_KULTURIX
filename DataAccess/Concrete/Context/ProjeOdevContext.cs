@@ -36,7 +36,7 @@ namespace DataAccess.Concrete.Context
             modelBuilder.ApplyConfiguration(new DistrictConfiguration());
             modelBuilder.ApplyConfiguration(new CityConfiguration());
             modelBuilder.ApplyConfiguration(new TicketConfiguration());
-
+            modelBuilder.ApplyConfiguration(new CostConfiguration());
 
         }
         public DbSet<Blog> Blogs { get; set; }
@@ -51,8 +51,8 @@ namespace DataAccess.Concrete.Context
         public  DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<District> Districts { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }   
- 
+        public DbSet<Ticket> Tickets { get; set; }
 
+        public DbSet<Cost> Costs { get; set; }
     }
 }
