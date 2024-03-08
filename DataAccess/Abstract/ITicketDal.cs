@@ -12,11 +12,11 @@ namespace DataAccess.Abstract
     public interface ITicketDal : IEntityRepository<Ticket>
     {
         void Add(TicketDTO ticketDTO, Guid userId);
-        void AddTicket(decimal price);
+     
         void Delete(Guid ıd, Guid userId);
         List<TicketDTO> GetAllTicketDetails();
         TicketDTO GetByUserId(Guid userId);
         void Update(Guid id, TicketDTO ticketDTO, Guid userId);
-        void UpdateTicket(decimal price);
+  
     }
 }

@@ -104,5 +104,8 @@ namespace Business.Constants
        public static string TicketPriceNotUpdated="Fiyat Güncellenemedi";
        public static string AddTicketPrice = "Fiyat oluşturuldu";
         public static string  NotAddTicketPrice="Fiyat oluşturulamadı";
+
+        public static string CostListed = "Fiyat Listelendi";
+        public static string CostNotListed = "Fiyat Listelenemedi";
     };
 }

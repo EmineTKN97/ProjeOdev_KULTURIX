@@ -21,33 +21,36 @@ namespace DataAccess.Concrete.EntityFramework
         }
         public void Add(TicketDTO ticketDTO, Guid userId)
         {
-            var newTicket = new Ticket
+            var cost = _context.Costs.SingleOrDefault(c => c.Id == ticketDTO.CostId);
+            if (cost != null)
             {
-                Id = ticketDTO.Id,  
-                CityId= ticketDTO.CityId,
-                DistrictId= ticketDTO.DistrictId,   
-                Price = ticketDTO.Price,    
-                Quantity = ticketDTO.Quantity,  
-                MuseumName= ticketDTO.MuseumName,   
-                Time = DateTime.Now,
-                UserId = userId,
-            };
+                decimal totalPrice = cost.Price * ticketDTO.Quantity;
 
-            _context.Tickets.Add(newTicket);
-            _context.SaveChanges();
+                // Ticket bilgilerini oluştur
+                var newTicket = new Ticket
+                {
+                    Id = ticketDTO.Id,
+                    CityId = ticketDTO.CityId,
+                    DistrictId = ticketDTO.DistrictId,
+                    Quantity = ticketDTO.Quantity,
+                    MuseumName = ticketDTO.MuseumName,
+                    Time = DateTime.Now,
+                    UserId = userId,
+                   Price = totalPrice,
+                   CostId = ticketDTO.CostId,
+                   
+                };
+
+               
+                _context.Tickets.Add(newTicket);
+                _context.SaveChanges();
+            }
+            else
+            {
+               throw new Exception("Cost bulunamadı ");
+            }
         }
 
-        public void AddTicket(decimal price)
-        {
-            var ticket = new Ticket
-            {
-                Price = price,
-
-            };
-            _context.Tickets.Add(ticket);
-            _context.SaveChanges();
-
-        }
 
         public void Delete(Guid ıd, Guid userId)
         {
@@ -139,16 +142,6 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public void UpdateTicket(decimal price)
-        {
-            var ticket = new Ticket
-            {
-                Price = price,
-
-            };
-            _context.Tickets.Update(ticket);
-            _context.SaveChanges();
-
-        }
+      
     }
 }

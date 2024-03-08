@@ -15,7 +15,6 @@ namespace Business.Abstract
         Task<IResult> Update(Guid Id, TicketDTO ticketDTO , Guid UserId);
         Task<IDataResult<List<TicketDTO>>> GetAllTicketDetails();
         Task<IDataResult<TicketDTO>> GetByUserId(Guid UserId);
-        Task<IResult> AddTicketPrice(decimal price);
-        Task<IResult> UpdateTicketPrice(decimal price);
+    
     }
 }
