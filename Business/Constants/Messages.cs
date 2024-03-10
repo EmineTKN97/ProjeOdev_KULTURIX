@@ -112,5 +112,7 @@ namespace Business.Constants
 
         public static string UserRoleUpdatedToAdmin = "Kullanıcı yönetici olarak yetkilendirildi";
         public static string UserRoleUpdateFailed = "Kullanıcı yetkilendirme işlemi başarısız";
+        public static string UserRoleRemoved = "Kullanıcın yetkisi geri alındı";
+        public static string UserRoleNotFound = "Yetkili kullanıcı bulunamadı";
     };
 }

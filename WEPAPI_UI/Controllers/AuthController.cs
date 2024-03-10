@@ -100,7 +100,7 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPut("ChangeRole")]
+        [HttpPost("ChangeRole")]
         public ActionResult ChangeRole(Guid UserId)
         {
             var result = _authService.ChangeRoles(UserId);
@@ -108,14 +108,14 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(Messages.UserRoleUpdateFailed);
             }
-            else {
+            else
+            {
 
-                return BadRequest(Messages.UserRoleUpdatedToAdmin);
-            }
-
-           
+                return Ok(Messages.UserRoleUpdatedToAdmin);
+            }  
 
         }
+
     }
 }
 

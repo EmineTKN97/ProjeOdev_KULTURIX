@@ -191,54 +191,54 @@ namespace Business.Concrete
         [SecuredOperation("ADMİN")]
         public async Task<IResult> ChangeRoles(Guid UserId)
         {
-            try
+
+            using (var unitOfWork = new ProjeOdevContext())
             {
-                using (var unitOfWork = new ProjeOdevContext())
+             
+                var user = unitOfWork.Users.FirstOrDefault(u => u.Id == UserId);
+                if (user != null)
                 {
-                    // Kullanıcıyı (user) admin olarak güncelle
-                    var user = unitOfWork.Users.FirstOrDefault(u => u.Id == UserId);
-                    if (user != null)
+                    
+                    var newAdmin = new Admin
                     {
-                        // Yeni bir Admin nesnesi oluştur
-                        var newAdmin = new Admin
-                        {
-                            FirstName = user.Name,
-                            LastName = user.SurName,
-                            Email = user.Email,
-                            PasswordHash = user.PasswordHash,
-                            PasswordSalt = user.PasswordSalt,
-                            Id = Guid.NewGuid(),
-                            
-                        };
+                        FirstName = user.Name,
+                        LastName = user.SurName,
+                        Email = user.Email,
+                        PasswordHash = user.PasswordHash,
+                        PasswordSalt = user.PasswordSalt,
+                        Id = Guid.NewGuid(),
 
-                        // Admin tablosuna yeni admini ekle
-                        unitOfWork.Admins.Add(newAdmin);
-                        unitOfWork.SaveChanges();
+                    };
 
-                        // Kullanıcıya admin yetkisi ekleyerek güncelle
-                        var adminOperationClaim = new AdminOperationClaim
-                        {
-                            Id = Guid.NewGuid(),
-                            AdminId = newAdmin.Id, // Yeni oluşturulan adminin ID'si
-                            OperationClaimsId = OperationClaimsStaticId.DefaultAdminOperationClaimId
-                        };
+                
+                    unitOfWork.Admins.Add(newAdmin);
+                    unitOfWork.SaveChanges();
 
-                        unitOfWork.AdminOperationClaims.Add(adminOperationClaim);
-                        unitOfWork.SaveChanges();
-
-                        return new SuccessResult(Messages.UserRoleUpdatedToAdmin);
-                    }
-                    else
+                    
+                    var adminOperationClaim = new AdminOperationClaim
                     {
-                        return new ErrorResult(Messages.UserNotFound);
-                    }
+                        Id = Guid.NewGuid(),
+                        AdminId = newAdmin.Id,
+                        OperationClaimsId = OperationClaimsStaticId.DefaultAdminOperationClaimId
+                    };
+
+                    unitOfWork.AdminOperationClaims.Add(adminOperationClaim);
+                    unitOfWork.SaveChanges();
+
+                    return new SuccessResult(Messages.UserRoleUpdatedToAdmin);
+                }
+                else
+                {
+                    return new ErrorResult(Messages.UserNotFound);
                 }
             }
-            catch (Exception ex)
-            {
-                return new ErrorResult(Messages.UserRoleUpdateFailed);
-            }
+
+
         }
+      
+
+       
     }
 }
+
 
