@@ -3,6 +3,8 @@ using Autofac.Core;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
+using Business.ValidationRules;
+using Business.ValidationRules.FluentValidation;
 using Castle.DynamicProxy;
 using Core.Utilities.İnterceptors;
 using Core.Utilities.Security.JWT;
@@ -47,6 +49,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfTicketDal>().As<ITicketDal>().InstancePerLifetimeScope();
             builder.RegisterType<CostManager>().As<ICostService>().InstancePerLifetimeScope();
             builder.RegisterType<EfCostDal>().As<ICostDal>().InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(ValidationManager<>)).As(typeof(IValidationService<>));
+
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
     
 

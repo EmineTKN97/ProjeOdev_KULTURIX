@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -40,7 +41,7 @@ namespace Business.Concrete
                 Email = userForRegisterDto.Email,
                 Name = userForRegisterDto.Name,
                 SurName = userForRegisterDto.SurName,
-                BirthDate= userForRegisterDto.BirthDate,
+                BirthDate = userForRegisterDto.BirthDate,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = false,
@@ -187,8 +188,57 @@ namespace Business.Concrete
             var accessToken = _tokenHelper.CreateToken(admin, claims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
+        [SecuredOperation("ADMİN")]
+        public async Task<IResult> ChangeRoles(Guid UserId)
+        {
+            try
+            {
+                using (var unitOfWork = new ProjeOdevContext())
+                {
+                    // Kullanıcıyı (user) admin olarak güncelle
+                    var user = unitOfWork.Users.FirstOrDefault(u => u.Id == UserId);
+                    if (user != null)
+                    {
+                        // Yeni bir Admin nesnesi oluştur
+                        var newAdmin = new Admin
+                        {
+                            FirstName = user.Name,
+                            LastName = user.SurName,
+                            Email = user.Email,
+                            PasswordHash = user.PasswordHash,
+                            PasswordSalt = user.PasswordSalt,
+                            Id = Guid.NewGuid(),
+                            
+                        };
 
-       
+                        // Admin tablosuna yeni admini ekle
+                        unitOfWork.Admins.Add(newAdmin);
+                        unitOfWork.SaveChanges();
 
+                        // Kullanıcıya admin yetkisi ekleyerek güncelle
+                        var adminOperationClaim = new AdminOperationClaim
+                        {
+                            Id = Guid.NewGuid(),
+                            AdminId = newAdmin.Id, // Yeni oluşturulan adminin ID'si
+                            OperationClaimsId = OperationClaimsStaticId.DefaultAdminOperationClaimId
+                        };
+
+                        unitOfWork.AdminOperationClaims.Add(adminOperationClaim);
+                        unitOfWork.SaveChanges();
+
+                        return new SuccessResult(Messages.UserRoleUpdatedToAdmin);
+                    }
+                    else
+                    {
+                        return new ErrorResult(Messages.UserNotFound);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult(Messages.UserRoleUpdateFailed);
+            }
+        }
     }
 }
+

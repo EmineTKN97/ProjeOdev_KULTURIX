@@ -18,7 +18,8 @@ namespace Entities.Concrete
         public int Quantity { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
-           
+        public long? UserIdentity { get; set; }
+        public int DateOfBirthYear { get; set; }
         public Guid CostId{ get; set; }
         public bool Status { get; set; }
         public DateTime Time { get; set; }

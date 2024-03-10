@@ -17,6 +17,7 @@ namespace Entities.Concrete
         public byte[] PasswordHash { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime CreateDate { get; set; }
+        public long? Identity { get; set; }
         public bool Status { get; set; }
         public string ImagePath { get; set; }
         public virtual ICollection<BlogComment> BlogComments { get; set; }

@@ -20,8 +20,8 @@ namespace WebAPI.Controllers
         public AuthController(IAuthService authService)
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
-        
-            
+
+
         }
 
         [HttpPost("loginUser")]
@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
         [HttpPost("registerUser")]
         public async Task<IActionResult> Register(UserForRegisterDTO userForRegisterDto)
         {
-            
+
             var userExists = _authService.UserExists(userForRegisterDto.Email);
             if (!userExists.Success)
             {
@@ -57,11 +57,11 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
-                return Ok(new { data = result.Data, message = Messages.UserRegistered } );
+                return Ok(new { data = result.Data, message = Messages.UserRegistered });
             }
 
             return BadRequest(result);
-        
+
         }
         [HttpPost("loginAdmin")]
         public ActionResult Login(AdminForLoginDTO adminForLoginDto)
@@ -75,7 +75,7 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessTokenAdmin(adminToLogin.Data);
             if (result.Success)
             {
-                return Ok(new { data = result.Data, message = Messages.SuccessfulLogin});
+                return Ok(new { data = result.Data, message = Messages.SuccessfulLogin });
             }
 
             return BadRequest(result);
@@ -99,6 +99,23 @@ namespace WebAPI.Controllers
 
             return BadRequest(result.Message);
         }
-       
+
+        [HttpPut("ChangeRole")]
+        public ActionResult ChangeRole(Guid UserId)
+        {
+            var result = _authService.ChangeRoles(UserId);
+            if (!result.IsCompletedSuccessfully)
+            {
+                return BadRequest(Messages.UserRoleUpdateFailed);
+            }
+            else {
+
+                return BadRequest(Messages.UserRoleUpdatedToAdmin);
+            }
+
+           
+
+        }
     }
 }
+

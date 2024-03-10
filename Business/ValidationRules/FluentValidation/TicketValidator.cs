@@ -25,9 +25,14 @@ namespace Business.ValidationRules.FluentValidation
                 .NotEmpty().WithMessage("Müze alanı boş geçilemez");
             RuleFor(t => t.Time)
             .NotEmpty().WithMessage("Tarih alanı boş geçilemez")
-            .Must(BeWithinWorkingHours).WithMessage("Tarih alanı çalışma saatleri dışında olmalıdır (09:00 - 16:00)");
+            .Must(BeWithinWorkingHours).WithMessage("Tarih alanı çalışma saatleri dışında olmamalıdır (09:00 - 16:00)");
+            RuleFor(t => t.UserIdentity.ToString())
+     .NotEmpty().WithMessage("T.C. Kimlik Numarası alanı boş olamaz.")
+     .Length(11).WithMessage("T.C. Kimlik Numarası 11 karakter olmalıdır.");
 
-
+            RuleFor(t => t.DateOfBirthYear)
+                .NotEmpty().WithMessage("Doğum Yılı alanı boş olamaz.")
+                .Must(BeOlderThan18).WithMessage("En az 18 yaşında olmalısınız.");
 
 
         }
@@ -39,6 +44,13 @@ namespace Business.ValidationRules.FluentValidation
             TimeSpan inputTime = time.TimeOfDay;
 
             return inputTime >= startTime && inputTime <= endTime;
+        }
+        private bool BeOlderThan18(int birthYear)
+        {
+            int currentYear = DateTime.Now.Year;
+            int age = currentYear - birthYear;
+
+            return age >= 18;
         }
     }
 

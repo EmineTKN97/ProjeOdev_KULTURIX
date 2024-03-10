@@ -8,6 +8,7 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.DTOs;
+using MernisServiceReference;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,20 @@ namespace Business.Concrete
         [ValidationAspect(typeof(TicketValidator))]
         public async Task<IResult> Add(TicketDTO ticketDTO, Guid UserId)
         {
-            _ticketDal.Add(ticketDTO, UserId);
-            return new SuccessResult(Messages.TicketAdded);
+            
+                // TC kimlik kontrolü yap
+                bool isPersonValid = await CheckPersonAsync(ticketDTO);
+
+                // TC kimlik kontrolü başarısız ise hata dön
+                if (!isPersonValid)
+                {
+                    return new ErrorResult(Messages.TCIdentityNotValid);
+                }
+
+                // TC kimlik kontrolü başarılı ise işlemi devam ettir
+                _ticketDal.Add(ticketDTO, UserId);
+                return new SuccessResult(Messages.TicketAdded);
+            
         }
         [SecuredOperation("USER")]
         public async Task<IResult> Delete(Guid Id, Guid UserId)
@@ -64,6 +77,19 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.TicketNotUpdated);
             }
         }
-      
+        private async Task<bool> CheckPersonAsync(TicketDTO ticketDTO)
+        {
+            try
+            {
+                KPSPublicSoapClient client = new KPSPublicSoapClient(KPSPublicSoapClient.EndpointConfiguration.KPSPublicSoap);
+                var result = await client.TCKimlikNoDogrulaAsync(new TCKimlikNoDogrulaRequest(new TCKimlikNoDogrulaRequestBody(ticketDTO.UserIdentity, ticketDTO.UserName, ticketDTO.UserSurname, ticketDTO.DateOfBirthYear)));
+                return result.Body.TCKimlikNoDogrulaResult;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
     }
 }

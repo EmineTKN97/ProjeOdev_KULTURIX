@@ -4,6 +4,7 @@ using DataAccess.Concrete.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjeOdevContext))]
-    partial class ProjeOdevContextModelSnapshot : ModelSnapshot
+    [Migration("20240309205612_tccolumnadd")]
+    partial class tccolumnadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,9 +312,6 @@ namespace DataAccess.Migrations
                     b.Property<Guid>("CostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("DateOfBirthYear")
-                        .HasColumnType("int");
-
                     b.Property<int>("DistrictId")
                         .HasColumnType("int");
 
@@ -333,9 +333,6 @@ namespace DataAccess.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<long?>("UserIdentity")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

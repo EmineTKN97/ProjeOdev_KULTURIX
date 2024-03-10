@@ -100,12 +100,17 @@ namespace Business.Constants
         public static string TicketNotAdded = "Bilet oluşturulamadı";
         public static string TicketNotListed = "Bilet Listelenemdi";
 
-       public static string TicketPriceUpdated="Fiyat Güncellendi";
-       public static string TicketPriceNotUpdated="Fiyat Güncellenemedi";
-       public static string AddTicketPrice = "Fiyat oluşturuldu";
-        public static string  NotAddTicketPrice="Fiyat oluşturulamadı";
+        public static string TicketPriceUpdated = "Fiyat Güncellendi";
+        public static string TicketPriceNotUpdated = "Fiyat Güncellenemedi";
+        public static string AddTicketPrice = "Fiyat oluşturuldu";
+        public static string NotAddTicketPrice = "Fiyat oluşturulamadı";
 
         public static string CostListed = "Fiyat Listelendi";
         public static string CostNotListed = "Fiyat Listelenemedi";
+
+        public static string TCIdentityNotValid = "Lütfen T.C. Kimlik numaranızı doğru giriniz";
+
+        public static string UserRoleUpdatedToAdmin = "Kullanıcı yönetici olarak yetkilendirildi";
+        public static string UserRoleUpdateFailed = "Kullanıcı yetkilendirme işlemi başarısız";
     };
 }

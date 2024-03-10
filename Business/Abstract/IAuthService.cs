@@ -16,6 +16,8 @@ namespace Business.Abstract
         IDataResult<Admin> LoginAdmin(AdminForLoginDTO adminForLoginDto);
         IResult AdminExists(string email);
         IDataResult<AccessToken> CreateAccessTokenAdmin(Admin admin);
+        Task<IResult> ChangeRoles(Guid UserId);
+      
        
     }
 }

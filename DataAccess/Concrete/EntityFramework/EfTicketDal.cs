@@ -25,8 +25,6 @@ namespace DataAccess.Concrete.EntityFramework
             if (cost != null)
             {
                 decimal totalPrice = cost.Price * ticketDTO.Quantity;
-
-                // Ticket bilgilerini oluştur
                 var newTicket = new Ticket
                 {
                     Id = ticketDTO.Id,
@@ -34,10 +32,12 @@ namespace DataAccess.Concrete.EntityFramework
                     DistrictId = ticketDTO.DistrictId,
                     Quantity = ticketDTO.Quantity,
                     MuseumName = ticketDTO.MuseumName,
-                    Time = DateTime.Now,
+                    Time = ticketDTO.Time,
                     UserId = userId,
                    Price = totalPrice,
                    CostId = ticketDTO.CostId,
+                   UserIdentity = ticketDTO.UserIdentity,
+                   DateOfBirthYear = ticketDTO.DateOfBirthYear, 
                    
                 };
 
@@ -113,7 +113,9 @@ namespace DataAccess.Concrete.EntityFramework
                                       CityId = t.CityId,
                                       DistrictId= t.DistrictId,
                                       Id = t.Id,
-                                      UserId = t.UserId
+                                      UserId = t.UserId,
+                                      UserIdentity = t.UserIdentity.Value,
+                                      DateOfBirthYear = t.DateOfBirthYear,
                                       
                                   }).FirstOrDefault();
 
@@ -133,6 +135,8 @@ namespace DataAccess.Concrete.EntityFramework
                 ticketToUpdate.CityId = ticketDTO.CityId;
                 ticketToUpdate.DistrictId = ticketDTO.DistrictId;
                 ticketToUpdate.Time = ticketDTO.Time;  
+                ticketToUpdate.UserIdentity = ticketDTO.UserIdentity;
+                ticketToUpdate.DateOfBirthYear = ticketDTO.DateOfBirthYear;
                 _context.Entry(ticketToUpdate).State = EntityState.Modified;
                 _context.SaveChanges();
             }
