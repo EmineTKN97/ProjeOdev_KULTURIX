@@ -23,7 +23,7 @@ namespace Business.ValidationRules.FluentValidation
             .WithMessage("Yorum eklemek için giriş yapmalısınız.");
             RuleFor(bc => bc.CommentTitle)
             .NotEmpty().WithMessage("Yorum başlığı boş olamaz.")
-            .MaximumLength(100).WithMessage("Yorum başlığı en fazla 100 karakter olmalıdır.");
+             .Length(5, 100).WithMessage("Yorum başlığı 5 ile 100 karakter arasında olmalıdır.");
 
         }
 

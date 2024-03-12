@@ -27,8 +27,8 @@ namespace Business.ValidationRules.FluentValidation
             .NotEmpty().WithMessage("Tarih alanı boş geçilemez")
             .Must(BeWithinWorkingHours).WithMessage("Tarih alanı çalışma saatleri dışında olmamalıdır (09:00 - 16:00)");
             RuleFor(t => t.UserIdentity.ToString())
-     .NotEmpty().WithMessage("T.C. Kimlik Numarası alanı boş olamaz.")
-     .Length(11).WithMessage("T.C. Kimlik Numarası 11 karakter olmalıdır.");
+            .NotEmpty().WithMessage("T.C. Kimlik Numarası alanı boş olamaz.")
+             .Length(11).WithMessage("T.C. Kimlik Numarası 11 karakter olmalıdır.");
 
             RuleFor(t => t.DateOfBirthYear)
                 .NotEmpty().WithMessage("Doğum Yılı alanı boş olamaz.")

@@ -12,11 +12,11 @@ namespace Business.ValidationRules.FluentValidation
     {
         public AdminValidator()
         {
-            RuleFor(a => a.LastName)
+            RuleFor(a => a.FirstName)
              .NotEmpty().WithMessage("Ad alanı boş geçilemez.")
              .MinimumLength(3).WithMessage("Ad en az 3 karakter olmalıdır.")
              .MaximumLength(50).WithMessage("Ad en fazla 50 karakter olabilir.");
-            RuleFor(a => a.FirstName)
+            RuleFor(a => a.LastName)
               .NotEmpty().WithMessage("Soyad alanı boş geçilemez.")
               .MinimumLength(2).WithMessage("Soyad en az 2 karakter olmalıdır.")
               .MaximumLength(50).WithMessage("Soyad en fazla 50 karakter olabilir.");

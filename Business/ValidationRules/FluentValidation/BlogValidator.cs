@@ -23,10 +23,10 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(b => b.Title)
 
             .NotEmpty().WithMessage("Başlık boş olamaz.")
-            .MaximumLength(50).WithMessage("Başlık en fazla 50 karakter olmalıdır.");
+           .Length(5, 100).WithMessage("Blog başlığı 5 ile 100 karakter arasında olmalıdır.");
             RuleFor(b => b.Content)
              .NotEmpty().WithMessage("İçerik boş olamaz.")
-             .MinimumLength(100).WithMessage("İçerik en az 100 karakter içermelidir.");
+             .Length(50, 1000).WithMessage("Blog içeriği 50 ile 1000 karakter arasında olmalıdır.");
 
 
         }
