@@ -92,7 +92,6 @@ namespace DataAccess.Concrete.EntityFramework
                 blogToUpdate.Title = updatedBlogDto.Title;
                 blogToUpdate.Content = updatedBlogDto.Content;
                 blogToUpdate.Date = DateTime.Now;
-                blogToUpdate.ImagePath = updatedBlogDto.ImagePath;
                 _context.Entry(blogToUpdate).State = EntityState.Modified;
                 _context.SaveChanges();
             }

@@ -36,18 +36,25 @@ namespace DataAccess.Concrete.EntityFramework
 
         public List<UserDTO> GetAllUser()
         {
-            var users = _context.Users.OrderByDescending(user => user.CreateDate).ToList();
-            var userDTOs = users.Select(user => new UserDTO
             {
-                Name = user.Name,
-               SurName = user.SurName, 
-               Email = user.Email,  
-               BirthDate = user.BirthDate,  
-               ImagePath = user.ImagePath,
-               UserId = user.Id,
-            }).ToList();
+                var users = _context.Users
+                                    .Where(user => user.Status == false)
+                                    .OrderByDescending(user => user.CreateDate)
+                                    .ToList();
 
-            return userDTOs;
+                var userDTOs = users.Select(user => new UserDTO
+                {
+                    Name = user.Name,
+                    SurName = user.SurName,
+                    Email = user.Email,
+                    BirthDate = user.BirthDate,
+                    ImagePath = user.ImagePath,
+                    UserId = user.Id,
+                }).ToList();
+
+                return userDTOs;
+            }
+    
         }
 
         public UserDTO GetById(Guid userId)

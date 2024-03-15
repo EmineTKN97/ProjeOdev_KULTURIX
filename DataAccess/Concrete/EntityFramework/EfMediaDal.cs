@@ -104,7 +104,7 @@ namespace DataAccess.Concrete.EntityFramework
                     mediaToDelete.Status = true;
                     _context.Medias.Update(mediaToDelete);
                     _context.SaveChanges();
-                    associatedBlog.ImagePath = "default.jpg";
+                    associatedBlog.ImagePath = "default.jpeg";
                     _context.SaveChanges();
                 }
                 else

@@ -96,6 +96,7 @@ namespace DataAccess.Concrete.EntityFramework
             var announcementDTOs = _context.Announcements
                         .OrderByDescending(ac => ac.CreateDate)
                         .Take(5)
+                        .Where (ac => ac.Status == false)   
                         .Select(ac => new AnnouncementDTO
                         {
                             AnnouncementId = ac.Id,
