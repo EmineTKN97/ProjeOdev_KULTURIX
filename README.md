@@ -5,10 +5,12 @@ Teknoloji olarak Asp.Net core Entity Framework Web API  kullanarak geliştirmeye
 ## Kurulum
 Projenin yerel olarak nasıl kurulacağına dair adımlar:
 
-1. Proje kurulumu yaptıktan sonra ProjeOdevContext.cs'dosyasını bulunuz. ![ProjeOdev](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/f1b62a72-1727-4f0a-b014-1bbdf71ceb7d)
-2. EF code first yaklaşımı ile tablolarımı oluşturduğum için Package Manager Console'den update-database yapmanız yeterlidir.
-3. İkinci adım...
-
+1. Proje kurulumu yaptıktan sonra ProjeOdevContext.cs'dosyasını bulunuz. ![sql](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/f1b62a72-1727-4f0a-b014-1bbdf71ceb7d)
+2. Burada bulunan UsesqlServer kısımını kendi veritabanınıza göre düzeltiniz.![Ekran görüntüsü 2024-03-29 190327](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/953285b8-8097-44e0-b0e8-eb26ad3e2bc0)
+3.Daha sonra  EF code first yaklaşımı ile tablolarımı oluşturduğum için Package Manager Console'den update-database yapmanız yeterlidir.Oluşturduğunuz veritabanından OperationClaims tablosunu bularak aşağıdaki verileri giriniz.
+![clims](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/cd746934-c1aa-46e5-b209-7bd8886cf639)
+Böylece USER ve ADMİN rolleri tanımlanmış oldu.
+   
 ## Kullandığım Teknolojiler
 
 Projenin geliştirilmesinde çeşitli teknolojiler kullanılmıştır. İşte projede kullanılan temel teknolojiler:
@@ -19,5 +21,14 @@ Projenin geliştirilmesinde çeşitli teknolojiler kullanılmıştır. İşte pr
 - **Müze API Entegrasyonu**: Kültürel etkinliklerin yanı sıra müzelerle ilgili bilgileri de sunabilmek için özel bir Müze API'si entegre edilmiştir.
 - **Autofac**: Proje içerisinde bağımlılık enjeksiyonu ve servisleri yönetmek için Autofac kullanılmıştır. Bu sayede kodun daha modüler ve yönetilebilir olması sağlanmıştır.
 - **MERNİS Servisi**: Kullanıcıların kimlik doğrulaması ve bilgilerinin doğruluğunu kontrol etmek için Türkiye Cumhuriyeti Nüfus ve Vatandaşlık İşleri Genel Müdürlüğü'nün (MERNİS) servisinden yararlanılmıştır.
+- **JWT**:Kullanıcı giriş yaparak kimlik doğrulamasını gerçekleştirir. Sunucu, geçerli bir kullanıcı kimliği ve parola alır ve bu bilgileri doğrular. Kullanıcı doğrulandıktan sonra sunucu, kullanıcıya bir JWT oluşturur. Kullanıcıya gönderilen JWT, kullanıcının oturumunun süresini belirler ve yetkilendirme bilgilerini içerir.Kullanıcı her istek yaptığında, JWT sunucuya gönderilir ve sunucu bu tokeni doğrular. Bu sayede kullanıcının kimliği ve yetkilendirmesi sağlanmış olur.
+
+  
+## Katkıda Bulunma
+
+- Eğer projeye katkıda bulunmak istiyorsanız, öncelikle bir issue açarak konuyu belirtin.
+- Fork ederek kendi çalışma alanınıza kopyalayın.
+- Yaptığınız değişiklikleri yeni bir branch oluşturarak commit edin.
+- Pull request (çekme isteği) gönderin ve değişikliklerinizi tartışın.
 
 Bu teknolojilerin bir araya gelmesiyle proje geliştirme süreci daha verimli ve etkili hale getirilmiştir. Detaylı bilgi için lütfen proje klasöründe yer alan belgelere ve kodlara göz atabilirsiniz.
