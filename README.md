@@ -1,7 +1,7 @@
 # KÜLTÜRİX (BLOG-HABER-BİLET) SİTESİ
 
 Bu proje benim ilk proje deneyimim oldu.Projede ulaşılmak istenen amaç  müze bileti satın alabileceğimiz müzelerle ilgili blogların ve duyuruların olduğu,bloglara yorum ve beğeni yapılabilen,user ve admin olarak iki yetkilendirmenin bulunduğu dinamik bir backend geliştirmektir.
-Teknoloji olarak Asp.Net core Entity Framework Web API  kullanarak geliştirmeye çalışıyorum.
+Teknoloji olarak Asp.Net core Entity Framework Web API  kullanarak geliştirmeye çalıştım.
 ## Kurulum
 Projenin yerel olarak nasıl kurulacağına dair adımlar:
 
@@ -33,3 +33,7 @@ Projenin geliştirilmesinde çeşitli teknolojiler kullanılmıştır. İşte pr
 - Pull request (çekme isteği) gönderin ve değişikliklerinizi tartışın.
 
 Bu teknolojilerin bir araya gelmesiyle proje geliştirme süreci daha verimli ve etkili hale getirilmiştir. Detaylı bilgi için lütfen proje klasöründe yer alan belgelere ve kodlara göz atabilirsiniz.
+Proje hakkında herhangi bir sorunuz, geri bildiriminiz veya işbirliği teklifiniz varsa benimle iletişime geçebilirsiniz.
+
+- **E-posta:** [eminetkn.97@gmail.com](eminetkn.97@gmail.com)
+- Her türlü geri bildiriminiz benim için değerlidir. Teşekkür ederim!
