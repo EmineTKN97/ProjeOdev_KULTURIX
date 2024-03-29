@@ -5,7 +5,7 @@ Teknoloji olarak Asp.Net core Entity Framework Web API  kullanarak geliştirmeye
 ## Kurulum
 Projenin yerel olarak nasıl kurulacağına dair adımlar:
 
-1. Proje kurulumu yaptıktan sonra ![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+1. Proje kurulumu yaptıktan sonra ProjeOdevContext.cs'dosyasını bulunuz. ![ProjeOdev](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/f1b62a72-1727-4f0a-b014-1bbdf71ceb7d)
 2. EF code first yaklaşımı ile tablolarımı oluşturduğum için Package Manager Console'den update-database yapmanız yeterlidir.
 3. İkinci adım...
 
