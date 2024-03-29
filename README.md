@@ -6,7 +6,7 @@ Teknoloji olarak Asp.Net core Entity Framework Web API  kullanarak geliştirmeye
 Projenin yerel olarak nasıl kurulacağına dair adımlar:
 
 1. Proje kurulumu yaptıktan sonra ProjeOdevContext.cs'dosyasını bulunuz.
- ![Ekran görüntüsü 2024-03-29 190327](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/953285b8-8097-44e0-b0e8-eb26ad3e2bc0)
+<center> ![Ekran görüntüsü 2024-03-29 190327](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/953285b8-8097-44e0-b0e8-eb26ad3e2bc0)</center>
 2. Burada bulunan UsesqlServer kısımını kendi veritabanınıza göre düzeltiniz. ![sql](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/f1b62a72-1727-4f0a-b014-1bbdf71ceb7d)
 3.Daha sonra  EF code first yaklaşımı ile tablolarımı oluşturduğum için Package Manager Console'den update-database yapmanız yeterlidir.Oluşturduğunuz veritabanından OperationClaims tablosunu bularak aşağıdaki verileri giriniz.Böylece USER ve ADMİN rolleri tanımlanmış oldu.
 ![clims](https://github.com/EmineTKN97/ProjeOdev_KULTURIX/assets/156480828/cd746934-c1aa-46e5-b209-7bd8886cf639)
