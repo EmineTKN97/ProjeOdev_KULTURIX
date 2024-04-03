@@ -36,3 +36,4 @@ Proje hakkında herhangi bir sorunuz, geri bildiriminiz veya işbirliği teklifi
 
 - **E-posta:** [eminetkn.97@gmail.com](eminetkn.97@gmail.com)
 - Her türlü geri bildiriminiz benim için değerlidir. Teşekkür ederim!
+- Projenin çalışır halini youtubenden izleyebilitsiniz.[Youtube](https://www.youtube.com/watch?v=k4X2cHI1i7A&list=PLwnn1JKHavmKoAawKT_17MhTyfI07Ggl-&index=48)
